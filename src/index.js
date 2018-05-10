@@ -22,24 +22,6 @@ let store = createStore(reducers, applyMiddleware(thunk))
 
 var params = {};
 
-if (window.location.search) {
-    var parts = window.location.search.substring(1).split('&');
-
-    for (var i = 0; i < parts.length; i++) {
-        var nv = parts[i].split('=');
-        if (!nv[0]) continue;
-        params[nv[0]] = nv[1] || true;
-    }
-}
-
-console.log(params);
-if (params._quizId) {
-  params._quizId = decodeURIComponent(params._quizId);
-}
-if (params._playerName) {
-  params._playerName = decodeURIComponent(params._playerName);
-}
-
 store.dispatch(loadInitialData(params, socket));
 
 socket.on('connect', () => {

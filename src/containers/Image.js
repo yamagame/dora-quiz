@@ -20,6 +20,21 @@ class Image extends Component {
     };
     this.resizeImage = this.resizeImage.bind(this);
     this.showNoImage = this.showNoImage.bind(this);
+    this.mounted = false;
+  }
+
+  componentDidMount() {
+    this.mounted = true;
+    window.addEventListener('resize', this.onResize, false);
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  onResize = () => {
+    this.resizeImage();
   }
 
   resizeImage() {
@@ -56,6 +71,7 @@ class Image extends Component {
   }
 
   render() {
+    var marginTop = 0;
     const style = {
       wrapper: {
         position: 'relative',
@@ -84,7 +100,6 @@ class Image extends Component {
     } else {
       const ratio = (this.state.ratio) ? this.state.ratio : 1;
       var width = ratio*this.props.height;
-      var marginTop = 0;
       if (width > this.props.width) {
         width = this.props.width;
         marginTop = (this.props.height - this.state.height) / 2;

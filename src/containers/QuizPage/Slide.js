@@ -27,7 +27,7 @@ class Slide extends Component {
         return host ? host+photourl : photourl;
       }
     }
-    const width = this.props.width-this.props.fontSize*2-((this.props.fontSize/2<15) ? 15 : this.props.fontSize/2)*4-32;
+    const width = this.props.width-32;
     const height = this.props.height-32;
     return (
       <div className="App">

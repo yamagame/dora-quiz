@@ -15,7 +15,6 @@ import {
   setParams,
 } from '../reducers'
 import Image from './Image';
-import AdminResult from './QuizPage/AdminResult';
 import Wait from './QuizPage/Wait';
 import Title from './QuizPage/Title';
 import Message from './QuizPage/Message';
@@ -121,9 +120,6 @@ class QuizPage extends Component {
   }
 
   render() {
-    if (this.props.mode == 'admin-result') {
-      return this.renderAdminResult(this.props.result);
-    }
     const pageNumber = (typeof this.props.pageNumber === 'undefined') ? 0 : this.props.pageNumber;
     if (this.props.action == 'quiz-init'
      || this.props.action == 'quiz-start'
@@ -136,10 +132,6 @@ class QuizPage extends Component {
       }
     }
     return this.renderPages(this.props);
-  }
-
-  renderAdminResult(result) {
-    return <AdminResult result={result} />
   }
 
   renderPages(page) {
