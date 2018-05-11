@@ -182,5 +182,16 @@ p {
   color: #ff0099;
 }
 
-.Message-Link {
+table, th, td {
+  border-collapse: collapse;
+  border: 1px solid darkgray;
+  padding: 4px;
+}
+
+th {
+  background-color: #bee7ffff;
+}
+
+td.Data {
+  text-align: center;
 }

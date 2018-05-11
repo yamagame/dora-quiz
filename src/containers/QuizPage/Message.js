@@ -44,7 +44,7 @@ class Message extends Component {
             }
             {
               links ? links.map( (v,i) => (
-                <a className="Message-Link" key={i} href={v.url} style={{
+                <a key={i} href={v.url} style={{
                   fontSize: this.props.fontSize,
                 }} target="_blank"> {v.title} </a>
               )) : null
