@@ -1,7 +1,7 @@
 # Dora Quiz
 
-[ドラエンジン](https://github.com/yamagame/dora-engine)用プレゼンテーションページのソースコードです。
-ビルドしたファイルをドラエンジンのpublicフォルダに配置します。[create-react-app](https://github.com/facebook/create-react-app)を使っています。
+[DoraEngine](https://github.com/yamagame/dora-engine)用プレゼンテーションページのソースコードです。
+ビルドしたファイルをDoraEngineのpublicフォルダに配置します。[create-react-app](https://github.com/facebook/create-react-app)を使っています。
 
 ## 機能
 
@@ -34,4 +34,4 @@ $ npm run build
 
 ## License
 
-  MIT
+[MIT](LICENSE)
