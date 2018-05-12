@@ -267,9 +267,13 @@ class QuizPage extends Component {
     return <Message
       fontSize={this.props.fontSize}
       title={title}
+      pageCount={this.props.pageCount}
       fontScale={fontScale}
       messages={messages}
       links={links}
+      prevButtonStatus={this.prevButtonStatus}
+      nextButtonStatus={this.nextButtonStatus}
+      openPageHandller={this.openPageHandller}
     />
   }
 

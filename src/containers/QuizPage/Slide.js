@@ -4,6 +4,7 @@ import Column from '../Column';
 import Row from '../Row';
 import Image from '../Image';
 import PageButton from '../PageButton';
+import Container from './Container';
 
 class Slide extends Component {
   constructor (props) {
@@ -27,38 +28,44 @@ class Slide extends Component {
         return host ? host+photourl : photourl;
       }
     }
-    const width = this.props.width-32;
-    const height = this.props.height-32;
+    const width = (this.props.pageCount>1) ? (this.props.width-32-this.props.fontSize*2) : this.props.width-32;
+    const height = (this.props.pageCount>1) ? (this.props.height-32-this.props.fontSize*2) : this.props.height-32;
     return (
       <div className="App">
-        <div style={{ height: '99%', }}>
-          <div style={{ padding: 16, height: this.props.height-32, }} >
-          <Row style={{ height: '100%', }}>
+        <Row style={{ height: '99%', }}>
+          <Column style={{ margin: 8, marginTop: 16, }}>
             {
-              (this.props.pageCount>1) ? <PageButton
-              title="＜"
-              disabled={this.props.prevButtonStatus()}
-              fontSize={this.props.fontSize}
-              onClick={this.props.openPageHandller(-1)}/> : null
+              (this.props.pageCount>1) ? <Container ref={ d => this.titleContainer = d } style={{ height: '10%', }} onUpdate={ box => this.setState({ titleContainer: box }) }>
+                <div style={{
+                  display: 'flex',
+                }}>
+                  <PageButton
+                  title="＜"
+                  disabled={this.props.prevButtonStatus()}
+                  fontSize={this.props.fontSize}
+                  onClick={this.props.openPageHandller(-1)}/>
+                  <div style={{
+                    width: '100%',
+                    overflow: 'auto',
+                  }}>
+                  </div>
+                  <PageButton
+                  title="＞"
+                  disabled={this.props.nextButtonStatus()}
+                  fontSize={this.props.fontSize}
+                  onClick={this.props.openPageHandller(+1)}/>
+                </div>
+              </Container> : null
             }
-            <div style={{ width: '100%', }} >
-              {
-                (photo) ? <Image ref={img => this.imageView = img } src={getHost(host, photo)} width={width} height={height} style={{ margin: 'auto', }}/> : null
-              }
-              {/*
-                (photo) ? <Image src={photo} style={{ height: '98%', marginButton: 0, }}/> : null
-              */}
-            </div>
-            {
-              (this.props.pageCount>1) ? <PageButton
-              title="＞"
-              disabled={this.props.nextButtonStatus()}
-              fontSize={this.props.fontSize}
-              onClick={this.props.openPageHandller(+1)}/> : null
-            }
-          </Row>
-          </div>
-        </div>
+            <Row>
+              <div style={{ width: '100%', }} >
+                {
+                  (photo) ? <Image ref={img => this.imageView = img } src={getHost(host, photo)} width={width} height={height} style={{ margin: 'auto', }}/> : null
+                }
+              </div>
+            </Row>
+         </Column>
+        </Row>
       </div>
     )
   }

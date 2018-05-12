@@ -7,6 +7,7 @@ import PageButton from '../PageButton';
 import Image from '../Image';
 import Button from '../Button';
 import Bar from '../Bar';
+import Container from './Container';
 
 function buttonValue(v, height, host) {
   if (typeof v !== 'object') {
@@ -18,34 +19,6 @@ function buttonValue(v, height, host) {
   return <p> { v.value } </p>;
 }
 
-class Container extends Component {
-  componentDidMount() {
-    this.props.onUpdate(this.box());
-    window.addEventListener('resize', this.onResize, false);
-  }
-
-  componentWillUnmount() {
-    this.props.onUpdate(null);
-    window.removeEventListener('resize', this.onResize);
-  }
-
-  onResize = () => {
-    this.props.onUpdate(this.box());
-  }
-
-  box() {
-    return {
-      offsetWidth: this.container.offsetWidth,
-      offsetHeight: this.container.offsetHeight,
-    }
-  }
-
-  render() {
-    return <div ref={ d => this.container = d } style={{ ...this.props.style }}>
-      { this.props.children }
-    </div>
-  }
-}
 
 class Select extends Component {
   constructor (props) {
