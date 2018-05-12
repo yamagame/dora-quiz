@@ -32,33 +32,31 @@ class Message extends Component {
             </div> : null
           */}
           <Column style={{ margin: 8, marginTop: 16, }}>
-            <Container ref={ d => this.titleContainer = d } style={{ height: '15%', }} onUpdate={ box => this.setState({ titleContainer: box }) }>
-              <div style={{
-                display: 'flex',
-                //margin: 8,
-                //height: '100%',
-              }}>
-                {
-                  (this.props.pageCount>1) ? <PageButton
-                  title="＜"
-                  disabled={this.props.prevButtonStatus()}
-                  fontSize={this.props.fontSize}
-                  onClick={this.props.openPageHandller(-1)}/> : null
-                }
+            {
+              (this.props.pageCount>1) ? <Container ref={ d => this.titleContainer = d } style={{ height: '15%', }} onUpdate={ box => this.setState({ titleContainer: box }) }>
                 <div style={{
-                  width: '100%',
-                  overflow: 'auto',
+                  display: 'flex',
+                  //margin: 8,
+                  //height: '100%',
                 }}>
+                  <PageButton
+                    title="＜"
+                    disabled={this.props.prevButtonStatus()}
+                    fontSize={this.props.fontSize}
+                    onClick={this.props.openPageHandller(-1)}/>
+                  <div style={{
+                    width: '100%',
+                    overflow: 'auto',
+                  }}>
+                  </div>
+                  <PageButton
+                    title="＞"
+                    disabled={this.props.nextButtonStatus()}
+                    fontSize={this.props.fontSize}
+                    onClick={this.props.openPageHandller(+1)}/>
                 </div>
-                {
-                  (this.props.pageCount>1) ? <PageButton
-                  title="＞"
-                  disabled={this.props.nextButtonStatus()}
-                  fontSize={this.props.fontSize}
-                  onClick={this.props.openPageHandller(+1)}/> : null
-                }
-              </div>
-            </Container>
+              </Container> : null
+            }
             <Row>
               <div style={{ margin: 'auto', }}>
                 <div style={{ width: '100%', }}>
