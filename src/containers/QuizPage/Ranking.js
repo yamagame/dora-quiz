@@ -143,19 +143,17 @@ class Ranking extends Component {
       Object.keys(this.props.quizAnswers).forEach( question => {
         const players = this.props.quizAnswers[question];
         Object.keys(players).forEach( clientId => {
-          if (players[clientId].quizStartTime === quizStartTime) {
-            const name = players[clientId].name;
-            const answer = players[clientId].answer;
-            const time = new Date(players[clientId].time);
-            if (result[name] == null) {
-              result[name] = { time, answer, point: 0 };
-            } else
-            if (result[name].time.getTime() < time.getTime()) {
-              result[name] = { time, answer, point: result[name].point };
-            }
-            if (answerCheck(question, answer)) {
-              result[name].point ++;
-            }
+          const name = players[clientId].name;
+          const answer = players[clientId].answer;
+          const time = new Date(players[clientId].time);
+          if (result[name] == null) {
+            result[name] = { time, answer, point: 0 };
+          } else
+          if (result[name].time.getTime() < time.getTime()) {
+            result[name] = { time, answer, point: result[name].point };
+          }
+          if (answerCheck(question, answer)) {
+            result[name].point ++;
           }
         });
       });
