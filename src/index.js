@@ -10,6 +10,7 @@ import {
   sendEntry,
   reducers,
   loadQuizAnswers,
+  imageServers,
 } from './reducers'
 import './index.css';
 import App from './App';
@@ -57,6 +58,10 @@ socket.on('quiz', (msg) => {
     return;
   }
   store.dispatch(quizCommand(msg));
+});
+
+socket.on('imageServers', (msg) => {
+  store.dispatch(imageServers(msg));
 });
 
 socket.on('sheet', (msg) => {

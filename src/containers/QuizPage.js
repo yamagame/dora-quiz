@@ -234,7 +234,7 @@ class QuizPage extends Component {
       fontSize={this.props.fontSize}
       action={this.props.action}
       time={this.props.time}
-      host={host}
+      host={host || this.props.imageServer}
       sideImage={sideImage}
       question={question}
       comment={comment}
@@ -325,7 +325,7 @@ class QuizPage extends Component {
       width={this.props.width}
       height={this.props.height}
       pageCount={this.props.pageCount}
-      host={this.props.host}
+      host={this.props.host || this.props.imageServer}
       photo={this.props.photo}
       prevButtonStatus={this.prevButtonStatus}
       nextButtonStatus={this.nextButtonStatus}
@@ -413,6 +413,7 @@ export default connect(
       result: state.app.result,
       sumQuestions: state.app.sumQuestions,
       showSum: state.app.showSum,
+      imageServer: state.app.imageServer,
     }
   },
   dispatch => ({

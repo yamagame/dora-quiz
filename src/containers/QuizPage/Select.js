@@ -71,8 +71,6 @@ class Select extends Component {
       fontScale,
     } = this.props;
     const shuffleChoices = (this.props.quizOrder) ? this.props.quizOrder.map( v => choices[v] ) : choices;
-    console.log(answers);
-    console.log(shuffleChoices);
     return (
       <div className="App">
         <Row style={{ height: '99%', }}>

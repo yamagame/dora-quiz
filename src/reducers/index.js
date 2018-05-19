@@ -51,6 +51,7 @@ const initialState = {
   quizOrder: [0,1,2,3],
   sumQuestions: null,
   showSum: false,
+  imageServer: null,
 }
 
 export const types = {
@@ -292,6 +293,29 @@ export const loadQuizAnswers = () => async (dispatch, getState) => {
     payload: {
       sumQuestions,
       showSum,
+    },
+  });
+}
+
+export const imageServers = (imageServers) => async (dispatch, getState) => {
+  function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+  }
+  const keys = Object.keys(imageServers);
+  const server = (imageServers && keys.length > 0) ? imageServers[keys[getRndInteger(0, keys.length)]] : null;
+  if (server === null) {
+    dispatch({
+      type: types.PARAMS,
+      payload: {
+        imageServer: null,
+      },
+    });
+    return;
+  }
+  dispatch({
+    type: types.PARAMS,
+    payload: {
+      imageServer: `${server.protocol}://${server.host}:${server.port}/`,
     },
   });
 }
