@@ -136,6 +136,7 @@ class Select extends Component {
                     <div style={{
                       width: '100%',
                       overflow: 'auto',
+                      pointerEvents: 'none',
                     }}>
                       <Text
                         ref={ text => this.titleText = text }
