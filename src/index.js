@@ -46,7 +46,7 @@ socket.on('quiz', (msg) => {
   if (msg.action === 'quiz-shuffle') {
     delete msg.action;
     if (!msg.initializeLoad) {
-      store.dispatch(quizShuffle(msg));
+      store.dispatch(quizShuffle(msg, msg.reset));
     }
     return;
   }

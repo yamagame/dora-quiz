@@ -12,6 +12,24 @@ class Slide extends Component {
   }
 
   render() {
+    return (
+      <div className="App">
+        {
+          this.renderPage()
+        }
+        <p style={{
+          backgroundColor: 'rgba(0,0,0,0.2)',
+          position: 'absolute' ,
+          width: '100%',
+          fontWeight: 'bold',
+          fontSize: this.props.fontSize,
+          top: this.props.height-this.props.fontSize*2,
+        }}> { this.props.speech } </p>
+      </div>
+    )
+  }
+
+  renderPage() {
     const { host, photo } = this.props;
     function getHost(host, photo) {
       if (host) {
@@ -81,6 +99,7 @@ Slide.defaultProps = {
   pageCount: 0,
   host: null,
   photo: null,
+  speech: null,
 
   prevButtonStatus: null,
   nextButtonStatus: null,

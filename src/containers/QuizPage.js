@@ -229,10 +229,14 @@ class QuizPage extends Component {
     answers,
     layout,
     fontScale,
+    selects,
   }) {
     return <Select
       fontSize={this.props.fontSize}
       action={this.props.action}
+      options={this.props.options}
+      selects={selects}
+      speech={this.props.speech}
       time={this.props.time}
       host={host || this.props.imageServer}
       sideImage={sideImage}
@@ -325,6 +329,7 @@ class QuizPage extends Component {
       width={this.props.width}
       height={this.props.height}
       pageCount={this.props.pageCount}
+      speech={this.props.speech}
       host={this.props.host || this.props.imageServer}
       photo={this.props.photo}
       prevButtonStatus={this.prevButtonStatus}
@@ -414,6 +419,9 @@ export default connect(
       sumQuestions: state.app.sumQuestions,
       showSum: state.app.showSum,
       imageServer: state.app.imageServer,
+      options: state.app.options,
+      selects: state.app.selects,
+      speech: state.app.speech,
     }
   },
   dispatch => ({

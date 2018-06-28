@@ -141,25 +141,24 @@ export const setParams = (payload, callback) => async (dispatch, getState) => {
   if (callback) callback();
 }
 
-export const quizShuffle = (payload, callback) => async (dispatch, getState) => {
+export const quizShuffle = (payload, reset, callback) => async (dispatch, getState) => {
   function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
   }
   const {  } = getState().app;
   let count = 4;
-  // pages.forEach( v => {
-  //   if (v.action === 'quiz') count ++;
-  // });
   const quizOrder = [];
   for (var i=0;i<count;i++) {
     quizOrder.push(i);
   }
-  for (var i=0;i<8;i++) {
-    const a = getRndInteger(0, quizOrder.length);
-    const b = getRndInteger(0, quizOrder.length);
-    const v = quizOrder[a];
-    quizOrder[a] = quizOrder[b];
-    quizOrder[b] = v;
+  if (!reset) {
+    for (var i=0;i<8;i++) {
+      const a = getRndInteger(0, quizOrder.length);
+      const b = getRndInteger(0, quizOrder.length);
+      const v = quizOrder[a];
+      quizOrder[a] = quizOrder[b];
+      quizOrder[b] = v;
+    }
   }
   await AsyncStorage.setItem('quizOrder', quizOrder);
   dispatch({
@@ -178,6 +177,9 @@ export const quizCommand = (payload, callback) => async (dispatch, getState) => 
     [
       'type',
       'action',
+      'options',
+      'selects',
+      'speech',
       'time',
       'pages',
       'sideImage',

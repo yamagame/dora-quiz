@@ -49,6 +49,9 @@ class Button extends Component {
   backgroundColor = () => {
     if (this.state.pushed) return this.props.selectedColor;
     if (this.props.selected) return this.props.selectedColor;
+    if (this.props.buttonStyle == 'article') {
+      return 'white';
+    }
     return '#CDF';
   }
 
@@ -63,7 +66,13 @@ class Button extends Component {
     }
     if (height) containerStyle.height = height;
     return (
-      <div className="Button-Container" style={containerStyle}>
+      <div className="Button-Container" style={containerStyle}
+        onClick={this.onClick}
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
+      >
         {/* this.props.children */}
         <div style={{ height: '100%' }}>
           <div className={['Button-Key', fade ? 'Button-Key-Fade' : '', this.props.correct ? 'Button-Key-Correct' : ''].join(' ')}
@@ -76,12 +85,8 @@ class Button extends Component {
               paddingTop: this.props.paddingTop,
               margin: this.props.margin,
               marginTop: 0,
+              textAlign: (this.props.buttonStyle === 'article') ? 'left' : 'center',
             }}
-            onClick={this.onClick}
-            onMouseDown={this.onMouseDown}
-            onMouseUp={this.onMouseUp}
-            onMouseEnter={this.onMouseEnter}
-            onMouseLeave={this.onMouseLeave}
           >
             {this.props.children}
             {/* <span
@@ -108,6 +113,8 @@ Button.defaultProps = {
   paddingTop: null,
   margin: null,
   correct: false,
+  fontScale: 1,
+  buttonStyle: 'normal',
 }
 
 export default connect(
