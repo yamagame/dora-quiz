@@ -224,13 +224,14 @@ export const quizCommand = (payload, callback) => async (dispatch, getState) => 
 }
 
 export const sendAnswer = (question, answer, callback) => async (dispatch, getState) => {
-  const { app: { name, clientId, quizId, playerAnswers, quizStartTime } } = getState();
+  const { app: { name, clientId, quizId, playerAnswers, quizStartTime, showSum } } = getState();
   const payload = {
     name,
     quizId,
     question,
     answer,
     clientId,
+    showSum,
     time: new Date(),
     quizStartTime,
   }
@@ -274,6 +275,7 @@ export const loadQuizAnswers = () => async (dispatch, getState) => {
       type: 'answers',
       quizId,
       startTime: quizStartTime,
+      showSum,
     })
   })
   let data = await response.json();
@@ -282,11 +284,13 @@ export const loadQuizAnswers = () => async (dispatch, getState) => {
     if (page.action === 'quiz') {
       const r = {}
       const t = data.answers[page.question];
-      Object.keys(t).forEach(key => {
-        if (typeof r[t[key].answer] === 'undefined') r[t[key].answer] = 0;
-        r[t[key].answer] ++;
-      });
-      sumQuestions[page.question] = r;
+      if (typeof t !== 'undefined') {
+        Object.keys(t).forEach(key => {
+          if (typeof r[t[key].answer] === 'undefined') r[t[key].answer] = 0;
+          r[t[key].answer] ++;
+        });
+        sumQuestions[page.question] = r;
+      }
     }
   });
   await AsyncStorage.setItem(`sumQuestions`, sumQuestions);
