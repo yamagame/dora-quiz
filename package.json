@@ -93,17 +93,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": {
-    "/socket.io": {
-      "target": "http://localhost:3090"
-    },
-    "/result": {
-      "target": "http://localhost:3090"
-    },
-    "/images/*": {
-      "target": "http://localhost:3090"
-    }
-  },
+  "proxy": "http://localhost:3090",
   "devDependencies": {
     "react-image-resizer": "^1.2.0"
   }

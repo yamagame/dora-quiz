@@ -13,6 +13,7 @@ import {
   sendAnswer,
   sendEntry,
   setParams,
+  startButtonPushed,
 } from '../reducers'
 import Image from './Image';
 import Wait from './QuizPage/Wait';
@@ -105,6 +106,10 @@ class QuizPage extends Component {
     }
   }
 
+  startButtonHandller = () => {
+    this.props.startButtonPushed();
+  }
+
   prevButtonStatus = () => {
     return (this.props.pageNumber > 0);
   }
@@ -180,7 +185,10 @@ class QuizPage extends Component {
       return this.renderTitle(page);
     }
     if (page.action == 'slide') {
-      return this.renderSlide(page);
+      return this.renderSlide(page, false);
+    }
+    if (page.action == 'startScreen') {
+      return this.renderSlide(page, true);
     }
     if (page.action == 'result') {
       if (this.props.name !== '_quiz_master_') {
@@ -321,7 +329,7 @@ class QuizPage extends Component {
   renderSlide({
     host,
     photo,
-  }) {
+  }, startScreen) {
     return <Slide
       fontSize={this.props.fontSize}
       host={host}
@@ -335,6 +343,9 @@ class QuizPage extends Component {
       prevButtonStatus={this.prevButtonStatus}
       nextButtonStatus={this.nextButtonStatus}
       openPageHandller={this.openPageHandller}
+      startButtonHandller={this.startButtonHandller}
+      title={this.props.name}
+      startScreen={startScreen}
     />
   }
 
@@ -428,5 +439,6 @@ export default connect(
     sendAnswer: (question, answer, callback) => dispatch( sendAnswer(question, answer, callback) ),
     sendEntry: (callback) => dispatch( sendEntry(callback) ),
     setParams: (payload, callback) => dispatch( setParams(payload, callback) ),
+    startButtonPushed: () => dispatch( startButtonPushed() ),
   })
 )(QuizPage);

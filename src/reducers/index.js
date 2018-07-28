@@ -248,6 +248,27 @@ export const sendAnswer = (question, answer, callback) => async (dispatch, getSt
   if (callback) callback();
 }
 
+export const startButtonPushed = (callback) => async (dispatch, getState) => {
+  let response = await fetch('/command', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      type: 'cancel',
+    })
+  })
+  if (response.ok) {
+    var contentType = response.headers.get("content-type");
+    if(contentType && contentType.includes("application/json")) {
+      let data = await response.json();
+      if (callback) callback(null, data);
+      return;
+    }
+  }
+  if (callback) callback();
+}
+
 export const sendEntry = (callback) => async (dispatch, getState) => {
   const { app: { name, clientId, } } = getState();
   const payload = {

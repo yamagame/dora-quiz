@@ -4,7 +4,19 @@ import Column from '../Column';
 import Row from '../Row';
 import Image from '../Image';
 import PageButton from '../PageButton';
+import Button from '../Button';
 import Container from './Container';
+
+const notSelectable = {
+  userSelect: 'none',
+}
+
+const slideTitle = {
+  fontSize: 60,
+  userSelect: 'none',
+  margin: 'auto',
+  color: '#0080FF',
+}
 
 class Slide extends Component {
   constructor (props) {
@@ -48,9 +60,15 @@ class Slide extends Component {
     }
     const width = (this.props.pageCount>1) ? (this.props.width-32-this.props.fontSize*2) : this.props.width-32;
     const height = (this.props.pageCount>1) ? (this.props.height-32-this.props.fontSize*2) : this.props.height-32;
+    const startScreen = this.props.startScreen;
     return (
       <div className="App">
-        <Row style={{ height: '99%', }}>
+        {
+          (startScreen) ? <Row style={{ height: this.props.fontSize*1.5, backgroundColor: '#D5FDF8' }}>
+            <h1 style={{ ...slideTitle, fontSize: this.props.fontSize, }}> { this.props.title } </h1>
+          </Row> : null
+        }
+        <Row style={{ height: height-(100+this.props.fontSize*1.5)*(startScreen?1:0), }}>
           <Column style={{ margin: 8, marginTop: 16, }}>
             {
               (this.props.pageCount>1) ? <Container ref={ d => this.titleContainer = d } style={{ height: '10%', }} onUpdate={ box => this.setState({ titleContainer: box }) }>
@@ -78,12 +96,26 @@ class Slide extends Component {
             <Row>
               <div style={{ width: '100%', }} >
                 {
-                  (photo) ? <Image ref={img => this.imageView = img } src={getHost(host, photo)} width={width} height={height} style={{ margin: 'auto', }}/> : null
+                  (photo) ? <Image ref={img => this.imageView = img } src={getHost(host, photo)} width={width} height={height-(100+this.props.fontSize*1.5)*(startScreen?1:0)} style={{ margin: 'auto', ...notSelectable, }}/> : null
                 }
               </div>
             </Row>
          </Column>
         </Row>
+        {
+          (startScreen) ? <Row>
+            <Button
+              //fontScale={_fontScale}
+              //correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
+              selected={true}
+              pushedColor="yellow"
+              onClick={this.props.startButtonHandller}
+              buttonStyle="normal"
+            >
+              スタート
+            </Button>
+          </Row> : null
+        }
       </div>
     )
   }
@@ -100,10 +132,13 @@ Slide.defaultProps = {
   host: null,
   photo: null,
   speech: null,
+  title: null,
+  startScreen: false,
 
   prevButtonStatus: null,
   nextButtonStatus: null,
   openPageHandller: null,
+  startButtonHandller: null,
 }
 
 export default Slide;

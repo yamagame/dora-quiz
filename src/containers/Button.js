@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { fontSize } from '../reducers'
 
+const notSelectable = {
+  userSelect: 'none',
+}
+
 class Button extends Component {
   constructor (props) {
     super(props)
@@ -47,7 +51,7 @@ class Button extends Component {
   }
 
   backgroundColor = () => {
-    if (this.state.pushed) return this.props.selectedColor;
+    if (this.state.pushed) return (this.props.pushedColor) ? this.props.pushedColor : this.props.selectedColor;
     if (this.props.selected) return this.props.selectedColor;
     if (this.props.buttonStyle == 'article') {
       return 'white';
@@ -86,6 +90,7 @@ class Button extends Component {
               margin: this.props.margin,
               marginTop: 0,
               textAlign: (this.props.buttonStyle === 'article') ? 'left' : 'center',
+              ...notSelectable,
             }}
           >
             {this.props.children}
@@ -103,6 +108,7 @@ class Button extends Component {
 Button.defaultProps = {
   // width: window.innerWidth,
   // height: window.innerHeight,
+  pushedColor: null,
   selectedColor: '#a9ff00',
   selected: false,
   fontSize: fontSize({
