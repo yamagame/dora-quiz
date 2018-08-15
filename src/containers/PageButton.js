@@ -1,10 +1,13 @@
 import React from 'react'
 
 export default function({ title, disabled, fontSize, onClick, style }) {
+  const margin = (fontSize/2<15) ? 15 : fontSize/2;
   return (!disabled) ? (
     <div>
       <button style={{
-        margin: (fontSize/2<15) ? 15 : fontSize/2,
+        marginTop: margin,
+        marginLeft: margin,
+        marginRight: margin,
         fontSize: fontSize*0.5,
         height: fontSize,
         width: fontSize,
@@ -16,7 +19,9 @@ export default function({ title, disabled, fontSize, onClick, style }) {
   ) : (
     <div>
       <button style={{
-        margin: (fontSize/2<15) ? 15 : fontSize/2,
+        marginTop: margin,
+        marginLeft: margin,
+        marginRight: margin,
         fontSize: fontSize*0.5,
         height: fontSize,
         width: fontSize,

@@ -11,6 +11,7 @@ import {
   reducers,
   loadQuizAnswers,
   imageServers,
+  preloadSlideImage,
 } from './reducers'
 import './index.css';
 import App from './App';
@@ -21,57 +22,65 @@ const socket = io();
 
 let store = createStore(reducers, applyMiddleware(thunk))
 
-var params = {};
+var params = {
+  cacheSlide: [],
+};
 
-store.dispatch(loadInitialData(params, socket));
+store.dispatch(loadInitialData(params, socket, () => {
 
-socket.on('connect', () => {
-  console.log('conncted');
-  store.dispatch(sendEntry());
-});
 
-socket.on('init', (state) => {
-  console.log(state);
-});
+  socket.on('connect', () => {
+    console.log('conncted');
+    store.dispatch(sendEntry());
+  });
 
-socket.on('quiz-reload-entry', () => {
-  store.dispatch(sendEntry());
-});
+  socket.on('init', (state) => {
+    console.log(state);
+  });
 
-socket.on('quiz', (msg) => {
-  console.log(msg);
-  if (msg.action === 'entry') {
-    delete msg.action;
-  }
-  if (msg.action === 'quiz-shuffle') {
-    delete msg.action;
-    if (!msg.initializeLoad) {
-      store.dispatch(quizShuffle(msg, msg.reset));
+  socket.on('quiz-reload-entry', () => {
+    store.dispatch(sendEntry());
+  });
+
+  socket.on('quiz', (msg) => {
+    if (msg.action === 'entry') {
+      delete msg.action;
     }
-    return;
-  }
-  if (msg.action === 'quiz-start') {
-    delete msg.pageNumber;
-  }
-  if (msg.action === 'refresh') {
-    store.dispatch(loadQuizAnswers());
-    return;
-  }
-  store.dispatch(quizCommand(msg));
-});
+    if (msg.action === 'quiz-shuffle') {
+      delete msg.action;
+      if (!msg.initializeLoad) {
+        store.dispatch(quizShuffle(msg, msg.reset));
+      }
+      return;
+    }
+    if (msg.action === 'quiz-start') {
+      delete msg.pageNumber;
+    }
+    if (msg.action === 'refresh') {
+      store.dispatch(loadQuizAnswers());
+      return;
+    }
+    if (msg.action === 'preload') {
+      store.dispatch(preloadSlideImage(msg.photo, msg.params));
+      return;
+    }
+    store.dispatch(quizCommand(msg));
+  });
 
-socket.on('imageServers', (msg) => {
-  store.dispatch(imageServers(msg));
-});
+  socket.on('imageServers', (msg) => {
+    store.dispatch(imageServers(msg));
+  });
 
-socket.on('sheet', (msg) => {
-  store.dispatch(quizCommand(msg));
-});
+  socket.on('sheet', (msg) => {
+    store.dispatch(quizCommand(msg));
+  });
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-);
-registerServiceWorker();
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root')
+  );
+  registerServiceWorker();
+
+}));

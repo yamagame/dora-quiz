@@ -51,6 +51,8 @@ const initialState = {
   quizOrder: [0,1,2,3],
   sumQuestions: null,
   showSum: false,
+  speechButton: false,
+  noSave: false,
   imageServer: null,
 }
 
@@ -79,7 +81,7 @@ export const reducers = combineReducers({
   app: setValues,
 })
 
-export const loadInitialData = (params, socketIO) => async (dispatch, getState) => {
+export const loadInitialData = (params, socketIO, callback) => async (dispatch, getState) => {
   const payload = {
     ...initialState,
     ...params,
@@ -118,6 +120,7 @@ export const loadInitialData = (params, socketIO) => async (dispatch, getState) 
     type: types.PARAMS,
     payload,
   });
+  if (callback) callback();
 }
 
 export const changeLayout = (payload) => async (dispatch, getState) => {
@@ -200,6 +203,8 @@ export const quizCommand = (payload, callback) => async (dispatch, getState) => 
       'sheet',
       'members',
       'showSum',
+      'speechButton',
+      'noSave',
     ].forEach( key => {
       if (typeof obj[key] !== 'undefined') {
         t[key] = obj[key];
@@ -224,7 +229,7 @@ export const quizCommand = (payload, callback) => async (dispatch, getState) => 
 }
 
 export const sendAnswer = (question, answer, callback) => async (dispatch, getState) => {
-  const { app: { name, clientId, quizId, playerAnswers, quizStartTime, showSum } } = getState();
+  const { app: { name, clientId, quizId, playerAnswers, quizStartTime, showSum, speechButton, noSave, } } = getState();
   const payload = {
     name,
     quizId,
@@ -232,9 +237,12 @@ export const sendAnswer = (question, answer, callback) => async (dispatch, getSt
     answer,
     clientId,
     showSum,
+    speechButton,
+    noSave,
     time: new Date(),
     quizStartTime,
   }
+  console.log(JSON.stringify(payload));
   socket.emit('quiz', payload);
   const answers = { ...playerAnswers };
   answers[question] = answer;
@@ -345,4 +353,23 @@ export const imageServers = (imageServers) => async (dispatch, getState) => {
       imageServer: `${server.protocol}://${server.host}:${server.port}/`,
     },
   });
+}
+
+export const preloadSlideImage = (photo, params={}) => async (dispatch, getState) => {
+  const { app: { cacheSlide, } } = getState();
+  if (!cacheSlide.some( v => {
+    return (v === photo);
+  })) {
+    const r = [ ...cacheSlide ];
+    r.push(photo);
+    if (typeof params.cacheSize !== 'undefined') {
+      r.splice(0, r.length-params.cacheSize);
+    }
+    dispatch({
+      type: types.PARAMS,
+      payload: {
+        cacheSlide: r,
+      },
+    });
+  }
 }

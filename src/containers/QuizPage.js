@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import Button from './Button';
 import MenuButton from './MenuButton';
 import Row from './Row';
-import Text from './Text';
 import Column from './Column';
 import Bar from './Bar';
 import PageButton from './PageButton';
@@ -256,6 +255,7 @@ class QuizPage extends Component {
       fontScale={fontScale}
       quizOrder={this.props.quizOrder}
       pageCount={this.props.pageCount}
+      width={this.props.width}
       height={this.props.height}
       playerAnswers={this.props.playerAnswers}
       selectedHandller={this.selectedHandller}
@@ -414,8 +414,6 @@ export default connect(
       answer: state.app.answer,
       answers: state.app.answers,
       fontSize: state.app.fontSize,
-      width: state.app.width,
-      height: state.app.height,
       name: state.app.name,
       pageCount,
       pageNumber: (state.app.pageNumber >= pageCount) ? 0 : state.app.pageNumber,

@@ -63,12 +63,26 @@ class Button extends Component {
     const fade = this.state.fade
     const scale = this.props.fontScale || 1;
     const fontSize = this.props.fontSize;
-    const height = (this.props.height) ? this.props.height+fontSize*2/4+10 : null;
+    const height = (this.props.height) ? this.props.height : null;
     const containerStyle = {
       zIndex: this.props.correct ? 2 : 1,
-      paddingBottom: fontSize*1/4,
+      paddingBottom: (this.props.paddingBottom!==null)?this.props.paddingBottom:(fontSize*1/4),
     }
-    if (height) containerStyle.height = height;
+    //if (height) containerStyle.height = height;
+    const style = {
+      fontSize: `${parseInt(fontSize*scale, 10)}px`,
+      backgroundColor: this.backgroundColor(),
+      height: this.props.height,
+      paddingTop: this.props.paddingTop,
+      paddingBottom: this.props.paddingBottom,
+      margin: this.props.margin,
+      marginTop: 0,
+      textAlign: (this.props.buttonStyle === 'article') ? 'left' : 'center',
+      ...notSelectable,
+    }
+    if (this.props.imageButton) {
+      delete style.fontSize;
+    }
     return (
       <div className="Button-Container" style={containerStyle}
         onClick={this.onClick}
@@ -78,20 +92,11 @@ class Button extends Component {
         onMouseLeave={this.onMouseLeave}
       >
         {/* this.props.children */}
-        <div style={{ height: '100%' }}>
+        <div style={{ /*height: '100%'*/ }}>
           <div className={['Button-Key', fade ? 'Button-Key-Fade' : '', this.props.correct ? 'Button-Key-Correct' : ''].join(' ')}
             ref={ bt => this.button = bt }
             type="button"
-            style={ {
-              fontSize: `${parseInt(fontSize*scale, 10)}px`,
-              backgroundColor: this.backgroundColor(),
-              height: this.props.height,
-              paddingTop: this.props.paddingTop,
-              margin: this.props.margin,
-              marginTop: 0,
-              textAlign: (this.props.buttonStyle === 'article') ? 'left' : 'center',
-              ...notSelectable,
-            }}
+            style={style}
           >
             {this.props.children}
             {/* <span
@@ -117,10 +122,12 @@ Button.defaultProps = {
   }),
   height: null,
   paddingTop: null,
+  paddingBottom: null,
   margin: null,
   correct: false,
   fontScale: 1,
   buttonStyle: 'normal',
+  imageButton: false,
 }
 
 export default connect(
