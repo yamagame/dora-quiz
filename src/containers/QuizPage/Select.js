@@ -218,7 +218,7 @@ class Select extends Component {
                     <Image
                       src={(host) ? host+sideImage.url : sideImage.url}
                       width={ this.props.width-32 }
-                      height={ this.props.height-((layout === 'grid') ? 260 : 320)-(this.props.height / 4)/((sideImage)?2:1) }
+                      height={ this.props.height-((layout === 'grid') ? 260 : 380)-(this.props.height / 4)/((sideImage)?2:1) }
                       style={{ margin: 'auto', userSelect: 'none', border: 'solid 1px #E0E0E0', }}
                     />
                 </div>

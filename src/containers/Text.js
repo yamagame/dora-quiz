@@ -110,8 +110,8 @@ class Text extends Component {
       <svg xmlns="http://www.w3.org/2000/svg" width="100%" height={this.props.maxHeight}>
         {
           <foreignObject x="0" y={ (this.state.startResize)?height:0 } width="100%" height="100%">
-            <div ref={ t => this.valueText = t } style={{ width: "100%", textAlign: 'left', fontSize, }}>{ this.props.value }</div>
-            <div ref={ t => this.commentText = t } style={{ width: "100%", textAlign: 'left', fontSize: fontSize*0.7, }}>{ this.props.comment }</div>
+            <div ref={ t => this.valueText = t } style={{ width: "100%", textAlign: 'left', fontSize, }}><MathJax value={ this.props.value }/></div>
+            <div ref={ t => this.commentText = t } style={{ width: "100%", textAlign: 'left', fontSize: fontSize*0.7, }}><MathJax value={ this.props.comment }/></div>
           </foreignObject>
         }
       </svg>
