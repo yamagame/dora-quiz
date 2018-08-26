@@ -40,7 +40,9 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{
+        height: '100%',
+      }}>
         <SlideCache
           cacheSlide={ this.props.cacheSlide }
           width={ this.props.width }
