@@ -28,7 +28,6 @@ var params = {
 
 store.dispatch(loadInitialData(params, socket, () => {
 
-
   socket.on('connect', () => {
     console.log('conncted');
     store.dispatch(sendEntry());

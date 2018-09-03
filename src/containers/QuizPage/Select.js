@@ -143,8 +143,18 @@ class Select extends Component {
       options,
     } = this.props;
     const _fontScale = ((fontScale) ? fontScale : 1)*((this.checkOption('font-small')) ? 0.8 : 1);
-    const shuffleChoices = (this.props.quizOrder && choices.length === 4) ? this.props.quizOrder.map( v => choices[v] ) : choices;
+    const _choices = choices.filter( v => {
+      if (typeof v !== 'object' || v.type !== 'option') return true;
+      return false;
+    })
+    const optionButtons = choices.filter( v => {
+      if (typeof v !== 'object' || v.type !== 'option') return false;
+      return true;
+    })
+    const buttonScale = _fontScale*((sideImage)?0.7:1.0)
+    const shuffleChoices = (this.props.quizOrder && _choices.length === 4) ? this.props.quizOrder.map( v => _choices[v] ) : _choices;
     const buttonStyle = this.checkOption('style-answer') ? 'article' : 'normal';
+    const bottomSpace = (((shuffleChoices && shuffleChoices.length > 0))?1:0)*((layout === 'grid') ? 260 : 380)+(this.props.height / 4)/((sideImage)?2:1)+((optionButtons && optionButtons.length > 0)?24+30+this.props.fontSize*buttonScale:0)-(this.checkOption('no-title')?this.props.fontSize*buttonScale:0);
     return (
       <div className="App">
         <Row style={{ height: '99%', }}>
@@ -218,8 +228,8 @@ class Select extends Component {
                     <Image
                       src={(host) ? host+sideImage.url : sideImage.url}
                       width={ this.props.width-32 }
-                      height={ this.props.height-((layout === 'grid') ? 260 : 380)-(this.props.height / 4)/((sideImage)?2:1) }
-                      style={{ margin: 'auto', userSelect: 'none', border: 'solid 1px #E0E0E0', }}
+                      height={ this.props.height-bottomSpace }
+                      style={{ margin: 'auto', userSelect: 'none', }}
                     />
                 </div>
               </Row> : null
@@ -227,71 +237,98 @@ class Select extends Component {
             {/* {
               (sideImage) ? <Image src={(host) ? host+sideImage.url : sideImage.url} height={ this.props.height-((this.state.titleContainer) ? this.state.titleContainer.offsetHeight : 0) } /> : null
             } */}
-            <Row flex={false} style={{ height: '99%', }}>
             {
-              (this.state.isReady)?<div style={{ marginTop: 8, width: '100%', }}>
-                {
-                  (this.props.time !== null && !this.checkOption('no-time')) ? <p style={{
-                    overflow: 'hidden',
-                    fontSize: this.props.fontSize*0.5,
-                    textAlign: 'center',
-                    margin: this.props.fontSize/2,
-                    //marginBottom: this.props.fontSize*3/4,
-                    height: this.props.fontSize,
-                  }}> { this.timeStr() } </p> : null
-                }
-                {
-                  (layout === 'grid') ?
-                  <div>
-                    <Row style={{ height: '99%', }}>
-                      {
-                        (shuffleChoices) ? shuffleChoices.filter(v => v).map( (v,i) => (
-                          ((i % 2) == 0) ? 
-                            <Button
-                              key={i}
-                              imageButton={(v.image)?true:false}
-                              fontScale={_fontScale*((sideImage)?0.7:1.0)}
-                              correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
-                              selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
-                              onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
-                              buttonStyle={buttonStyle}
-                            >
-                              {
-                                buttonValue(v, (sideImage)?70:((this.props.height*1/3)/(shuffleChoices.length/2)*1.5), host)
-                              }
-                            </Button> : null
-                        )) : null
-                      }
-                    </Row>
-                    <Row style={{ height: '99%', }}>
-                      {
-                        (shuffleChoices) ? shuffleChoices.filter(v => v).map( (v,i) => (
-                          ((i % 2) == 1) ? 
-                            <Button
-                              key={i}
-                              imageButton={(v.image)?true:false}
-                              fontScale={_fontScale*((sideImage)?0.7:1.0)}
-                              correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
-                              selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
-                              onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
-                              buttonStyle={buttonStyle}
-                            >
-                              {
-                                buttonValue(v, (sideImage)?70:((this.props.height*1/3)/(shuffleChoices.length/2)*1.5), host)
-                              }
-                            </Button> : null
-                        )) : null
-                      }
-                    </Row>
-                  </div>
-                  :
-                  <div>
+              (shuffleChoices && shuffleChoices.length > 0) ? <Row flex={false} style={{ height: '99%', }}>
+              {
+                (this.state.isReady)?<div style={{ marginTop: 8, width: '100%', }}>
                   {
-                    (shuffleChoices) ? shuffleChoices.filter(v => v).map( (v,i) => (
-                      <Button
+                    (this.props.time !== null && !this.checkOption('no-time')) ? <p style={{
+                      overflow: 'hidden',
+                      fontSize: this.props.fontSize*0.5,
+                      textAlign: 'center',
+                      margin: this.props.fontSize/2,
+                      //marginBottom: this.props.fontSize*3/4,
+                      height: this.props.fontSize,
+                    }}> { this.timeStr() } </p> : null
+                  }
+                  {
+                    (layout === 'grid') ?
+                    <div>
+                      <Row style={{ height: '99%', }}>
+                        {
+                          (shuffleChoices) ? shuffleChoices.filter(v => v).map( (v,i) => (
+                            ((i % 2) == 0) ? 
+                              <Button
+                                key={i}
+                                imageButton={(v.image)?true:false}
+                                fontScale={buttonScale}
+                                correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
+                                selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
+                                onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
+                                buttonStyle={buttonStyle}
+                              >
+                                {
+                                  buttonValue(v, (sideImage)?70:((this.props.height*1/3)/(shuffleChoices.length/2)*1.5), host)
+                                }
+                              </Button> : null
+                          )) : null
+                        }
+                      </Row>
+                      <Row style={{ height: '99%', }}>
+                        {
+                          (shuffleChoices) ? shuffleChoices.filter(v => v).map( (v,i) => (
+                            ((i % 2) == 1) ? 
+                              <Button
+                                key={i}
+                                imageButton={(v.image)?true:false}
+                                fontScale={buttonScale}
+                                correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
+                                selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
+                                onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
+                                buttonStyle={buttonStyle}
+                              >
+                                {
+                                  buttonValue(v, (sideImage)?70:((this.props.height*1/3)/(shuffleChoices.length/2)*1.5), host)
+                                }
+                              </Button> : null
+                          )) : null
+                        }
+                      </Row>
+                    </div>
+                    :
+                    <div>
+                    {
+                      (shuffleChoices) ? shuffleChoices.filter(v => v).map( (v,i) => (
+                        <Button
+                          key={i}
+                          imageButton={(v.image)?true:false}
+                          fontScale={buttonScale}
+                          correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
+                          selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
+                          onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
+                          buttonStyle={buttonStyle}
+                        >
+                          {
+                            buttonValue(v, (sideImage)?50:((this.props.height*1/3)/shuffleChoices.length*1.5), host)
+                          }
+                        </Button>
+                      )) : null
+                    }
+                    </div>
+                  }
+                </div> : null
+              }
+              </Row> : null
+            }
+            {
+              (optionButtons && optionButtons.length > 0) ? <div style={{ paddingTop: 5, paddingLeft: 10, paddingRight: 10, }}>
+                <Row>
+                  {
+                    optionButtons.map( (v, i) => {
+                      return <Button
                         key={i}
                         imageButton={(v.image)?true:false}
-                        fontScale={_fontScale*((sideImage)?0.7:1.0)}
+                        fontScale={buttonScale}
                         correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
                         selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                         onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
@@ -301,13 +338,11 @@ class Select extends Component {
                           buttonValue(v, (sideImage)?50:((this.props.height*1/3)/shuffleChoices.length*1.5), host)
                         }
                       </Button>
-                    )) : null
+                    })
                   }
-                  </div>
-                }
-              </div>:null
+                </Row>
+              </div> : null
             }
-            </Row>
           </Column>
         </Row>
       </div>
@@ -328,7 +363,14 @@ class Select extends Component {
       fontScale,
       options,
     } = this.props;
-    const shuffleChoices = choices;
+    const shuffleChoices = choices.filter( v => {
+      if (typeof v !== 'object' || v.type !== 'option') return true;
+      return false;
+    })
+    const optionButtons = choices.filter( v => {
+      if (typeof v !== 'object' || v.type !== 'option') return false;
+      return true;
+    })
     return (
       <div className="App">
         <Row style={{ height: '99%', }}>
@@ -398,7 +440,7 @@ class Select extends Component {
                       src={(host) ? host+sideImage.url : sideImage.url}
                       width={ this.props.width-32 }
                       height={ this.props.height-200-(this.props.height / 4)/((sideImage)?2:1) }
-                      style={{ margin: 'auto', userSelect: 'none', border: 'solid 1px #E0E0E0', }}
+                      style={{ margin: 'auto', userSelect: 'none', }}
                     />
                 </div>
               </Row> : null
@@ -414,54 +456,58 @@ class Select extends Component {
               }}> { this.timeStr() } </p> : null
             }
             {
-              (sideImage) ? <div style={{
-                position: 'absolute',
-                top: this.props.height-150,
-                width: this.props.width-20,
-              }}>
-                <Row style={{ height: '99%', }}>
+              (shuffleChoices && shuffleChoices.length > 0) ? <div>
                 {
-                  (shuffleChoices) ? shuffleChoices.map( (v,i) => (
-                    (v) ? <Button
-                      key={i}
-                      imageButton={(v.image)?true:false}
-                      fontScale={fontScale*((this.checkOption('half-button')) ? 0.5 : 1)}
-                      height={100}
-                      //margin={this.props.fontSize*0.5}
-                      paddingTop={0}
-                      paddingBottom={0}
-                      correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
-                      selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
-                      onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
-                    >
-                      {
-                        buttonValue(v, 100, host)
-                      }
-                    </Button> : null
-                  )) : null
-                }
-                </Row>
-              </div> : <Row style={{ height: '99%', }}>
-              {
-                (shuffleChoices) ? shuffleChoices.map( (v,i) => (
-                  (v) ? <Button
-                    key={i}
-                    imageButton={(v.image)?true:false}
-                    fontScale={fontScale*((this.checkOption('half-button')) ? 0.5 : 1)}
-                    height={this.props.fontSize*5}
-                    margin={this.props.fontSize*0.5}
-                    paddingTop={this.props.fontSize*2}
-                    correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
-                    selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
-                    onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
-                  >
+                  (sideImage) ? <div style={{
+                    position: 'absolute',
+                    top: this.props.height-150,
+                    width: this.props.width-20,
+                  }}>
+                    <Row style={{ height: '99%', }}>
                     {
-                      buttonValue(v, this.props.fontSize*3, host)
+                      (shuffleChoices) ? shuffleChoices.map( (v,i) => (
+                        (v) ? <Button
+                          key={i}
+                          imageButton={(v.image)?true:false}
+                          fontScale={fontScale*((this.checkOption('half-button')) ? 0.5 : 1)}
+                          height={100}
+                          //margin={this.props.fontSize*0.5}
+                          paddingTop={0}
+                          paddingBottom={0}
+                          correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
+                          selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
+                          onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
+                        >
+                          {
+                            buttonValue(v, 100, host)
+                          }
+                        </Button> : null
+                      )) : null
                     }
-                  </Button> : null
-                )) : null
-              }
-              </Row>
+                    </Row>
+                  </div> : <Row style={{ height: '99%', }}>
+                  {
+                    (shuffleChoices) ? shuffleChoices.map( (v,i) => (
+                      (v) ? <Button
+                        key={i}
+                        imageButton={(v.image)?true:false}
+                        fontScale={fontScale*((this.checkOption('half-button')) ? 0.5 : 1)}
+                        height={this.props.fontSize*5}
+                        margin={this.props.fontSize*0.5}
+                        paddingTop={this.props.fontSize*2}
+                        correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
+                        selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
+                        onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
+                      >
+                        {
+                          buttonValue(v, this.props.fontSize*3, host)
+                        }
+                      </Button> : null
+                    )) : null
+                  }
+                  </Row>
+                }
+              </div> : null
             }
           </Column>
         </Row>
@@ -483,7 +529,14 @@ class Select extends Component {
       fontScale,
     } = this.props;
     let maxValue = 10;
-    const shuffleChoices = choices;
+    const shuffleChoices = choices.filter( v => {
+      if (typeof v !== 'object' || v.type !== 'option') return true;
+      return false;
+    })
+    const optionButtons = choices.filter( v => {
+      if (typeof v !== 'object' || v.type !== 'option') return false;
+      return true;
+    })
     if (this.props.sumQuestions) {
       (shuffleChoices) ? shuffleChoices.forEach( (v,i) => {
         if (typeof v === 'undefined') return;
@@ -566,7 +619,7 @@ class Select extends Component {
                       src={(host) ? host+sideImage.url : sideImage.url}
                       width={ this.props.width-32 }
                       height={ this.props.height-200-(this.props.height / 4)/((sideImage)?2:1) }
-                      style={{ margin: 'auto', userSelect: 'none', border: 'solid 1px #E0E0E0', }}
+                      style={{ margin: 'auto', userSelect: 'none', }}
                     />
                 </div>
               </Row> : (this.props.sumQuestions) ? (

@@ -88,6 +88,8 @@ export const loadInitialData = (params, socketIO, callback) => async (dispatch, 
     width: window.innerWidth,
     height: window.innerHeight,
   }
+  let signature = null;
+  let user_id = null;
   payload.fontSize = fontSize(payload);
   socket = socketIO;
   await Promise.all(Object.keys(initialState).map(async (key) => {
@@ -95,6 +97,34 @@ export const loadInitialData = (params, socketIO, callback) => async (dispatch, 
   }));
   payload.clientId = await AsyncStorage.getItem('clientId', uuid.v4());
   await AsyncStorage.setItem('clientId', payload.clientId);
+  {
+    let response = await fetch('/login-quiz-player', {
+      method: 'POST',
+    });
+    if (response.ok) {
+    } else {
+      console.log('ERROR');
+    }
+  }
+  {
+    let response = await fetch('/access-token', {
+      method: 'POST',
+    });
+    if (response.ok) {
+      let data = await response.json();
+      signature = data.signature;
+      user_id = data.user_id;
+      dispatch({
+        type: types.PARAMS,
+        payload: {
+          user_id,
+          signature,
+        },
+      });
+    } else {
+      console.log('ERROR');
+    }
+  }
   if (payload.mode == 'admin-result') {
     const  { _quizId, _startTime, _playerName } = payload;
     let response = await fetch('/result', {
@@ -106,6 +136,7 @@ export const loadInitialData = (params, socketIO, callback) => async (dispatch, 
         type: 'answers',
         quizId: _quizId,
         startTime: _startTime,
+        signature,
       })
     })
     let data = await response.json();
@@ -229,7 +260,18 @@ export const quizCommand = (payload, callback) => async (dispatch, getState) => 
 }
 
 export const sendAnswer = (question, answer, callback) => async (dispatch, getState) => {
-  const { app: { name, clientId, quizId, playerAnswers, quizStartTime, showSum, speechButton, noSave, } } = getState();
+  const { app: {
+    name,
+    clientId,
+    quizId,
+    playerAnswers,
+    quizStartTime,
+    showSum,
+    speechButton,
+    noSave,
+    user_id,
+    signature,
+  }} = getState();
   const payload = {
     name,
     quizId,
@@ -241,6 +283,8 @@ export const sendAnswer = (question, answer, callback) => async (dispatch, getSt
     noSave,
     time: new Date(),
     quizStartTime,
+    user_id,
+    signature,
   }
   console.log(JSON.stringify(payload));
   socket.emit('quiz', payload);
@@ -257,6 +301,7 @@ export const sendAnswer = (question, answer, callback) => async (dispatch, getSt
 }
 
 export const startButtonPushed = (callback) => async (dispatch, getState) => {
+  const { app: { signature, } } = getState();
   let response = await fetch('/command', {
     method: 'POST',
     headers: {
@@ -264,6 +309,7 @@ export const startButtonPushed = (callback) => async (dispatch, getState) => {
     },
     body: JSON.stringify({
       type: 'cancel',
+      signature,
     })
   })
   if (response.ok) {
@@ -278,11 +324,13 @@ export const startButtonPushed = (callback) => async (dispatch, getState) => {
 }
 
 export const sendEntry = (callback) => async (dispatch, getState) => {
-  const { app: { name, clientId, } } = getState();
+  const { app: { name, clientId, user_id, signature, } } = getState();
   const payload = {
     name,
     clientId,
     time: new Date(),
+    user_id,
+    signature,
   }
   socket.emit('quiz', payload);
   dispatch({
@@ -294,7 +342,14 @@ export const sendEntry = (callback) => async (dispatch, getState) => {
 }
 
 export const loadQuizAnswers = () => async (dispatch, getState) => {
-  const { app: { quizId, quizStartTime, pageNumber, pages, showSum } } = getState();
+  const { app: {
+    quizId,
+    quizStartTime,
+    pageNumber,
+    pages,
+    showSum,
+    signature,
+  }} = getState();
   let response = await fetch('/result', {
     method: 'POST',
     headers: {
@@ -305,6 +360,7 @@ export const loadQuizAnswers = () => async (dispatch, getState) => {
       quizId,
       startTime: quizStartTime,
       showSum,
+      signature,
     })
   })
   let data = await response.json();
