@@ -68,15 +68,18 @@ class Select extends Component {
   }
 
   timeStr = () => {
-    if (this.props.action == 'question' || this.props.action == 'quiz-init') {
-      return `回答時間は ${this.props.time} 秒です`;
-    } else {
-      if (this.props.time == 0) {
-        return `タイムアップ`;
+    if ('time' in this.props) {
+      if (this.props.action == 'question' || this.props.action == 'quiz-init') {
+        return `回答時間は ${this.props.time} 秒です`;
       } else {
-        return `あと ${this.props.time} 秒です`;
+        if (this.props.time == 0) {
+          return `タイムアップ`;
+        } else {
+          return `あと ${this.props.time} 秒です`;
+        }
       }
     }
+    return '回答時間';
   }
 
   barColor = (maxnum, i) => {
@@ -98,6 +101,30 @@ class Select extends Component {
     return this.checkOption('final-answer') && this.props.selects.some( v => {
       return v == t;
     });
+  }
+
+  bottomSpace = ({
+    shuffleChoices,
+    sideImage,
+    buttonScale,
+    buttonHeight,
+    layout,
+    optionButtons,
+    fontSize,
+    titleHeight,
+  }) => {
+    const timeHeight = this.checkOption('no-time')?0:fontSize+fontSize-8;
+    const windowHeight = this.props.height;
+    const buttonHeight2 = buttonHeight+25;
+    const optionAdjust = ((optionButtons && optionButtons.length > 0)?buttonHeight2:0);
+    const titleSpace = this.checkOption('no-title')?0:titleHeight+8;
+    const choiceLength = (shuffleChoices && shuffleChoices.length > 0)?shuffleChoices.length:0;
+    if (sideImage) {
+      const buttonAreaHeight = ((layout === 'grid') ? Math.floor(choiceLength/2)*buttonHeight2 : choiceLength*buttonHeight2);
+      const buttonDelta = (choiceLength>0)?28:0;
+      return buttonAreaHeight+buttonDelta+optionAdjust+timeHeight+titleSpace;
+    }
+    return 0;
   }
 
   render() {
@@ -151,10 +178,21 @@ class Select extends Component {
       if (typeof v !== 'object' || v.type !== 'option') return false;
       return true;
     })
-    const buttonScale = _fontScale*((sideImage)?0.7:1.0)
+    const buttonScale = _fontScale*((sideImage)?1.0:1.0)
     const shuffleChoices = (this.props.quizOrder && _choices.length === 4) ? this.props.quizOrder.map( v => _choices[v] ) : _choices;
     const buttonStyle = this.checkOption('style-answer') ? 'article' : 'normal';
-    const bottomSpace = (((shuffleChoices && shuffleChoices.length > 0))?1:0)*((layout === 'grid') ? 260 : 380)+(this.props.height / 4)/((sideImage)?2:1)+((optionButtons && optionButtons.length > 0)?24+30+this.props.fontSize*buttonScale:0)-(this.checkOption('no-title')?this.props.fontSize*buttonScale:0);
+    const titleHeight = (this.props.height / 4)/((sideImage)?3:1);
+    const buttonHeight = parseInt(this.props.fontSize*buttonScale*1.5, 10);
+    const bottomSpace = this.bottomSpace({
+      shuffleChoices,
+      sideImage,
+      buttonScale,
+      buttonHeight,
+      layout,
+      optionButtons,
+      fontSize: this.props.fontSize,
+      titleHeight,
+    });
     return (
       <div className="App">
         <Row style={{ height: '99%', }}>
@@ -163,7 +201,7 @@ class Select extends Component {
               <img src={sideImage.url}  width={ sideImage.aspect*this.props.height } height='100%' />
             </div> : null
           */}
-          <Column style={{ margin: 8, marginTop: 16, }}>
+          <Column style={{ margin: 8, marginTop: 8, }}>
             {
               (!this.checkOption('no-title')) ? 
               <div className="Button-Key" style={{
@@ -195,7 +233,7 @@ class Select extends Component {
                       comment={ comment }
                       onLayout={ this.onReady }
                       minHeight= { (this.props.height / 4)/((sideImage)?3:1) }
-                      maxHeight= { (this.props.height / 4)/((sideImage)?3:1) }
+                      maxHeight= { titleHeight }
                     />
                     {/*
                       <p ref={ p => this.titleText = p } style={{
@@ -240,16 +278,16 @@ class Select extends Component {
             {
               (shuffleChoices && shuffleChoices.length > 0) ? <Row flex={false} style={{ height: '99%', }}>
               {
-                (this.state.isReady)?<div style={{ marginTop: 8, width: '100%', }}>
+                <div style={{ marginTop: 8, width: '100%', }}>
                   {
-                    (this.props.time !== null && !this.checkOption('no-time')) ? <p style={{
+                    this.checkOption('no-time') ? null : <p style={{
                       overflow: 'hidden',
                       fontSize: this.props.fontSize*0.5,
                       textAlign: 'center',
                       margin: this.props.fontSize/2,
                       //marginBottom: this.props.fontSize*3/4,
                       height: this.props.fontSize,
-                    }}> { this.timeStr() } </p> : null
+                    }}> { this.timeStr() } </p>
                   }
                   {
                     (layout === 'grid') ?
@@ -262,6 +300,7 @@ class Select extends Component {
                                 key={i}
                                 imageButton={(v.image)?true:false}
                                 fontScale={buttonScale}
+                                height={buttonHeight}
                                 correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
                                 selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                                 onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
@@ -282,6 +321,7 @@ class Select extends Component {
                                 key={i}
                                 imageButton={(v.image)?true:false}
                                 fontScale={buttonScale}
+                                height={buttonHeight}
                                 correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
                                 selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                                 onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
@@ -303,6 +343,7 @@ class Select extends Component {
                           key={i}
                           imageButton={(v.image)?true:false}
                           fontScale={buttonScale}
+                          height={buttonHeight}
                           correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
                           selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                           onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
@@ -316,7 +357,7 @@ class Select extends Component {
                     }
                     </div>
                   }
-                </div> : null
+                </div>
               }
               </Row> : null
             }

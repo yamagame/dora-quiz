@@ -46,7 +46,8 @@ class Image extends Component {
     const widthRatio = this.props.width / originalWidth;
     const heightRatio = this.props.height / originalHeight;
     const aspectRatio = originalWidth / originalHeight;
-    if (widthRatio < heightRatio) {
+
+    if (originalWidth > originalHeight) {
       this.setState({
         ratio: aspectRatio,
         width: originalWidth * widthRatio,
@@ -71,8 +72,6 @@ class Image extends Component {
   }
 
   render() {
-console.log(`width ${this.props.width}`);
-console.log(`height ${this.props.height}`);
     var marginTop = 0;
     const style = {
       wrapper: {
@@ -101,9 +100,7 @@ console.log(`height ${this.props.height}`);
       );
     } else {
       const ratio = (this.state.ratio) ? this.state.ratio : 1;
-console.log(`ratio ${ratio}`);
       var width = ratio*this.props.height;
-console.log(`width ${width} this.props.width ${this.props.width}`);
       if (width > this.props.width) {
         width = this.props.width;
         marginTop = (this.props.height - this.state.height) / 2;

@@ -61,7 +61,7 @@ class Button extends Component {
 
   render() {
     const fade = this.state.fade
-    const scale = this.props.fontScale || 1;
+    const fontScale = this.props.fontScale || 1;
     const fontSize = this.props.fontSize;
     const height = (this.props.height) ? this.props.height : null;
     const containerStyle = {
@@ -70,7 +70,7 @@ class Button extends Component {
     }
     //if (height) containerStyle.height = height;
     const style = {
-      fontSize: `${parseInt(fontSize*scale, 10)}px`,
+      fontSize: `${parseInt(fontSize*fontScale, 10)}px`,
       backgroundColor: this.backgroundColor(),
       height: this.props.height,
       paddingTop: this.props.paddingTop,
@@ -121,8 +121,8 @@ Button.defaultProps = {
     height: window.innerHeight,
   }),
   height: null,
-  paddingTop: null,
-  paddingBottom: null,
+  paddingTop: 5,
+  paddingBottom: 5,
   margin: null,
   correct: false,
   fontScale: 1,
