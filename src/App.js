@@ -39,10 +39,14 @@ class App extends Component {
   }
 
   render() {
+    const bgStyle = {}
+    if ('backgroundImage' in this.props && this.props.backgroundImage != null) bgStyle.backgroundImage = `url(${this.props.backgroundImage})`;
+    if ('backgroundColor' in this.props && this.props.backgroundColor != null) bgStyle.backgroundColor = this.props.backgroundColor;
     return (
       <div style={{
         height: '100%',
       }}>
+        <div id="bg" style={bgStyle} />
         <SlideCache
           cacheSlide={ this.props.cacheSlide }
           width={ this.props.width }
@@ -63,6 +67,8 @@ export default connect(
       width: state.app.width,
       height: state.app.height,
       cacheSlide: state.app.cacheSlide,
+      backgroundImage: state.app.backgroundImage,
+      backgroundColor: state.app.backgroundColor,
     }
   },
   dispatch => ( {

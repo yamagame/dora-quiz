@@ -10,15 +10,13 @@ import Bar from '../Bar';
 import Container from './Container';
 import MathJax, { update as MathJaxUpdate, check as MathJaxCheck, }  from '../MathJax';
 
-function buttonValue(v, height, host) {
+function buttonValue(v, height, host, fontSize=100, marginTop=0) {
   const style = {
-    pointerEvents: 'none',
-  }
-  if (height > 0) {
-    style.lineHeight = `${height}px`;
+    fontSize: `${fontSize}%`,
+    marginTop,
   }
   if (typeof v !== 'object') {
-    return <p> <MathJax value={v} /> </p>;
+    return <div style={style}> <MathJax value={v} /> </div>;
   }
   if (v.image) {
     return <img style={{
@@ -31,6 +29,7 @@ function buttonValue(v, height, host) {
   return <p style={{
     pointerEvents: 'none',
     lineHeight: `${height}px`,
+    ...style,
   }}> <MathJax value={v.value} /> </p>;
 }
 
@@ -222,19 +221,21 @@ class Select extends Component {
                         onClick={this.props.openPageHandller(-1)}
                       /> : null
                     }
-                    <Text
-                      ref={ text => this.titleText = text }
-                      style={{
-                        textAlign: 'left',
-                      }}
-                      container={ this.state.titleContainer }
-                      fontSize={ this.props.fontSize }
-                      value={ question }
-                      comment={ comment }
-                      onLayout={ this.onReady }
-                      minHeight= { (this.props.height / 4)/((sideImage)?3:1) }
-                      maxHeight= { titleHeight }
-                    />
+                    {
+                     <Text
+                        ref={ text => this.titleText = text }
+                        style={{
+                          textAlign: (this.checkOption('center-title'))?'center':'left',
+                        }}
+                        container={ this.state.titleContainer }
+                        fontSize={ this.props.fontSize }
+                        value={ question }
+                        comment={ comment }
+                        onLayout={ this.onReady }
+                        minHeight= { (this.props.height / 4)/((sideImage)?3:1) }
+                        maxHeight= { titleHeight }
+                      />
+                    }
                     {/*
                       <p ref={ p => this.titleText = p } style={{
                         fontSize: this.props.fontSize,

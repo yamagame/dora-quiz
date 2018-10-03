@@ -37,7 +37,7 @@ store.dispatch(loadInitialData(params, socket, () => {
     console.log(state);
   });
 
-  socket.on('quiz-reload-entry', () => {
+  socket.on('quiz-reload-entry', (msg) => {
     store.dispatch(sendEntry());
   });
 

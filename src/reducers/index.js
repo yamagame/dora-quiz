@@ -54,6 +54,8 @@ const initialState = {
   speechButton: false,
   noSave: false,
   imageServer: null,
+  backgroundImage: null,
+  backgroundColor: null,
 }
 
 export const types = {
@@ -236,6 +238,8 @@ export const quizCommand = (payload, callback) => async (dispatch, getState) => 
       'showSum',
       'speechButton',
       'noSave',
+      'backgroundImage',
+      'backgroundColor',
     ].forEach( key => {
       if (typeof obj[key] !== 'undefined') {
         t[key] = obj[key];
