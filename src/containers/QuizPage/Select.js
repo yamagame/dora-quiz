@@ -10,27 +10,36 @@ import Bar from '../Bar';
 import Container from './Container';
 import MathJax, { update as MathJaxUpdate, check as MathJaxCheck, }  from '../MathJax';
 
-function buttonValue(v, height, host, fontSize=100, marginTop=0) {
+function buttonValue(v, width, height, host) {
   const style = {
-    fontSize: `${fontSize}%`,
-    marginTop,
+    fontSize: '100%',
+    marginTop: 0,
+    pointerEvents: 'none',
+    height,
+    verticalAlign: 'middle',
   }
   if (typeof v !== 'object') {
     return <div style={style}> <MathJax value={v} /> </div>;
   }
   if (v.image) {
-    return <img style={{
-      pointerEvents: 'none',
-      display: 'inline-block',
-      verticalAlign: 'middle',
-      height,
-    }} src={(host) ? host+v.image : v.image} />
+    return (
+      <div style={{ width: '100%', }} >
+        <Image
+          style={{
+            margin: 'auto',
+            pointerEvents: 'none',
+            userSelect: 'none',
+          }}
+          width={width}
+          height={height+30}
+          src={(host) ? host+v.image : v.image}
+        />
+      </div>
+    )
   }
-  return <p style={{
-    pointerEvents: 'none',
-    lineHeight: `${height}px`,
-    ...style,
-  }}> <MathJax value={v.value} /> </p>;
+  if ('fontScale' in v) style.fontSize = v.fontScale;
+  if ('marginTop' in v) style.marginTop = parseFloat(v.marginTop);
+  return <div style={style}> <MathJax value={v.value} /> </div>;
 }
 
 class Select extends Component {
@@ -268,7 +277,11 @@ class Select extends Component {
                       src={(host) ? host+sideImage.url : sideImage.url}
                       width={ this.props.width-32 }
                       height={ this.props.height-bottomSpace }
-                      style={{ margin: 'auto', userSelect: 'none', }}
+                      style={{
+                        margin: 'auto',
+                        pointerEvents: 'none',
+                        userSelect: 'none',
+                      }}
                     />
                 </div>
               </Row> : null
@@ -308,7 +321,12 @@ class Select extends Component {
                                 buttonStyle={buttonStyle}
                               >
                                 {
-                                  buttonValue(v, (sideImage)?70:((this.props.height*1/3)/(shuffleChoices.length/2)*1.5), host)
+                                  buttonValue(
+                                    v,
+                                    this.props.width/2-30,
+                                    buttonHeight-30,
+                                    host,
+                                  )
                                 }
                               </Button> : null
                           )) : null
@@ -329,7 +347,12 @@ class Select extends Component {
                                 buttonStyle={buttonStyle}
                               >
                                 {
-                                  buttonValue(v, (sideImage)?70:((this.props.height*1/3)/(shuffleChoices.length/2)*1.5), host)
+                                  buttonValue(
+                                    v,
+                                    this.props.width/2-30,
+                                    buttonHeight-30,
+                                    host,
+                                  )
                                 }
                               </Button> : null
                           )) : null
@@ -351,7 +374,12 @@ class Select extends Component {
                           buttonStyle={buttonStyle}
                         >
                           {
-                            buttonValue(v, (sideImage)?50:((this.props.height*1/3)/shuffleChoices.length*1.5), host)
+                            buttonValue(
+                              v,
+                              this.props.width,
+                              buttonHeight-30,
+                              host,
+                            )
                           }
                         </Button>
                       )) : null
@@ -377,7 +405,12 @@ class Select extends Component {
                         buttonStyle={buttonStyle}
                       >
                         {
-                          buttonValue(v, (sideImage)?50:((this.props.height*1/3)/shuffleChoices.length*1.5), host)
+                          buttonValue(
+                            v,
+                            this.props.width,
+                            buttonHeight-30,
+                            host
+                          )
                         }
                       </Button>
                     })
