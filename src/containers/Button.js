@@ -95,7 +95,6 @@ class Button extends Component {
         <div style={{ /*height: '100%'*/ }}>
           <div className={['Button-Key', fade ? 'Button-Key-Fade' : '', this.props.correct ? 'Button-Key-Correct' : ''].join(' ')}
             ref={ bt => this.button = bt }
-            type="button"
             style={style}
           >
             {this.props.children}
