@@ -3,6 +3,7 @@ import { fontSize } from '../../reducers'
 import Column from '../Column';
 import Row from '../Row';
 import Image from '../Image';
+import Area from '../Area';
 import PageButton from '../PageButton';
 import Button from '../Button';
 import Container from './Container';
@@ -22,6 +23,16 @@ const slideTitle = {
 class Slide extends Component {
   constructor (props) {
     super(props);
+  }
+
+  componentDidMount() {
+    if (this.areaView) {
+      setTimeout(() => {
+        if (this.areaView) {
+          this.areaView.initializeSVG(this.imageView);
+        }
+      }, 100)
+    }
   }
 
   render() {
@@ -81,7 +92,25 @@ class Slide extends Component {
           <Row>
             <div style={{ width: '100%', }} >
               {
-                (photo) ? <Image ref={img => this.imageView = img } src={getHost(host, photo)} width={width} height={height-(100+this.props.fontSize*1.5)*(startScreen?1:0)} style={{ margin: 'auto', ...notSelectable, }}/> : null
+                (photo) ? (
+                  <Image
+                    ref={img => this.imageView = img }
+                    src={getHost(host, photo)}
+                    width={width}
+                    height={height-(100+this.props.fontSize*1.5)*(startScreen?1:0)}
+                    style={{ margin: 'auto', ...notSelectable, }}
+                    offsetY__={16}
+                  >
+                    {
+                      (this.props.area) ? <Area
+                        ref={ d => this.areaView = d }
+                        data={this.props.area}
+                        editable={false}
+                        onClick={this.props.onClickArea}
+                      /> : null
+                    }
+                  </Image>
+                 ) : null
               }
             </div>
           </Row>
@@ -118,11 +147,13 @@ Slide.defaultProps = {
   speech: null,
   title: null,
   startScreen: false,
+  area: null,
 
   prevButtonStatus: null,
   nextButtonStatus: null,
   openPageHandller: null,
   startButtonHandller: null,
+  onClickArea: null,
 }
 
 export default Slide;

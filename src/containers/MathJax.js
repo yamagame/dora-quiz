@@ -14,6 +14,7 @@ export const update = () => {
 
 export const check = (value) => {
   return (value && value.match(/\\\(.+\\\)/));
+  // return (value && (value.match(/\\\(.+\\\)/) || value.match(/\$\$.+\$\$/)));
 }
 
 class MathJax extends Component {

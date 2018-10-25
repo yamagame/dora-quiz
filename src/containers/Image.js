@@ -17,6 +17,7 @@ class Image extends Component {
       width: 0,
       height: 0,
       isNoImage: false,
+      ratio: 1,
     };
     this.resizeImage = this.resizeImage.bind(this);
     this.showNoImage = this.showNoImage.bind(this);
@@ -71,6 +72,12 @@ class Image extends Component {
     });
   }
 
+  originalSize() {
+    const originalWidth = ReactDOM.findDOMNode(this.refs.image).naturalWidth;
+    const originalHeight = ReactDOM.findDOMNode(this.refs.image).naturalHeight;
+    return { width: originalWidth, height: originalHeight }
+  }
+
   render() {
     var marginTop = 0;
     const style = {
@@ -107,10 +114,18 @@ class Image extends Component {
       }
       return (
         <div style={{ width: width, ...this.props.style, marginTop, }}>
-          <img ref="image" src={this.props.src} width={ width } height='100%'
+          <img ref="image" src={this.props.src} width={ width }
             onLoad={this.resizeImage}
             onError={this.showNoImage}
           />
+          <div style={{
+            position: 'absolute',
+            top: marginTop+this.props.offsetY__,
+            width,
+            height: width/this.state.ratio,
+          }}>
+            { this.props.children }
+          </div>
         </div>
       )
     }
@@ -119,6 +134,8 @@ class Image extends Component {
 
 Image.defaultProps = {
   style: {},
+  area: [],
+  offsetY__: 0,
 }
 
 export default Image;

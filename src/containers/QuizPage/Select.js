@@ -124,7 +124,7 @@ class Select extends Component {
     const timeHeight = this.checkOption('no-time')?0:fontSize+fontSize-8;
     const windowHeight = this.props.height;
     const buttonHeight2 = buttonHeight+25;
-    const optionAdjust = ((optionButtons && optionButtons.length > 0)?buttonHeight2:0);
+    const optionAdjust = ((optionButtons && optionButtons.length > 0)?buttonHeight2+25:0);
     const titleSpace = this.checkOption('no-title')?0:titleHeight+8;
     const choiceLength = (shuffleChoices && shuffleChoices.length > 0)?shuffleChoices.length:0;
     if (sideImage) {
@@ -399,6 +399,7 @@ class Select extends Component {
                         key={i}
                         imageButton={(v.image)?true:false}
                         fontScale={buttonScale}
+                        height={buttonHeight}
                         correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
                         selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                         onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}

@@ -41,6 +41,7 @@ const initialState = {
   entry: {},
   photo: '',
   pages: [],
+  area: [],
   sideImage: null,
   pageNumber: 0,
   playerAnswers: {},
@@ -229,6 +230,7 @@ export const quizCommand = (payload, callback) => async (dispatch, getState) => 
       'title',
       'photo',
       'name',
+      'area',
       'pageNumber',
       'quizAnswers',
       'quizId',
@@ -301,6 +303,30 @@ export const sendAnswer = (question, answer, callback) => async (dispatch, getSt
       playerAnswers: answers,
     },
   });
+  if (callback) callback();
+}
+
+export const sendSpeech = (speech, callback) => async (dispatch, getState) => {
+  const { app: { signature, } } = getState();
+  let response = await fetch('/command', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      type: 'speech',
+      speech,
+      signature,
+    })
+  })
+  if (response.ok) {
+    var contentType = response.headers.get("content-type");
+    if(contentType && contentType.includes("application/json")) {
+      let data = await response.json();
+      if (callback) callback(null, data);
+      return;
+    }
+  }
   if (callback) callback();
 }
 

@@ -11,6 +11,7 @@ import {
   fontScale,
   sendAnswer,
   sendEntry,
+  sendSpeech,
   setParams,
   startButtonPushed,
 } from '../reducers'
@@ -121,6 +122,11 @@ class QuizPage extends Component {
     if (!pages || pages.length <= 0) return {};
     if (pages.length > number) return pages[number];
     return pages[0];
+  }
+
+  onClickArea = (key) => {
+    this.props.sendSpeech(key, () => {
+    })
   }
 
   render() {
@@ -340,10 +346,12 @@ class QuizPage extends Component {
       speech={this.props.speech}
       host={this.props.host || this.props.imageServer}
       photo={this.props.photo}
+      area={this.props.area}
       prevButtonStatus={this.prevButtonStatus}
       nextButtonStatus={this.nextButtonStatus}
       openPageHandller={this.openPageHandller}
       startButtonHandller={this.startButtonHandller}
+      onClickArea={this.onClickArea}
       title={this.props.name}
       startScreen={startScreen}
     />
@@ -406,6 +414,7 @@ export default connect(
       time: state.app.time,
       title: state.app.title,
       photo: state.app.photo,
+      area: state.app.area,
       sideImage: state.app.sideImage,
       messages: state.app.messages,
       links: state.app.links,
@@ -436,6 +445,7 @@ export default connect(
   dispatch => ({
     sendAnswer: (question, answer, callback) => dispatch( sendAnswer(question, answer, callback) ),
     sendEntry: (callback) => dispatch( sendEntry(callback) ),
+    sendSpeech: (speech, callback) => dispatch( sendSpeech(speech, callback) ),
     setParams: (payload, callback) => dispatch( setParams(payload, callback) ),
     startButtonPushed: () => dispatch( startButtonPushed() ),
   })
