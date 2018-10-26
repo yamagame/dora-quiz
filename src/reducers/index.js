@@ -139,6 +139,7 @@ export const loadInitialData = (params, socketIO, callback) => async (dispatch, 
         type: 'answers',
         quizId: _quizId,
         startTime: _startTime,
+        user_id,
         signature,
       })
     })
@@ -307,7 +308,7 @@ export const sendAnswer = (question, answer, callback) => async (dispatch, getSt
 }
 
 export const sendSpeech = (speech, callback) => async (dispatch, getState) => {
-  const { app: { signature, } } = getState();
+  const { app: { user_id, signature, } } = getState();
   let response = await fetch('/command', {
     method: 'POST',
     headers: {
@@ -316,6 +317,7 @@ export const sendSpeech = (speech, callback) => async (dispatch, getState) => {
     body: JSON.stringify({
       type: 'speech',
       speech,
+      user_id,
       signature,
     })
   })
@@ -331,7 +333,7 @@ export const sendSpeech = (speech, callback) => async (dispatch, getState) => {
 }
 
 export const startButtonPushed = (callback) => async (dispatch, getState) => {
-  const { app: { signature, } } = getState();
+  const { app: { user_id, signature, } } = getState();
   let response = await fetch('/command', {
     method: 'POST',
     headers: {
@@ -339,6 +341,7 @@ export const startButtonPushed = (callback) => async (dispatch, getState) => {
     },
     body: JSON.stringify({
       type: 'cancel',
+      user_id,
       signature,
     })
   })
