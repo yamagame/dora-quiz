@@ -770,7 +770,7 @@ Select.defaultProps = {
   pageCount: 0,
   width: 0,
   height: 0,
-  playerAnswers: [],
+  playerAnswers: {},
   sumQuestions: {},
   showSum: false,
   quizMaster: false,

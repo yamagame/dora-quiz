@@ -299,13 +299,17 @@ class QuizPage extends Component {
     title,
     messages,
     links,
+    options,
   }) {
     return <Result
       fontSize={this.props.fontSize}
       time={this.props.time}
+      width={this.props.width}
+      height={this.props.height}
       title={title}
       messages={messages}
       links={links}
+      options={options}
       name={this.props.name}
       action={this.props.action}
       pages={this.props.pages}
