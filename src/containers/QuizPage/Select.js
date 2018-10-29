@@ -114,6 +114,7 @@ class Select extends Component {
   bottomSpace = ({
     shuffleChoices,
     sideImage,
+    inlineFrame,
     buttonScale,
     buttonHeight,
     layout,
@@ -127,10 +128,10 @@ class Select extends Component {
     const optionAdjust = ((optionButtons && optionButtons.length > 0)?buttonHeight2+25:0);
     const titleSpace = this.checkOption('no-title')?0:titleHeight+8;
     const choiceLength = (shuffleChoices && shuffleChoices.length > 0)?shuffleChoices.length:0;
-    if (sideImage) {
+    if (sideImage || inlineFrame) {
       const buttonAreaHeight = ((layout === 'grid') ? Math.floor(choiceLength/2)*buttonHeight2 : choiceLength*buttonHeight2);
       const buttonDelta = (choiceLength>0)?28:0;
-      return buttonAreaHeight+buttonDelta+optionAdjust+timeHeight+titleSpace;
+      return buttonAreaHeight+buttonDelta+optionAdjust+timeHeight+titleSpace+(choiceLength === 0)*20;
     }
     return 0;
   }
@@ -169,6 +170,7 @@ class Select extends Component {
       time,
       host,
       sideImage,
+      inlineFrame,
       question,
       comment,
       choices,
@@ -186,14 +188,15 @@ class Select extends Component {
       if (typeof v !== 'object' || v.type !== 'option') return false;
       return true;
     })
-    const buttonScale = _fontScale*((sideImage)?1.0:1.0)
+    const buttonScale = _fontScale*((sideImage || inlineFrame)?1.0:1.0)
     const shuffleChoices = (this.props.quizOrder && _choices.length === 4) ? this.props.quizOrder.map( v => _choices[v] ) : _choices;
     const buttonStyle = this.checkOption('style-answer') ? 'article' : 'normal';
-    const titleHeight = (this.props.height / 4)/((sideImage)?3:1);
+    const titleHeight = (this.props.height / 4)/((sideImage || inlineFrame)?3:1);
     const buttonHeight = parseInt(this.props.fontSize*buttonScale*1.5, 10);
     const bottomSpace = this.bottomSpace({
       shuffleChoices,
       sideImage,
+      inlineFrame,
       buttonScale,
       buttonHeight,
       layout,
@@ -241,7 +244,7 @@ class Select extends Component {
                         value={ question }
                         comment={ comment }
                         onLayout={ this.onReady }
-                        minHeight= { (this.props.height / 4)/((sideImage)?3:1) }
+                        minHeight= { (this.props.height / 4)/((sideImage || inlineFrame)?3:1) }
                         maxHeight= { titleHeight }
                       />
                     }
@@ -283,6 +286,24 @@ class Select extends Component {
                         userSelect: 'none',
                       }}
                     />
+                </div>
+              </Row> : null
+            }
+            {
+              (inlineFrame) ? <Row flex={false} >
+                <div
+                  style={{
+                    width: '100%',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <iframe
+                    src={inlineFrame.url}
+                    style={{
+                      width: '100%',
+                      height: this.props.height-bottomSpace,
+                    }}
+                  />
                 </div>
               </Row> : null
             }
@@ -431,6 +452,7 @@ class Select extends Component {
       time,
       host,
       sideImage,
+      inlineFrame,
       question,
       comment,
       choices,
@@ -485,8 +507,8 @@ class Select extends Component {
                   value={ question }
                   comment={ comment }
                   onLayout={ this.onReady }
-                  minHeight= { (this.props.height / 4)/((sideImage)?3:1) }
-                  maxHeight= { (this.props.height / 4)/((sideImage)?3:1) }
+                  minHeight= { (this.props.height / 4)/((sideImage || inlineFrame)?3:1) }
+                  maxHeight= { (this.props.height / 4)/((sideImage || inlineFrame)?3:1) }
                 />
                 {/*
                   <p ref={ p => this.titleText = p } style={{
@@ -515,9 +537,22 @@ class Select extends Component {
                     <Image
                       src={(host) ? host+sideImage.url : sideImage.url}
                       width={ this.props.width-32 }
-                      height={ this.props.height-200-(this.props.height / 4)/((sideImage)?2:1) }
+                      height={ this.props.height-200-(this.props.height / 4)/((sideImage || inlineFrame)?2:1) }
                       style={{ margin: 'auto', userSelect: 'none', }}
                     />
+                </div>
+              </Row> : null
+            }
+            {
+              (inlineFrame) ? <Row>
+                <div style={{ width: '100%', }} >
+                  <iframe
+                    src={inlineFrame.url}
+                    style={{
+                      width: '100%',
+                      height: this.props.height-200-(this.props.height / 4)/((sideImage || inlineFrame)?2:1),
+                    }}
+                  />
                 </div>
               </Row> : null
             }
@@ -526,7 +561,7 @@ class Select extends Component {
                 overflow: 'hidden',
                 fontSize: this.props.fontSize*0.5,
                 textAlign: 'center',
-                margin: (sideImage) ? 0 : this.props.fontSize/2,
+                margin: (sideImage || inlineFrame) ? 0 : this.props.fontSize/2,
                 //marginBottom: this.props.fontSize*3/4,
                 height: this.props.fontSize,
               }}> { this.timeStr() } </p> : null
@@ -534,7 +569,7 @@ class Select extends Component {
             {
               (shuffleChoices && shuffleChoices.length > 0) ? <div>
                 {
-                  (sideImage) ? <div style={{
+                  (sideImage || inlineFrame) ? <div style={{
                     position: 'absolute',
                     top: this.props.height-150,
                     width: this.props.width-20,
@@ -597,6 +632,7 @@ class Select extends Component {
       time,
       host,
       sideImage,
+      inlineFrame,
       question,
       comment,
       choices,
@@ -664,8 +700,8 @@ class Select extends Component {
                   value={ question }
                   comment={ comment }
                   onLayout={ this.onReady }
-                  minHeight= { (this.props.height / 4)/((sideImage)?3:1) }
-                  maxHeight= { (this.props.height / 4)/((sideImage)?3:1) }
+                  minHeight= { (this.props.height / 4)/((sideImage || inlineFrame)?3:1) }
+                  maxHeight= { (this.props.height / 4)/((sideImage || inlineFrame)?3:1) }
                 />
                 {/*
                   <p ref={ p => this.titleText = p } style={{
@@ -761,6 +797,7 @@ Select.defaultProps = {
   time: null,
   host: null,
   sideImage: null,
+  inlineFrame: null,
   question: null,
   comment: null,
   choices: null,

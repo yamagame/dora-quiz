@@ -236,6 +236,7 @@ class QuizPage extends Component {
     time,
     host,
     sideImage,
+    inlineFrame,
     question,
     comment,
     choices,
@@ -253,6 +254,7 @@ class QuizPage extends Component {
       time={this.props.time}
       host={host || this.props.imageServer}
       sideImage={sideImage}
+      inlineFrame={inlineFrame}
       question={question}
       comment={comment}
       choices={choices}
@@ -420,6 +422,7 @@ export default connect(
       photo: state.app.photo,
       area: state.app.area,
       sideImage: state.app.sideImage,
+      inlineFrame: state.app.inlineFrame,
       messages: state.app.messages,
       links: state.app.links,
       entry: state.app.entry,
