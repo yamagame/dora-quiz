@@ -14,6 +14,7 @@ import {
   sendSpeech,
   setParams,
   startButtonPushed,
+  saveImageMap,
 } from '../reducers'
 import Image from './Image';
 import Wait from './QuizPage/Wait';
@@ -190,10 +191,13 @@ class QuizPage extends Component {
       return this.renderTitle(page);
     }
     if (page.action == 'slide') {
-      return this.renderSlide(page, false);
+      return this.renderSlide(page);
+    }
+    if (page.action == 'edit') {
+      return this.renderSlide(page, 'edit');
     }
     if (page.action == 'startScreen') {
-      return this.renderSlide(page, true);
+      return this.renderSlide(page, 'start');
     }
     if (page.action == 'result') {
       if (this.props.name !== '_quiz_master_') {
@@ -341,7 +345,7 @@ class QuizPage extends Component {
   renderSlide({
     host,
     photo,
-  }, startScreen) {
+  }, mode) {
     return <Slide
       fontSize={this.props.fontSize}
       host={host}
@@ -359,7 +363,9 @@ class QuizPage extends Component {
       startButtonHandller={this.startButtonHandller}
       onClickArea={this.onClickArea}
       title={this.props.name}
-      startScreen={startScreen}
+      startScreen={mode==='start'}
+      editScreen={mode==='edit'}
+      saveImageMap={this.props.saveImageMap}
     />
   }
 
@@ -455,5 +461,6 @@ export default connect(
     sendSpeech: (speech, callback) => dispatch( sendSpeech(speech, callback) ),
     setParams: (payload, callback) => dispatch( setParams(payload, callback) ),
     startButtonPushed: () => dispatch( startButtonPushed() ),
+    saveImageMap: (filename, imageMap, callback) => dispatch( saveImageMap(filename, imageMap, callback) ),
   })
 )(QuizPage);

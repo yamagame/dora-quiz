@@ -464,3 +464,25 @@ export const preloadSlideImage = (photo, params={}) => async (dispatch, getState
     });
   }
 }
+
+export const saveImageMap = (filename, imageMap, callback) => async (dispatch, getState) => {
+  const { app: {
+    signature,
+  }} = getState();
+  let response = await fetch('/command', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      type: 'save',
+      action: 'imageMap',
+      filename,
+      imageMap,
+      signature,
+    })
+  })
+  if (response.ok) {
+  }
+  if (callback) callback();
+}

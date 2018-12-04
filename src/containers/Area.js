@@ -77,7 +77,7 @@ export default class Area extends Component {
 
     this.dragArea = d3.drag()
       .on('start', function(d, i) {
-        if (!d.selected && !self.shiftKey) {
+        if (!d.selected && !d3.event.sourceEvent.shiftKey) {
           self.base.selectAll('path.rectangle')
             .each((d) => {
               d.selected = false;
@@ -108,6 +108,9 @@ export default class Area extends Component {
             d.y = parseInt(d.y);
           })
           self.updateSelection();
+          self.props.onAction({
+            action: 'update-area',
+          })
         }
         d3.event.on("drag", dragged).on("end", ended);
       })
@@ -155,7 +158,7 @@ export default class Area extends Component {
             y1 = y2;
             y2 = t;
           }
-          if (!self.shiftKey && dragCount > 5) {
+          if (!d3.event.sourceEvent.shiftKey && dragCount > 5) {
             self.props.onAction({
               action: 'create-area',
               data: {
@@ -168,7 +171,7 @@ export default class Area extends Component {
           } else {
             self.base.selectAll('path.rectangle')
               .each((d) => {
-                if (self.shiftKey && d.selected) return;
+                if (d3.event.sourceEvent.shiftKey && d.selected) return;
                 d.selected = (x1 <= d.x+d.width && d.x <= x2 && y1 <= d.y+d.height && d.y <= y2);
               })
             self.updateSelection();
@@ -182,8 +185,6 @@ export default class Area extends Component {
     }
 
     this.updateMarky();
-
-    console.log('initializeSVG');
 
     this.initialized = true;
   }
@@ -302,7 +303,6 @@ export default class Area extends Component {
 
   onKeyDown = (e) => {
     if (this.props.editable) {
-      this.shiftKey = e.shiftKey;
       if(e.keyCode == 8 || e.keyCode == 46) {
         this.props.onAction({
           action: 'delete-selection',
@@ -320,7 +320,6 @@ export default class Area extends Component {
   }
 
   onKeyUp = (e) => {
-    this.shiftKey = e.shiftKey;
   }
 
   onMouseMove = () => {
@@ -339,10 +338,10 @@ export default class Area extends Component {
   }
 
   onMouseLeave = () => {
-    if (this.shiftKey) {
-      this.marky.width = 0;
-      this.marky.height = 0;
-    }
+    // if (this.shiftKey) {
+    //   this.marky.width = 0;
+    //   this.marky.height = 0;
+    // }
   }
 
   render() {
