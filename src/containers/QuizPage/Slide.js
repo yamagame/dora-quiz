@@ -119,7 +119,7 @@ class Slide extends Component {
         }
         this.props.saveImageMap(photo, this.saveText());
       }
-    }, 1000)
+    }, 100)
   }
 
   loadText = (d) => {

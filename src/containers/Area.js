@@ -77,42 +77,44 @@ export default class Area extends Component {
 
     this.dragArea = d3.drag()
       .on('start', function(d, i) {
-        if (!d.selected && !d3.event.sourceEvent.shiftKey) {
-          self.base.selectAll('path.rectangle')
-            .each((d) => {
-              d.selected = false;
+        if (self.props.editable) {
+          if (!d.selected && !d3.event.sourceEvent.shiftKey) {
+            self.base.selectAll('path.rectangle')
+              .each((d) => {
+                d.selected = false;
+              })
+          }
+          d.selected = true;
+          self.props.data.forEach( d => {
+            d.ox = self.xScale(d.x);
+            d.oy = self.yScale(d.y);
+          })
+          self.updateSelection();
+          const dragged = (d) => {
+            self.props.data.forEach( d => {
+              if (d.selected) {
+                d.ox += d3.event.dx;
+                d.oy += d3.event.dy;
+                d.x = self.xScale.invert(d.ox);
+                d.y = self.yScale.invert(d.oy);
+              }
             })
+            self.updateSelection();
+          }
+          const ended = () => {
+            self.props.data.forEach( d => {
+              delete d.ox;
+              delete d.oy;
+              d.x = parseInt(d.x);
+              d.y = parseInt(d.y);
+            })
+            self.updateSelection();
+            self.props.onAction({
+              action: 'update-area',
+            })
+          }
+          d3.event.on("drag", dragged).on("end", ended);
         }
-        d.selected = true;
-        self.props.data.forEach( d => {
-          d.ox = self.xScale(d.x);
-          d.oy = self.yScale(d.y);
-        })
-        self.updateSelection();
-        const dragged = (d) => {
-          self.props.data.forEach( d => {
-            if (d.selected) {
-              d.ox += d3.event.dx;
-              d.oy += d3.event.dy;
-              d.x = self.xScale.invert(d.ox);
-              d.y = self.yScale.invert(d.oy);
-            }
-          })
-          self.updateSelection();
-        }
-        const ended = () => {
-          self.props.data.forEach( d => {
-            delete d.ox;
-            delete d.oy;
-            d.x = parseInt(d.x);
-            d.y = parseInt(d.y);
-          })
-          self.updateSelection();
-          self.props.onAction({
-            action: 'update-area',
-          })
-        }
-        d3.event.on("drag", dragged).on("end", ended);
       })
 
     this.updateArea();
