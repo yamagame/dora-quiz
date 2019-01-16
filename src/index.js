@@ -43,6 +43,9 @@ store.dispatch(loadInitialData(params, socket, () => {
   });
 
   socket.on('quiz', (msg) => {
+    if (!msg.quizMode) {
+      msg.quizMode = 'Quiz Robo';
+    }
     if (msg.action === 'entry') {
       delete msg.action;
     }

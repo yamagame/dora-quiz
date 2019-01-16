@@ -21,6 +21,7 @@ function SlideCache({ cacheSlide, width, height, }) {
 class App extends Component {
   constructor(props) {
     super(props);
+    document.title = props.quizMode;
   }
 
   onResize = () => {
@@ -36,6 +37,12 @@ class App extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.quizMode !== this.props.quizMode) {
+      document.title = (!nextProps.quizMode) ? 'Quiz Robo' : nextProps.quizMode;
+    }
   }
 
   render() {
@@ -55,10 +62,15 @@ class App extends Component {
         <QuizPage
           width={ this.props.width }
           height={ this.props.height }
+          quizMode={ this.props.quizMode }
         />
       </div>
     )
   }
+}
+
+App.defaultProps = {
+  quizMode: null,
 }
 
 export default connect(
@@ -69,6 +81,7 @@ export default connect(
       cacheSlide: state.app.cacheSlide,
       backgroundImage: state.app.backgroundImage,
       backgroundColor: state.app.backgroundColor,
+      quizMode: state.app.quizMode,
     }
   },
   dispatch => ( {

@@ -39,36 +39,38 @@ class Title extends Component {
                 textAlign: 'middle',
                 margin: 8,
                 flex: 1,
-              }}> 早押しロボクイズ </p>
+              }}> {this.props.title} </p>
               <div style={{ fontSize: this.props.fontSize*0.5, flex: 1, margin: 30, marginBottom: 0 }}>
-                <label> あなたの名前： </label>
+                <label> {this.props.inputLabel} </label>
                 <input ref={ d => this.entryName = d } type="text" className="Name-Input"/>
               </div>
-              <select name="members" style={{
-                appearance: 'none',
-                marginLeft: 100,
-                marginBottom: 30,
-                border: '1px solid #999',
-                //background: '#eee',
-                width: '25%',
-                height: 32,
-              }} onChange={
-                (event) => {
-                  if (event.target.value !== '-') {
-                    this.entryName.value = event.target.value;
+              {
+                (this.props.memberSelector) ? <select name="members" style={{
+                  appearance: 'none',
+                  marginLeft: 100,
+                  border: '1px solid #999',
+                  //background: '#eee',
+                  width: '25%',
+                  height: 32,
+                }} onChange={
+                  (event) => {
+                    if (event.target.value !== '-') {
+                      this.entryName.value = event.target.value;
+                    }
                   }
-                }
-              }>
-                {
-                  (this.props.members) ? this.props.members.map( (p, i) => {
-                    return <option value={p} key={i}> {p} </option>
-                  }) : null
-                }
-              </select>
+                }>
+                  {
+                    (this.props.members) ? this.props.members.map( (p, i) => {
+                      return <option value={p} key={i}> {p} </option>
+                    }) : null
+                  }
+                </select> : null
+              }
               <div style={{
                 flex: 1,
                 width: '30%',
                 margin: 'auto',
+                marginTop: 30,
               }}>
                 <div>
                   <Button onClick={() => {
@@ -77,23 +79,27 @@ class Title extends Component {
                     }
                   }}>
                     {
-                      buttonValue("スタート", this.props.fontSize*4)
+                      buttonValue(this.props.buttonTitle, this.props.fontSize*4)
                     }
                   </Button>
                 </div>
               </div>
-              <p style={{
-                flex: 1,
-                fontSize: this.props.fontSize*0.4,
-              }}>
-                名前を選択してスタートボタンをクリックしてね！
-              </p>
-              <p style={{
-                flex: 1,
-                fontSize: this.props.fontSize*0.4,
-              }}>
-                名前はランキング表示に使われるよ。
-              </p>
+              {
+                (this.props.optionMessage) ? <div>
+                  {
+                    this.props.optionMessage.split('\n').map( (m, i) => {
+                      return (
+                        <p key={i} style={{
+                          flex: 1,
+                          fontSize: this.props.fontSize*0.4,
+                        }}>
+                          { m }
+                        </p> 
+                      )
+                    })
+                  }
+                </div> : null
+              }
             </div>
           </div>
         </Column>
@@ -108,8 +114,12 @@ Title.defaultProps = {
     height: window.innerHeight,
   }),
   name: '',
-
   onStartQuiz: null,
+  title: '早押しロボクイズ',
+  inputLabel: 'あなたの名前：',
+  buttonTitle: 'スタート',
+  memberSelector: true,
+  optionMessage: '名前を選択してスタートボタンをクリックしてね！\n名前はランキング表示に使われるよ。',
 }
 
 export default Title;

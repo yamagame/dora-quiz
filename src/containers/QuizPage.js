@@ -227,6 +227,23 @@ class QuizPage extends Component {
   }
 
   renderTitle({}) {
+    console.log(`this.props.quizMode ${this.props.quizMode}`)
+    if (!this.props.quizMode) {
+      return <div></div>
+    }
+    if (this.props.quizMode === 'Guide Robo') {
+      return <Title
+        fontSize={this.props.fontSize}
+        members={this.props.members}
+        name={this.props.name}
+        onStartQuiz={this.startQuiz}
+        title="サイネージロボ"
+        inputLabel="アカウント名："
+        buttonTitle="ログイン"
+        memberSelector={false}
+        optionMessage=""
+      />
+    }
     return <Title
       fontSize={this.props.fontSize}
       members={this.props.members}
@@ -414,6 +431,7 @@ QuizPage.defaultProps = {
     height: window.innerHeight,
   }),
   sheet: {},
+  quizMode: 'Quiz Robo',
 }
 
 export default connect(
