@@ -222,6 +222,7 @@ export const quizCommand = (payload, callback) => async (dispatch, getState) => 
       'time',
       'pages',
       'quizMode',
+      'closeButton',
       'sideImage',
       'inlineFrame',
       'choices',

@@ -227,7 +227,6 @@ class QuizPage extends Component {
   }
 
   renderTitle({}) {
-    console.log(`this.props.quizMode ${this.props.quizMode}`)
     if (!this.props.quizMode) {
       return <div></div>
     }
@@ -237,9 +236,9 @@ class QuizPage extends Component {
         members={this.props.members}
         name={this.props.name}
         onStartQuiz={this.startQuiz}
-        title="サイネージロボ"
-        inputLabel="アカウント名："
-        buttonTitle="ログイン"
+        title="Guide Robot System"
+        inputLabel="username："
+        buttonTitle="Login"
         memberSelector={false}
         optionMessage=""
       />

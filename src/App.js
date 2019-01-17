@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {
   QuizPage,
+  CloseButton,
 } from './containers';
 import logo from './logo.svg';
 import './App.css';
@@ -54,6 +55,9 @@ class App extends Component {
         height: '100%',
       }}>
         <div id="bg" style={bgStyle} />
+        {
+          this.props.closeButton ? <CloseButton /> : null
+        }
         <SlideCache
           cacheSlide={ this.props.cacheSlide }
           width={ this.props.width }
@@ -82,6 +86,7 @@ export default connect(
       backgroundImage: state.app.backgroundImage,
       backgroundColor: state.app.backgroundColor,
       quizMode: state.app.quizMode,
+      closeButton: state.app.closeButton,
     }
   },
   dispatch => ( {
