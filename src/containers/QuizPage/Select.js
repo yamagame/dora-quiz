@@ -31,7 +31,7 @@ function buttonValue(v, width, height, host) {
             userSelect: 'none',
           }}
           width={width}
-          height={height+30}
+          height={height+10}
           src={(host) ? host+v.image : v.image}
         />
       </div>
@@ -192,7 +192,7 @@ class Select extends Component {
     const shuffleChoices = (this.props.quizOrder && _choices.length === 4) ? this.props.quizOrder.map( v => _choices[v] ) : _choices;
     const buttonStyle = this.checkOption('style-answer') ? 'article' : 'normal';
     const titleHeight = (this.props.height / 4)/((sideImage || inlineFrame)?3:1);
-    const buttonHeight = parseInt(this.props.fontSize*buttonScale*1.5, 10);
+    const buttonHeight = parseInt(this.props.fontSize*buttonScale*1.8, 10);
     const bottomSpace = this.bottomSpace({
       shuffleChoices,
       sideImage,

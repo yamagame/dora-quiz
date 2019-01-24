@@ -16,7 +16,8 @@ const AsyncStorage = {
 
 export const fontSize = (payload) => {
   var size = (payload.width < payload.height) ? payload.width : payload.height;
-  return parseInt(size*0.6/10, 10);
+  const t = parseInt(size*0.6/10, 10);
+  return t;
 }
 
 export const fontScale = (size) => {
