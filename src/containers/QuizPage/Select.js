@@ -131,7 +131,11 @@ class Select extends Component {
     if (sideImage || inlineFrame) {
       const buttonAreaHeight = ((layout === 'grid') ? Math.floor(choiceLength/2)*buttonHeight2 : choiceLength*buttonHeight2);
       const buttonDelta = (choiceLength>0)?28:0;
-      return buttonAreaHeight+buttonDelta+optionAdjust+timeHeight+titleSpace+(choiceLength === 0)*20;
+      let r = buttonAreaHeight+buttonDelta+optionAdjust+timeHeight+titleSpace+(choiceLength === 0)*20;
+      if (inlineFrame && (optionButtons && optionButtons.length > 0)) {
+        r -= 40;
+      }
+      return r;
     }
     return 0;
   }
@@ -158,6 +162,7 @@ class Select extends Component {
           width: '100%',
           fontWeight: 'bold',
           fontSize: this.props.fontSize,
+          zIndex: 10,
           top: this.props.height-this.props.fontSize*2,
         }}> { this.props.speech } </p>
       </div>
@@ -294,6 +299,7 @@ class Select extends Component {
                 <div
                   style={{
                     width: '100%',
+                    height: this.props.height-bottomSpace,
                     overflow: 'hidden',
                   }}
                 >
@@ -301,7 +307,8 @@ class Select extends Component {
                     src={inlineFrame.url}
                     style={{
                       width: '100%',
-                      height: this.props.height-bottomSpace,
+                      height: this.props.height-bottomSpace+(inlineFrame.offsetBottom?inlineFrame.offsetBottom:0),
+                      border: 'none',
                     }}
                   />
                 </div>
@@ -550,7 +557,8 @@ class Select extends Component {
                     src={inlineFrame.url}
                     style={{
                       width: '100%',
-                      height: this.props.height-200-(this.props.height / 4)/((sideImage || inlineFrame)?2:1),
+                      height: this.props.height-160-(this.props.height / 4)/((sideImage || inlineFrame)?2:1),
+                      border: 'none',
                     }}
                   />
                 </div>
