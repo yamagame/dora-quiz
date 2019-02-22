@@ -17,6 +17,8 @@ export default class Area extends Component {
       color: 'rgba(0,0,0,0.1)',
     }
     this.initialized = false;
+    this.orgSize = null;
+    this.mount = false;
   }
 
   componentWillMount() {
@@ -25,6 +27,7 @@ export default class Area extends Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown);
+    this.mount = true;
   }
 
   componentDidUpdate() {
@@ -48,6 +51,7 @@ export default class Area extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.onKeyDown);
+    this.mount = false;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,6 +64,7 @@ export default class Area extends Component {
     const self = this;
     this.target = target;
     const orgSize = this.target.originalSize();
+    this.orgSize = orgSize;
     const { data } = this.props;
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
@@ -196,6 +201,8 @@ export default class Area extends Component {
   }
 
   updateSelection = () => {
+    if (!this.initialized) return;
+
     if (this.props.editable) {
       this.base.selectAll('text.rectangle')
         .attr('x', d => this.xScale(d.x))
@@ -215,13 +222,15 @@ export default class Area extends Component {
         return 'rgba(0,0,0,0)';
       })
       .attr("d", d => rect(
-        this.xScale(d.x), this.yScale(d.y), 
-        this.xScale(d.width)+this.xScale(d.x),
-        this.yScale(d.height)+this.yScale(d.y)
-      ))
+          this.xScale(d.x), this.yScale(d.y), 
+          this.xScale(d.width)+this.xScale(d.x),
+          this.yScale(d.height)+this.yScale(d.y)
+        ))
   }
 
   updateArea = () => {
+    if (!this.initialized) return;
+
     const self = this;
 
     if (this.props.editable) {

@@ -22,6 +22,7 @@ class Image extends Component {
     this.resizeImage = this.resizeImage.bind(this);
     this.showNoImage = this.showNoImage.bind(this);
     this.mounted = false;
+    this.loaded = false;
   }
 
   componentDidMount() {
@@ -34,16 +35,22 @@ class Image extends Component {
     window.removeEventListener('resize', this.onResize);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.src !== nextProps.src) {
+      this.loaded = false;
+    }
+  }
+
   onResize = () => {
     this.resizeImage();
   }
 
   resizeImage() {
-    if (ReactDOM.findDOMNode(this.refs.image) == null) {
+    if (ReactDOM.findDOMNode(this.imageView) == null) {
       return;
     }
-    const originalWidth = ReactDOM.findDOMNode(this.refs.image).naturalWidth;
-    const originalHeight = ReactDOM.findDOMNode(this.refs.image).naturalHeight;
+    const originalWidth = ReactDOM.findDOMNode(this.imageView).naturalWidth;
+    const originalHeight = ReactDOM.findDOMNode(this.imageView).naturalHeight;
     const widthRatio = this.props.width / originalWidth;
     const heightRatio = this.props.height / originalHeight;
     const aspectRatio = originalWidth / originalHeight;
@@ -61,6 +68,7 @@ class Image extends Component {
         height: originalHeight * heightRatio,
       });
     }
+    this.loaded = true;
   }
 
   showNoImage() {
@@ -72,9 +80,16 @@ class Image extends Component {
     });
   }
 
+  isLoaded() {
+    return this.loaded;
+  }
+
   originalSize() {
-    const originalWidth = ReactDOM.findDOMNode(this.refs.image).naturalWidth;
-    const originalHeight = ReactDOM.findDOMNode(this.refs.image).naturalHeight;
+    if (ReactDOM.findDOMNode(this.imageView) == null || this.loaded !== true) {
+      return { width: -1, height: -1 };
+    }
+    const originalWidth = ReactDOM.findDOMNode(this.imageView).naturalWidth;
+    const originalHeight = ReactDOM.findDOMNode(this.imageView).naturalHeight;
     return { width: originalWidth, height: originalHeight }
   }
 
@@ -114,7 +129,10 @@ class Image extends Component {
       }
       return (
         <div style={{ width: width, ...this.props.style, marginTop, }}>
-          <img ref="image" src={this.props.src} width={ width }
+          <img
+            ref={img => this.imageView = img }
+            src={this.props.src}
+            width={ width }
             onLoad={this.resizeImage}
             onError={this.showNoImage}
           />

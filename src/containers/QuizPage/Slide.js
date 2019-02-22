@@ -48,14 +48,22 @@ class Slide extends Component {
     this.saveTimer = null;
   }
 
-  componentDidMount() {
+  updateImage(time=100) {
     if (this.updateTimer) clearTimeout(this.updateTimer);
     this.updateTimer = setTimeout(() => {
       if (this.areaView && this.imageView) {
-        this.areaView.initializeSVG(this.imageView);
-        this.forceUpdate();
+        if (this.imageView.isLoaded()) {
+          this.areaView.initializeSVG(this.imageView);
+          this.forceUpdate();
+        } else {
+          this.updateImage(1000);
+        }
       }
-    }, 100)
+    }, time)
+  }
+
+  componentDidMount() {
+    this.updateImage();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,13 +81,7 @@ class Slide extends Component {
       this.setState({
         data,
       }, () => {
-        if (this.updateTimer) clearTimeout(this.updateTimer);
-        this.updateTimer = setTimeout(() => {
-          if (this.areaView && this.imageView) {
-            this.areaView.initializeSVG(this.imageView);
-            this.forceUpdate();
-          }
-        }, 100)
+        this.updateImage();
       })
     }
   }
@@ -89,6 +91,15 @@ class Slide extends Component {
     this.updateTimer = null;
     if (this.saveTimer) clearTimeout(this.saveTimer);
     this.saveTimer = null;
+  }
+
+  componentDidUpdate() {
+    if (this.areaView && this.imageView) {
+      if (this.imageView.isLoaded()) {
+        this.areaView.updateArea();
+        this.areaView.updateSelection();
+      }
+    }
   }
 
   render() {
@@ -103,6 +114,7 @@ class Slide extends Component {
           width: '100%',
           fontWeight: 'bold',
           fontSize: this.props.fontSize,
+          zIndex: 10,
           top: this.props.height-this.props.fontSize*2,
         }}> { this.props.speech } </p>
       </div>
