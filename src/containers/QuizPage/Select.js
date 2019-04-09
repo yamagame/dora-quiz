@@ -347,6 +347,8 @@ class Select extends Component {
                                 selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                                 onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
                                 buttonStyle={buttonStyle}
+                                fontColor={this.checkOption('style-deepblue') ? 'white' : 'black'}
+                                buttonBaseColor={this.checkOption('style-deepblue') ? '#0761A0' : '#CDF'}
                               >
                                 {
                                   buttonValue(
@@ -373,6 +375,8 @@ class Select extends Component {
                                 selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                                 onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
                                 buttonStyle={buttonStyle}
+                                fontColor={this.checkOption('style-deepblue') ? 'white' : 'black'}
+                                buttonBaseColor={this.checkOption('style-deepblue') ? '#0761A0' : '#CDF'}
                               >
                                 {
                                   buttonValue(
@@ -400,6 +404,8 @@ class Select extends Component {
                           selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                           onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
                           buttonStyle={buttonStyle}
+                          fontColor={this.checkOption('style-deepblue') ? 'white' : 'black'}
+                          buttonBaseColor={this.checkOption('style-deepblue') ? '#0761A0' : '#CDF'}
                         >
                           {
                             buttonValue(
@@ -432,6 +438,8 @@ class Select extends Component {
                         selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                         onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
                         buttonStyle={buttonStyle}
+                        fontColor={this.checkOption('style-deepblue') ? 'white' : 'black'}
+                        buttonBaseColor={this.checkOption('style-deepblue') ? '#0761A0' : '#CDF'}
                       >
                         {
                           buttonValue(
@@ -596,6 +604,8 @@ class Select extends Component {
                           correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
                           selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                           onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
+                          fontColor={this.checkOption('style-deepblue') ? 'white' : 'black'}
+                          buttonBaseColor={this.checkOption('style-deepblue') ? '#0761A0' : '#CDF'}
                         >
                           {
                             buttonValue(v, 100, host)
@@ -617,6 +627,8 @@ class Select extends Component {
                         correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
                         selected={this.props.selectedHandller(this.props.playerAnswers[question], (typeof v !== 'object') ? v : v.value ) || this.selectedButton(v)}
                         onClick={this.props.buttonHandller(question, (typeof v !== 'object') ? v : v.value)}
+                        fontColor={this.checkOption('style-deepblue') ? 'white' : 'black'}
+                        buttonBaseColor={this.checkOption('style-deepblue') ? '#0761A0' : '#CDF'}
                       >
                         {
                           buttonValue(v, this.props.fontSize*3, host)

@@ -56,7 +56,7 @@ class Button extends Component {
     if (this.props.buttonStyle == 'article') {
       return 'white';
     }
-    return '#CDF';
+    return this.props.buttonBaseColor;
   }
 
   render() {
@@ -72,6 +72,7 @@ class Button extends Component {
     const style = {
       fontSize: `${parseInt(fontSize*fontScale, 10)}px`,
       backgroundColor: this.backgroundColor(),
+      color: this.props.fontColor,
       height: this.props.height,
       paddingTop: this.props.paddingTop,
       paddingBottom: this.props.paddingBottom,
@@ -127,6 +128,8 @@ Button.defaultProps = {
   fontScale: 1,
   buttonStyle: 'normal',
   imageButton: false,
+  fontColor: 'black',
+  buttonBaseColor: '#CDF',
 }
 
 export default connect(
