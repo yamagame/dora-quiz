@@ -1,7 +1,7 @@
 # Dora Quiz
 
 [DoraEngine](https://github.com/yamagame/dora-engine)用プレゼンテーションページのソースコードです。
-ビルドしたファイルをDoraEngineのpublicフォルダに配置します。[create-react-app](https://github.com/facebook/create-react-app)を使っています。
+ビルドしたファイルを DoraEngine の public フォルダに配置します。[create-react-app](https://github.com/facebook/create-react-app)を使っています。
 
 ## 機能
 
@@ -20,7 +20,7 @@ $ npm i
 
 ## 開発方法
 
-package.jsonの proxyをドラエンジンが起動しているラズベリーパイのホスト名に変更し、以下のコマンドを実行します。
+package.json の proxy をドラエンジンが起動しているラズベリーパイのホスト名に変更し、以下のコマンドを実行します。
 
 ```
 $ npm start

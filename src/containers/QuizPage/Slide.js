@@ -1,38 +1,38 @@
-import React, { Component } from 'react';
-import { fontSize } from '../../reducers';
-import pathParse from 'path-parse';
-import Column from '../Column';
-import Row from '../Row';
-import Image from '../Image';
-import Area from '../Area';
-import PageButton from '../PageButton';
-import Button from '../Button';
-import Container from './Container';
-import { getHost } from '../../utils';
-import AreaDialog from '../AreaDialog';
-import DataDialog from '../DataDialog';
+import React, { Component } from "react";
+import { fontSize } from "../../reducers";
+import pathParse from "path-parse";
+import Column from "../Column";
+import Row from "../Row";
+import Image from "../Image";
+import Area from "../Area";
+import PageButton from "../PageButton";
+import Button from "../Button";
+import Container from "./Container";
+import { getHost } from "../../utils";
+import AreaDialog from "../AreaDialog";
+import DataDialog from "../DataDialog";
 
 const notSelectable = {
-  userSelect: 'none',
-}
+  userSelect: "none",
+};
 
 const slideTitle = {
   fontSize: 60,
-  userSelect: 'none',
-  margin: 'auto',
-  color: '#0080FF',
-}
+  userSelect: "none",
+  margin: "auto",
+  color: "#0080FF",
+};
 
 function basename(path) {
   const p = pathParse(path);
   if (p) {
     return p.base;
   }
-  return '';
+  return "";
 }
 
 class Slide extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       data: {
@@ -43,12 +43,12 @@ class Slide extends Component {
       showDataDialog: false,
       value: {},
       index: 0,
-    }
+    };
     this.updateTimer = null;
     this.saveTimer = null;
   }
 
-  updateImage(time=100) {
+  updateImage(time = 100) {
     if (this.updateTimer) clearTimeout(this.updateTimer);
     this.updateTimer = setTimeout(() => {
       if (this.areaView && this.imageView) {
@@ -59,7 +59,7 @@ class Slide extends Component {
           this.updateImage(1000);
         }
       }
-    }, time)
+    }, time);
   }
 
   componentDidMount() {
@@ -68,7 +68,7 @@ class Slide extends Component {
 
   componentWillReceiveProps(nextProps) {
     let updateState = false;
-    const data = { ...this.state.data }
+    const data = { ...this.state.data };
     if (this.props.area !== nextProps.area) {
       data.area = nextProps.area;
       updateState = true;
@@ -78,11 +78,14 @@ class Slide extends Component {
       updateState = true;
     }
     if (updateState) {
-      this.setState({
-        data,
-      }, () => {
-        this.updateImage();
-      })
+      this.setState(
+        {
+          data,
+        },
+        () => {
+          this.updateImage();
+        }
+      );
     }
   }
 
@@ -105,20 +108,23 @@ class Slide extends Component {
   render() {
     return (
       <div className="App">
-        {
-          this.renderPage()
-        }
-        <p style={{
-          backgroundColor: 'rgba(0,0,0,0.2)',
-          position: 'absolute' ,
-          width: '100%',
-          fontWeight: 'bold',
-          fontSize: this.props.fontSize,
-          zIndex: 10,
-          top: this.props.height-this.props.fontSize*2,
-        }}> { this.props.speech } </p>
+        {this.renderPage()}
+        <p
+          style={{
+            backgroundColor: "rgba(0,0,0,0.2)",
+            position: "absolute",
+            width: "100%",
+            fontWeight: "bold",
+            fontSize: this.props.fontSize,
+            zIndex: 10,
+            top: this.props.height - this.props.fontSize * 2,
+          }}
+        >
+          {" "}
+          {this.props.speech}{" "}
+        </p>
       </div>
-    )
+    );
   }
 
   saveArea = () => {
@@ -126,181 +132,224 @@ class Slide extends Component {
     this.saveTimer = setTimeout(() => {
       if (this.props.saveImageMap) {
         let photo = this.props.photo;
-        if (photo.indexOf('images/') == 0) {
-          photo = photo.replace('images/', '');
+        if (photo.indexOf("images/") == 0) {
+          photo = photo.replace("images/", "");
         }
         this.props.saveImageMap(photo, this.saveText());
       }
-    }, 100)
-  }
+    }, 100);
+  };
 
   loadText = (d) => {
-    const t = d.replace('export default ', '').replace(';', '');
+    const t = d.replace("export default ", "").replace(";", "");
     const data = JSON.parse(t);
     this.setState({
       data,
-    })
-  }
+    });
+  };
 
   saveText = () => {
-    let t = '';
-    this.state.data.area.forEach( (r,i) => {
-      const c = { ...r }
+    let t = "";
+    this.state.data.area.forEach((r, i) => {
+      const c = { ...r };
       delete c.selected;
       if (i > 0) t += `,\n`;
-      t += `    {${Object.keys(c).map( k => {
-        if (typeof c[k] === 'string') {
-          return ` "${k}": "${c[k]}"`;
-        } else {
-          return ` "${k}": ${c[k]}`;
-        }
-      }).join(',')} }`;
-    })
+      t += `    {${Object.keys(c)
+        .map((k) => {
+          if (typeof c[k] === "string") {
+            return ` "${k}": "${c[k]}"`;
+          } else {
+            return ` "${k}": ${c[k]}`;
+          }
+        })
+        .join(",")} }`;
+    });
     return `{\n  "image": "${this.state.data.image}",\n  "area": [\n${t}\n  ]\n}\n`;
-  }
+  };
 
   onAction = (event) => {
     const { action } = event;
     if (this.state.showEditDialog || this.state.showDataDialog) return;
-    if (action === 'delete-selection') {
+    if (action === "delete-selection") {
       const data = { ...this.state.data };
-      data.area = data.area.filter( d => !d.selected);
-      this.setState({
-        data,
-      }, this.saveArea)
+      data.area = data.area.filter((d) => !d.selected);
+      this.setState(
+        {
+          data,
+        },
+        this.saveArea
+      );
     }
-    if (action === 'update-area') {
-      this.saveArea()
+    if (action === "update-area") {
+      this.saveArea();
     }
-    if (action === 'create-area') {
+    if (action === "create-area") {
       const data = { ...this.state.data };
       data.area.push(event.data);
-      this.setState({
-        data,
-      }, this.saveArea)
+      this.setState(
+        {
+          data,
+        },
+        this.saveArea
+      );
     }
-    if (action === 'edit-area') {
+    if (action === "edit-area") {
       this.setState({
         value: event.data,
         index: event.index,
         showEditDialog: true,
-      })
+      });
     }
-    if (action === 'show-data') {
+    if (action === "show-data") {
       this.setState({
         showDataDialog: true,
-      })
+      });
     }
-  }
+  };
 
   renderPage() {
     const startScreen = this.props.startScreen;
-    const { host, photo, } = this.props;
+    const { host, photo } = this.props;
     const { area } = this.state.data;
-    const width = (this.props.pageCount>1) ? (this.props.width-32-this.props.fontSize*2) : this.props.width-32;
-    const height = (this.props.pageCount>1) ? (this.props.height-32-this.props.fontSize*2) : this.props.height-32;
-    return <div className="App">
-      {
-        (startScreen) ? <Row style={{ height: this.props.fontSize*1.5, backgroundColor: '#D5FDF8' }}>
-          <h1 style={{ ...slideTitle, fontSize: this.props.fontSize, }}> { this.props.title } </h1>
-        </Row> : null
-      }
-      <Row style={{ height: height-(100+this.props.fontSize*1.5)*(startScreen?1:0), }}>
-        <Column style={{ margin: 8, marginTop: 16, }}>
-          {
-            (this.props.pageCount>1) ? <Container ref={ d => this.titleContainer = d } style={{ height: '10%', }} onUpdate={ box => this.setState({ titleContainer: box }) }>
-              <div style={{
-                display: 'flex',
-              }}>
-                <PageButton
-                title="＜"
-                disabled={this.props.prevButtonStatus()}
-                fontSize={this.props.fontSize}
-                onClick={this.props.openPageHandller(-1)}/>
-                <div style={{
-                  width: '100%',
-                  overflow: 'auto',
-                }}>
+    const width =
+      this.props.pageCount > 1
+        ? this.props.width - 32 - this.props.fontSize * 2
+        : this.props.width - 32;
+    const height =
+      this.props.pageCount > 1
+        ? this.props.height - 32 - this.props.fontSize * 2
+        : this.props.height - 32;
+    return (
+      <div className="App">
+        {startScreen ? (
+          <Row
+            style={{
+              height: this.props.fontSize * 1.5,
+              backgroundColor: "#D5FDF8",
+            }}
+          >
+            <h1 style={{ ...slideTitle, fontSize: this.props.fontSize }}>
+              {" "}
+              {this.props.title}{" "}
+            </h1>
+          </Row>
+        ) : null}
+        <Row
+          style={{
+            height:
+              height -
+              (100 + this.props.fontSize * 1.5) * (startScreen ? 1 : 0),
+          }}
+        >
+          <Column style={{ margin: 8, marginTop: 16 }}>
+            {this.props.pageCount > 1 ? (
+              <Container
+                ref={(d) => (this.titleContainer = d)}
+                style={{ height: "10%" }}
+                onUpdate={(box) => this.setState({ titleContainer: box })}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                  }}
+                >
+                  <PageButton
+                    title="＜"
+                    disabled={this.props.prevButtonStatus()}
+                    fontSize={this.props.fontSize}
+                    onClick={this.props.openPageHandller(-1)}
+                  />
+                  <div
+                    style={{
+                      width: "100%",
+                      overflow: "auto",
+                    }}
+                  ></div>
+                  <PageButton
+                    title="＞"
+                    disabled={this.props.nextButtonStatus()}
+                    fontSize={this.props.fontSize}
+                    onClick={this.props.openPageHandller(+1)}
+                  />
                 </div>
-                <PageButton
-                title="＞"
-                disabled={this.props.nextButtonStatus()}
-                fontSize={this.props.fontSize}
-                onClick={this.props.openPageHandller(+1)}/>
-              </div>
-            </Container> : null
-          }
-          <Row>
-            <div style={{ width: '100%', }} >
-              {
-                (photo) ? (
+              </Container>
+            ) : null}
+            <Row>
+              <div style={{ width: "100%" }}>
+                {photo ? (
                   <Image
-                    ref={img => this.imageView = img }
+                    ref={(img) => (this.imageView = img)}
                     src={getHost(host, photo)}
                     width={width}
-                    height={height-(100+this.props.fontSize*1.5)*(startScreen?1:0)}
-                    style={{ margin: 'auto', ...notSelectable, }}
+                    height={
+                      height -
+                      (100 + this.props.fontSize * 1.5) * (startScreen ? 1 : 0)
+                    }
+                    style={{ margin: "auto", ...notSelectable }}
                     offsetY__={16}
                   >
-                    {
-                      (area) ? <Area
-                        ref={ d => this.areaView = d }
+                    {area ? (
+                      <Area
+                        ref={(d) => (this.areaView = d)}
                         data={area}
                         editable={this.props.editScreen}
                         onClick={this.props.onClickArea}
-                        onAction={ this.onAction }
-                      /> : null
-                    }
+                        onAction={this.onAction}
+                      />
+                    ) : null}
                   </Image>
-                 ) : null
-              }
-            </div>
+                ) : null}
+              </div>
+            </Row>
+          </Column>
+        </Row>
+        {startScreen ? (
+          <Row>
+            <Button
+              //fontScale={_fontScale}
+              //correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
+              selected={true}
+              pushedColor="yellow"
+              onClick={this.props.startButtonHandller}
+              buttonStyle="normal"
+            >
+              スタート
+            </Button>
           </Row>
-        </Column>
-      </Row>
-      {
-        (startScreen) ? <Row>
-          <Button
-            //fontScale={_fontScale}
-            //correct={(answers && (this.props.action === 'quiz-answer' || this.props.action === 'answer')) ? answers.some( t => t === ((typeof v !== 'object') ? v : v.value)) : false}
-            selected={true}
-            pushedColor="yellow"
-            onClick={this.props.startButtonHandller}
-            buttonStyle="normal"
-          >
-            スタート
-          </Button>
-        </Row> : null
-      }
-      {
-        (this.state.showEditDialog) ? <AreaDialog
-          show={this.state.showEditDialog}
-          index={this.state.index}
-          value={this.state.value}
-          onClose={(d) => {
-            const data = { ...this.state.data };
-            data.area[this.state.index] = d;
-            this.setState({
-              data,
-              showEditDialog: false,
-            }, this.saveArea)
-          }}
-        /> : null
-      }
-      {
-        (this.state.showDataDialog) ? <DataDialog
-          show={this.state.showDataDialog}
-          value={this.saveText()}
-          height={this.props.height-300}
-          onClose={(text) => {
-            this.loadText(text);
-            this.setState({
-              showDataDialog: false,
-            })
-          }}
-        /> : null
-      }
-    </div>
+        ) : null}
+        {this.state.showEditDialog ? (
+          <AreaDialog
+            show={this.state.showEditDialog}
+            index={this.state.index}
+            value={this.state.value}
+            onClose={(d) => {
+              const data = { ...this.state.data };
+              data.area[this.state.index] = d;
+              this.setState(
+                {
+                  data,
+                  showEditDialog: false,
+                },
+                this.saveArea
+              );
+            }}
+          />
+        ) : null}
+        {this.state.showDataDialog ? (
+          <DataDialog
+            show={this.state.showDataDialog}
+            value={this.saveText()}
+            height={this.props.height - 300}
+            onClose={(text) => {
+              this.loadText(text);
+              this.setState({
+                showDataDialog: false,
+              });
+            }}
+          />
+        ) : null}
+      </div>
+    );
   }
 }
 
@@ -326,6 +375,6 @@ Slide.defaultProps = {
   startButtonHandller: null,
   onClickArea: null,
   saveImageMap: null,
-}
+};
 
 export default Slide;

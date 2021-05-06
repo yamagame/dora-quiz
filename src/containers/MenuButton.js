@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { fontSize, fontScale, } from '../reducers'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { fontSize, fontScale } from "../reducers";
 
 class MenuButton extends Component {
   constructor(props) {
@@ -24,38 +24,36 @@ class MenuButton extends Component {
     }
   }
 
-  handleChange = () => {
-  }
+  handleChange = () => {};
 
   render() {
     return (
-      <div className="MenuButton-Container" style={ {...this.props.style} } >
-        <input className="MenuButton-Key"
+      <div className="MenuButton-Container" style={{ ...this.props.style }}>
+        <input
+          className="MenuButton-Key"
           type={this.props.type}
           value={this.state.value}
           onClick={this.props.onClick}
           onChange={this.handleChange}
-          style={ {fontSize: `${fontScale(24)}px` }}
+          style={{ fontSize: `${fontScale(24)}px` }}
         />
       </div>
-    )
+    );
   }
 }
 
 MenuButton.defaultProps = {
   width: window.innerWidth,
   height: window.innerHeight,
-  value: '',
+  value: "",
   fontSize: fontSize({
     width: window.innerWidth,
     height: window.innerHeight,
   }),
-}
+};
 
-export default connect(
-  state => ({
-    fontSize: state.app.fontSize,
-    width: state.app.width,
-    height: state.app.height,
-  })
-)(MenuButton);
+export default connect((state) => ({
+  fontSize: state.app.fontSize,
+  width: state.app.width,
+  height: state.app.height,
+}))(MenuButton);

@@ -1,7 +1,4 @@
-import QuizPage from './QuizPage';
-import CloseButton from './CloseButton';
+import QuizPage from "./QuizPage";
+import CloseButton from "./CloseButton";
 
-export {
-  QuizPage,
-  CloseButton,
-}
+export { QuizPage, CloseButton };

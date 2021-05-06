@@ -1,55 +1,45 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import {
-  Row,
-  Col,
-  Button,
-  Modal,
-} from 'react-bootstrap';
-import AceEditor from 'react-ace';
-import 'brace/mode/javascript';
-import 'brace/theme/chrome';
+import React, { Component } from "react";
+// import ReactDOM from "react-dom";
+import { Row, Col, Button, Modal } from "react-bootstrap";
+import AceEditor from "react-ace";
+// import 'brace/mode/javascript';
+// import 'brace/theme/chrome';
 
 export default class DataDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
-    }
+      value: "",
+    };
   }
 
-  componentWillMount() {
-  }
+  componentWillMount() {}
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  componentDidUpdate() {
-  }
+  componentDidUpdate() {}
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
-  componentWillReceiveProps(nextProps) {
-  }
+  componentWillReceiveProps(nextProps) {}
 
   onClose = () => {
     if (this.props.onClose) {
       this.props.onClose(this.state.value);
     }
-  }
+  };
 
   onChangeText = (value) => {
     this.setState({
       value,
     });
-  }
+  };
 
   onEntered = () => {
     this.setState({
       value: this.props.value,
-    })
-  }
+    });
+  };
 
   render() {
     return (
@@ -60,19 +50,17 @@ export default class DataDialog extends Component {
         onEntered={this.onEntered}
       >
         <Modal.Header closeButton>
-          <Modal.Title>
-            データの出力
-          </Modal.Title>
+          <Modal.Title>データの出力</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
             <Col md={12}>
               {
                 <AceEditor
-                  ref={ r => this.editor = r }
+                  ref={(r) => (this.editor = r)}
                   style={{
-                    display: 'inline-block',
-                    border: 'solid 1px lightgray',
+                    display: "inline-block",
+                    border: "solid 1px lightgray",
                   }}
                   mode="javascript"
                   theme="chrome"
@@ -83,7 +71,7 @@ export default class DataDialog extends Component {
                   showPrintMargin={false}
                   fontSize={12}
                   name="senario_editor"
-                  editorProps={{$blockScrolling: Infinity}}
+                  editorProps={{ $blockScrolling: Infinity }}
                 />
               }
             </Col>
@@ -93,11 +81,11 @@ export default class DataDialog extends Component {
           <Button onClick={this.onClose}>閉じる</Button>
         </Modal.Footer>
       </Modal>
-    )
+    );
   }
 }
 
 DataDialog.defaultProps = {
   show: false,
   height: 400,
-}
+};

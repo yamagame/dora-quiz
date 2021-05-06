@@ -35,7 +35,7 @@ p {
 .ResultTitle {
   margin-top: 30px;
   margin-bottom: 10px;
-  background: #AAFFFF;
+  background: #aaffff;
 }
 
 .ResultItem {
@@ -64,8 +64,12 @@ p {
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .App-Row {
@@ -97,11 +101,11 @@ p {
   border-radius: 22px;
 }
 
-.Button-Key-Pushed { 
+.Button-Key-Pushed {
   background-color: yellow;
 }
 
-.Button-Key-Correct { 
+.Button-Key-Correct {
   border: 5px solid red;
   border-radius: 22px;
   z-index: 100;
@@ -112,8 +116,12 @@ p {
 }
 
 @keyframes fade-in-keyframes {
-  from {opacity: 0}
-  to {opacity: 1}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .MenuButton-Container {
@@ -170,7 +178,7 @@ p {
   color: white;
   background: blue;
   border-radius: 22px;
-  border: 5px solid #FFDD00;
+  border: 5px solid #ffdd00;
   margin-bottom: 3px;
 }
 
@@ -183,7 +191,9 @@ p {
   color: #ff0099;
 }
 
-table, th, td {
+table,
+th,
+td {
   border-collapse: collapse;
   border: 1px solid darkgray;
   padding: 4px;
@@ -198,14 +208,14 @@ td.Data {
 }
 
 #bg {
-  position: fixed; 
-  top: 0%; 
-  left: 0%; 
-  width: 100%; 
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
   height: 100%;
   background-position: center center;
-  background-repeat:  no-repeat;
+  background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size:  cover;
+  background-size: cover;
   z-index: -1000;
 }

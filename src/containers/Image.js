@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import assign from 'object-assign';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import assign from "object-assign";
 
-const m = function() {
+const m = function () {
   let res = {};
   for (let i = 0; i < arguments.length; ++i) {
     if (arguments[i]) assign(res, arguments[i]);
@@ -27,12 +27,12 @@ class Image extends Component {
 
   componentDidMount() {
     this.mounted = true;
-    window.addEventListener('resize', this.onResize, false);
+    window.addEventListener("resize", this.onResize, false);
   }
 
   componentWillUnmount() {
     this.mounted = false;
-    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener("resize", this.onResize);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,7 +43,7 @@ class Image extends Component {
 
   onResize = () => {
     this.resizeImage();
-  }
+  };
 
   resizeImage() {
     if (ReactDOM.findDOMNode(this.imageView) == null) {
@@ -90,21 +90,21 @@ class Image extends Component {
     }
     const originalWidth = ReactDOM.findDOMNode(this.imageView).naturalWidth;
     const originalHeight = ReactDOM.findDOMNode(this.imageView).naturalHeight;
-    return { width: originalWidth, height: originalHeight }
+    return { width: originalWidth, height: originalHeight };
   }
 
   render() {
     var marginTop = 0;
     const style = {
       wrapper: {
-        position: 'relative',
+        position: "relative",
         width: this.props.width,
         height: this.props.height,
         backgroundColor: this.props.backgroundColor,
       },
       image: {
-        position: 'absolute',
-        display: 'block',
+        position: "absolute",
+        display: "block",
         left: (this.props.width - this.state.width) / 2,
         top: (this.props.height - this.state.height) / 2,
         width: this.state.width,
@@ -115,37 +115,41 @@ class Image extends Component {
       return (
         <div style={m(this.props.style, style.wrapper)}>
           <img
-            ref="image" src={this.props.noImageSrc} height='100%'
+            ref="image"
+            src={this.props.noImageSrc}
+            height="100%"
             onLoad={this.resizeImage}
           />
         </div>
       );
     } else {
-      const ratio = (this.state.ratio) ? this.state.ratio : 1;
-      var width = ratio*this.props.height;
+      const ratio = this.state.ratio ? this.state.ratio : 1;
+      var width = ratio * this.props.height;
       if (width > this.props.width) {
         width = this.props.width;
         marginTop = (this.props.height - this.state.height) / 2;
       }
       return (
-        <div style={{ width: width, ...this.props.style, marginTop, }}>
+        <div style={{ width: width, ...this.props.style, marginTop }}>
           <img
-            ref={img => this.imageView = img }
+            ref={(img) => (this.imageView = img)}
             src={this.props.src}
-            width={ width }
+            width={width}
             onLoad={this.resizeImage}
             onError={this.showNoImage}
           />
-          <div style={{
-            position: 'absolute',
-            top: marginTop+this.props.offsetY__,
-            width,
-            height: width/this.state.ratio,
-          }}>
-            { this.props.children }
+          <div
+            style={{
+              position: "absolute",
+              top: marginTop + this.props.offsetY__,
+              width,
+              height: width / this.state.ratio,
+            }}
+          >
+            {this.props.children}
           </div>
         </div>
-      )
+      );
     }
   }
 }
@@ -154,6 +158,6 @@ Image.defaultProps = {
   style: {},
   area: [],
   offsetY__: 0,
-}
+};
 
 export default Image;
