@@ -36,7 +36,7 @@ class QuizPage extends Component {
     this.props.sendEntry();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.action !== this.props.action) {
       if (
         (nextProps.action === "question" && this.props.action === "wait") ||
@@ -77,7 +77,7 @@ class QuizPage extends Component {
     };
   };
 
-  isAnswered = (question) => {
+  isAnswered = question => {
     return this.props.playerAnswers[question];
   };
 
@@ -85,7 +85,7 @@ class QuizPage extends Component {
     return answer !== "" && answer === choice;
   };
 
-  startQuiz = (name) => {
+  startQuiz = name => {
     if (name.trim() !== "") {
       this.props.setParams({ name: name.trim() }, () => {
         this.setState(
@@ -111,7 +111,7 @@ class QuizPage extends Component {
     );
   };
 
-  openPageHandller = (dx) => {
+  openPageHandller = dx => {
     return () => {
       if (typeof this.props.pages !== "undefined") {
         if (
@@ -142,7 +142,7 @@ class QuizPage extends Component {
     return pages[0];
   }
 
-  onClickArea = (key) => {
+  onClickArea = key => {
     this.props.sendSpeech(key, () => {});
   };
 
@@ -465,7 +465,7 @@ QuizPage.defaultProps = {
 };
 
 export default connect(
-  (state) => {
+  state => {
     const pageCount =
       typeof state.app.pages !== "undefined" ? state.app.pages.length : 0;
     return {
@@ -504,10 +504,10 @@ export default connect(
       speech: state.app.speech,
     };
   },
-  (dispatch) => ({
+  dispatch => ({
     sendAnswer: (question, answer, callback) =>
       dispatch(sendAnswer(question, answer, callback)),
-    sendEntry: (callback) => dispatch(sendEntry(callback)),
+    sendEntry: callback => dispatch(sendEntry(callback)),
     sendSpeech: (speech, callback) => dispatch(sendSpeech(speech, callback)),
     setParams: (payload, callback) => dispatch(setParams(payload, callback)),
     startButtonPushed: () => dispatch(startButtonPushed()),

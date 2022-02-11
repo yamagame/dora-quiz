@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { QuizPage, CloseButton } from "./containers";
-import logo from "./logo.svg";
 import "./App.css";
 import { changeLayout } from "./reducers";
 import { getHost } from "./utils";
@@ -43,7 +42,7 @@ class App extends Component {
     window.removeEventListener("resize", this.onResize);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.quizMode !== this.props.quizMode) {
       document.title = !nextProps.quizMode ? "Quiz Robo" : nextProps.quizMode;
     }
@@ -83,7 +82,7 @@ App.defaultProps = {
 };
 
 export default connect(
-  (state) => {
+  state => {
     return {
       width: state.app.width,
       height: state.app.height,
@@ -94,7 +93,7 @@ export default connect(
       closeButton: state.app.closeButton,
     };
   },
-  (dispatch) => ({
-    onLayout: (size) => dispatch(changeLayout(size)),
+  dispatch => ({
+    onLayout: size => dispatch(changeLayout(size)),
   })
 )(App);

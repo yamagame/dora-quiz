@@ -33,7 +33,7 @@ class Text extends Component {
     window.removeEventListener("resize", this.onResize);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (
       this.props.value !== nextProps.value ||
       this.props.comment !== nextProps.comment ||
@@ -146,13 +146,13 @@ class Text extends Component {
             height="100%"
           >
             <div
-              ref={(t) => (this.valueText = t)}
+              ref={t => (this.valueText = t)}
               style={{ width: "100%", textAlign, fontSize }}
             >
               <MathJax value={this.props.value} />
             </div>
             <div
-              ref={(t) => (this.commentText = t)}
+              ref={t => (this.commentText = t)}
               style={{ width: "100%", textAlign, fontSize: fontSize * 0.7 }}
             >
               <MathJax value={this.props.comment} />

@@ -20,7 +20,7 @@ export default class AreaDialog extends Component {
 
   componentWillUnmount() {}
 
-  componentWillReceiveProps(nextProps) {}
+  componentDidUpdate(nextProps) {}
 
   onClose = () => {
     if (this.props.onClose) {
@@ -28,7 +28,7 @@ export default class AreaDialog extends Component {
     }
   };
 
-  onChangeTitle = (e) => {
+  onChangeTitle = e => {
     const value = { ...this.state.value };
     if (typeof value === "undefined") {
       value.title = "";

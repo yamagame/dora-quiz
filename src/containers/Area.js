@@ -52,13 +52,13 @@ export default class Area extends Component {
     this.mount = false;
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (this.props.data !== nextProps.data) {
       this.forceUpdate();
     }
   }
 
-  initializeSVG = (target) => {
+  initializeSVG = target => {
     const self = this;
     this.target = target;
     const orgSize = this.target.originalSize();
@@ -80,18 +80,18 @@ export default class Area extends Component {
     this.dragArea = d3.drag().on("start", function (d, i) {
       if (self.props.editable) {
         if (!d.selected && !d3.event.sourceEvent.shiftKey) {
-          self.base.selectAll("path.rectangle").each((d) => {
+          self.base.selectAll("path.rectangle").each(d => {
             d.selected = false;
           });
         }
         d.selected = true;
-        self.props.data.forEach((d) => {
+        self.props.data.forEach(d => {
           d.ox = self.xScale(d.x);
           d.oy = self.yScale(d.y);
         });
         self.updateSelection();
-        const dragged = (d) => {
-          self.props.data.forEach((d) => {
+        const dragged = d => {
+          self.props.data.forEach(d => {
             if (d.selected) {
               d.ox += d3.event.dx;
               d.oy += d3.event.dy;
@@ -102,7 +102,7 @@ export default class Area extends Component {
           self.updateSelection();
         };
         const ended = () => {
-          self.props.data.forEach((d) => {
+          self.props.data.forEach(d => {
             delete d.ox;
             delete d.oy;
             d.x = parseInt(d.x);
@@ -128,7 +128,7 @@ export default class Area extends Component {
       self.markyData.y = d3.event.y;
       self.markyData.width = 0;
       self.markyData.height = 0;
-      const dragged = (d) => {
+      const dragged = d => {
         dragCount++;
         x += d3.event.dx;
         y += d3.event.dy;
@@ -137,7 +137,7 @@ export default class Area extends Component {
         marky
           .selectAll("path")
           .attr("visibility", "visible")
-          .attr("d", (d) => rect(d.x, d.y, d.x + d.width, d.y + d.height));
+          .attr("d", d => rect(d.x, d.y, d.x + d.width, d.y + d.height));
       };
       const ended = () => {
         marky.selectAll("path").attr("visibility", "hidden");
@@ -167,7 +167,7 @@ export default class Area extends Component {
             },
           });
         } else {
-          self.base.selectAll("path.rectangle").each((d) => {
+          self.base.selectAll("path.rectangle").each(d => {
             if (d3.event.sourceEvent.shiftKey && d.selected) return;
             d.selected =
               x1 <= d.x + d.width &&
@@ -200,14 +200,14 @@ export default class Area extends Component {
     if (this.props.editable) {
       this.base
         .selectAll("text.rectangle")
-        .attr("x", (d) => this.xScale(d.x))
-        .attr("y", (d) => this.yScale(d.y))
-        .text((d) => d.title);
+        .attr("x", d => this.xScale(d.x))
+        .attr("y", d => this.yScale(d.y))
+        .text(d => d.title);
     }
 
     this.base
       .selectAll("path.rectangle")
-      .attr("stroke", (d) => {
+      .attr("stroke", d => {
         if (this.props.editable) {
           if (d.selected) {
             return "rgba(255,0,0,1)";
@@ -217,7 +217,7 @@ export default class Area extends Component {
         }
         return "rgba(0,0,0,0)";
       })
-      .attr("d", (d) =>
+      .attr("d", d =>
         rect(
           this.xScale(d.x),
           this.yScale(d.y),
@@ -240,9 +240,9 @@ export default class Area extends Component {
         .append("text")
         .classed("rectangle", true)
         .attr("fill", "white")
-        .attr("x", (d) => this.xScale(d.x))
-        .attr("y", (d) => this.yScale(d.y))
-        .text((d) => d.title);
+        .attr("x", d => this.xScale(d.x))
+        .attr("y", d => this.yScale(d.y))
+        .text(d => d.title);
     }
 
     this.base
@@ -251,7 +251,7 @@ export default class Area extends Component {
       .enter()
       .append("path")
       .classed("rectangle", true)
-      .attr("stroke", (d) => {
+      .attr("stroke", d => {
         if (this.props.editable) {
           if (d.selected) {
             return "rgba(255,0,0,1)";
@@ -263,7 +263,7 @@ export default class Area extends Component {
       })
       .attr("stroke-width", 1)
       .attr("fill", "rgba(0,0,0,0)")
-      .attr("d", (d) =>
+      .attr("d", d =>
         rect(
           this.xScale(d.x),
           this.yScale(d.y),
@@ -301,11 +301,11 @@ export default class Area extends Component {
       .attr("stroke", "none")
       .attr("stroke-width", 2)
       .style("pointer-events", "none")
-      .attr("fill", (d) => (d.color ? d.color : "none"))
-      .attr("d", (d) => rect(d.x, d.y, d.x + d.width, d.y + d.height));
+      .attr("fill", d => (d.color ? d.color : "none"))
+      .attr("d", d => rect(d.x, d.y, d.x + d.width, d.y + d.height));
   };
 
-  onFocus = (e) => {
+  onFocus = e => {
     this.focused = true;
   };
 
@@ -313,7 +313,7 @@ export default class Area extends Component {
     this.focused = false;
   };
 
-  onKeyDown = (e) => {
+  onKeyDown = e => {
     if (this.props.editable) {
       if (e.keyCode == 8 || e.keyCode == 46) {
         this.props.onAction({
@@ -330,7 +330,7 @@ export default class Area extends Component {
 
   onKeyPress = () => {};
 
-  onKeyUp = (e) => {};
+  onKeyUp = e => {};
 
   onMouseMove = () => {};
 
@@ -362,13 +362,13 @@ export default class Area extends Component {
     };
     return (
       <div
-        ref={(n) => (this.container = n)}
+        ref={n => (this.container = n)}
         style={style}
         onKeyDown={this.onKeyDown}
         onKeyPress={this.onKeyDown}
       >
         <svg
-          ref={(n) => (this.svg = d3.select(n))}
+          ref={n => (this.svg = d3.select(n))}
           style={{
             width: "100%",
             height: "100%",
@@ -387,8 +387,8 @@ export default class Area extends Component {
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
         >
-          <g ref={(n) => (this.base = d3.select(n))} />
-          <g ref={(n) => (this.marky = n)} />
+          <g ref={n => (this.base = d3.select(n))} />
+          <g ref={n => (this.marky = n)} />
         </svg>
       </div>
     );
@@ -400,5 +400,5 @@ Area.defaultProps = {
   target: null,
   data: [],
   editable: true,
-  onAction: (event) => {},
+  onAction: event => {},
 };

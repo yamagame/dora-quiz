@@ -66,7 +66,7 @@ export default class Radar extends Component {
 
   componentWillUnmount() {}
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (this.props.legend !== nextProps.legend) {
       this.forceUpdate();
     }
@@ -266,15 +266,15 @@ export default class Radar extends Component {
       ...this.props.style,
     };
     return (
-      <div ref={(n) => (this.container = n)} style={style}>
+      <div ref={n => (this.container = n)} style={style}>
         <svg
-          ref={(n) => (this.svg = d3.select(n))}
+          ref={n => (this.svg = d3.select(n))}
           style={{
             width: "100%",
             height: "100%",
           }}
         >
-          <g ref={(n) => (this.base = d3.select(n))} />
+          <g ref={n => (this.base = d3.select(n))} />
         </svg>
       </div>
     );

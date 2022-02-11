@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { fontSize } from "../../reducers";
-import pathParse from "path-parse";
+// import pathParse from "path-parse";
 import Column from "../Column";
 import Row from "../Row";
 import Image from "../Image";
@@ -24,9 +24,9 @@ const slideTitle = {
 };
 
 function basename(path) {
-  const p = pathParse(path);
-  if (p) {
-    return p.base;
+  const basename = path.split("/").pop().split(".").shift();
+  if (basename) {
+    return basename;
   }
   return "";
 }
@@ -66,7 +66,7 @@ class Slide extends Component {
     this.updateImage();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     let updateState = false;
     const data = { ...this.state.data };
     if (this.props.area !== nextProps.area) {
@@ -140,7 +140,7 @@ class Slide extends Component {
     }, 100);
   };
 
-  loadText = (d) => {
+  loadText = d => {
     const t = d.replace("export default ", "").replace(";", "");
     const data = JSON.parse(t);
     this.setState({
@@ -155,7 +155,7 @@ class Slide extends Component {
       delete c.selected;
       if (i > 0) t += `,\n`;
       t += `    {${Object.keys(c)
-        .map((k) => {
+        .map(k => {
           if (typeof c[k] === "string") {
             return ` "${k}": "${c[k]}"`;
           } else {
@@ -167,12 +167,12 @@ class Slide extends Component {
     return `{\n  "image": "${this.state.data.image}",\n  "area": [\n${t}\n  ]\n}\n`;
   };
 
-  onAction = (event) => {
+  onAction = event => {
     const { action } = event;
     if (this.state.showEditDialog || this.state.showDataDialog) return;
     if (action === "delete-selection") {
       const data = { ...this.state.data };
-      data.area = data.area.filter((d) => !d.selected);
+      data.area = data.area.filter(d => !d.selected);
       this.setState(
         {
           data,
@@ -244,9 +244,9 @@ class Slide extends Component {
           <Column style={{ margin: 8, marginTop: 16 }}>
             {this.props.pageCount > 1 ? (
               <Container
-                ref={(d) => (this.titleContainer = d)}
+                ref={d => (this.titleContainer = d)}
                 style={{ height: "10%" }}
-                onUpdate={(box) => this.setState({ titleContainer: box })}
+                onUpdate={box => this.setState({ titleContainer: box })}
               >
                 <div
                   style={{
@@ -278,7 +278,7 @@ class Slide extends Component {
               <div style={{ width: "100%" }}>
                 {photo ? (
                   <Image
-                    ref={(img) => (this.imageView = img)}
+                    ref={img => (this.imageView = img)}
                     src={getHost(host, photo)}
                     width={width}
                     height={
@@ -290,7 +290,7 @@ class Slide extends Component {
                   >
                     {area ? (
                       <Area
-                        ref={(d) => (this.areaView = d)}
+                        ref={d => (this.areaView = d)}
                         data={area}
                         editable={this.props.editScreen}
                         onClick={this.props.onClickArea}
@@ -322,7 +322,7 @@ class Slide extends Component {
             show={this.state.showEditDialog}
             index={this.state.index}
             value={this.state.value}
-            onClose={(d) => {
+            onClose={d => {
               const data = { ...this.state.data };
               data.area[this.state.index] = d;
               this.setState(
@@ -340,7 +340,7 @@ class Slide extends Component {
             show={this.state.showDataDialog}
             value={this.saveText()}
             height={this.props.height - 300}
-            onClose={(text) => {
+            onClose={text => {
               this.loadText(text);
               this.setState({
                 showDataDialog: false,

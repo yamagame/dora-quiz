@@ -14,13 +14,13 @@ const AsyncStorage = {
   },
 };
 
-export const fontSize = (payload) => {
+export const fontSize = payload => {
   var size = payload.width < payload.height ? payload.width : payload.height;
   const t = parseInt((size * 0.6) / 10, 10);
   return t;
 };
 
-export const fontScale = (size) => {
+export const fontScale = size => {
   if (window.innerWidth > window.innerHeight) {
     return size;
   }
@@ -86,86 +86,84 @@ export const reducers = combineReducers({
   app: setValues,
 });
 
-export const loadInitialData = (params, socketIO, callback) => async (
-  dispatch,
-  getState
-) => {
-  const payload = {
-    ...initialState,
-    ...params,
-    width: window.innerWidth,
-    height: window.innerHeight,
-  };
-  let signature = null;
-  let user_id = null;
-  payload.fontSize = fontSize(payload);
-  socket = socketIO;
-  await Promise.all(
-    Object.keys(initialState).map(async (key) => {
-      payload[key] = await AsyncStorage.getItem(key, payload[key]);
-    })
-  );
-  payload.clientId = await AsyncStorage.getItem("clientId", uuid.v4());
-  await AsyncStorage.setItem("clientId", payload.clientId);
-  {
-    let response = await fetch("/login-quiz-player", {
-      method: "POST",
-    });
-    if (response.ok) {
-    } else {
-      console.log("ERROR");
+export const loadInitialData =
+  (params, socketIO, callback) => async (dispatch, getState) => {
+    const payload = {
+      ...initialState,
+      ...params,
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+    let signature = null;
+    let user_id = null;
+    payload.fontSize = fontSize(payload);
+    socket = socketIO;
+    await Promise.all(
+      Object.keys(initialState).map(async key => {
+        payload[key] = await AsyncStorage.getItem(key, payload[key]);
+      })
+    );
+    payload.clientId = await AsyncStorage.getItem("clientId", uuid());
+    await AsyncStorage.setItem("clientId", payload.clientId);
+    {
+      let response = await fetch("/login-quiz-player", {
+        method: "POST",
+      });
+      if (response.ok) {
+      } else {
+        console.log("ERROR");
+      }
     }
-  }
-  {
-    let response = await fetch("/access-token", {
-      method: "POST",
-    });
-    if (response.ok) {
-      let data = await response.json();
-      signature = data.signature;
-      user_id = data.user_id;
-      dispatch({
-        type: types.PARAMS,
-        payload: {
+    {
+      let response = await fetch("/access-token", {
+        method: "POST",
+      });
+      if (response.ok) {
+        let data = await response.json();
+        signature = data.signature;
+        user_id = data.user_id;
+        dispatch({
+          type: types.PARAMS,
+          payload: {
+            user_id,
+            signature,
+          },
+        });
+      } else {
+        console.log("ERROR");
+      }
+    }
+    if (payload.mode == "admin-result") {
+      const { _quizId, _startTime, _playerName } = payload;
+      let response = await fetch("/result", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "answers",
+          quizId: _quizId,
+          startTime: _startTime,
           user_id,
           signature,
-        },
+        }),
       });
-    } else {
-      console.log("ERROR");
-    }
-  }
-  if (payload.mode == "admin-result") {
-    const { _quizId, _startTime, _playerName } = payload;
-    let response = await fetch("/result", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        type: "answers",
+      let data = await response.json();
+      payload.result = {
         quizId: _quizId,
         startTime: _startTime,
-        user_id,
-        signature,
-      }),
+        playerName: _playerName,
+        data,
+      };
+    }
+    dispatch({
+      type: types.PARAMS,
+      payload,
     });
-    let data = await response.json();
-    payload.result = {
-      quizId: _quizId,
-      startTime: _startTime,
-      playerName: _playerName,
-      data,
-    };
-  }
-  dispatch({
-    type: types.PARAMS,
-    payload,
-  });
-  if (callback) callback();
-};
+    if (callback) callback();
+  };
 
-export const changeLayout = (payload) => async (dispatch, getState) => {
+export const changeLayout = payload => async (dispatch, getState) => {
   dispatch({
     type: types.LAYOUT,
     payload: {
@@ -177,7 +175,7 @@ export const changeLayout = (payload) => async (dispatch, getState) => {
 
 export const setParams = (payload, callback) => async (dispatch, getState) => {
   await Promise.all(
-    Object.keys(payload).map(async (key) => {
+    Object.keys(payload).map(async key => {
       await AsyncStorage.setItem(key, payload[key]);
     })
   );
@@ -188,151 +186,145 @@ export const setParams = (payload, callback) => async (dispatch, getState) => {
   if (callback) callback();
 };
 
-export const quizShuffle = (payload, reset, callback) => async (
-  dispatch,
-  getState
-) => {
-  function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-  const {} = getState().app;
-  let count = 4;
-  const quizOrder = [];
-  for (var i = 0; i < count; i++) {
-    quizOrder.push(i);
-  }
-  if (!reset) {
-    for (var i = 0; i < 8; i++) {
-      const a = getRndInteger(0, quizOrder.length);
-      const b = getRndInteger(0, quizOrder.length);
-      const v = quizOrder[a];
-      quizOrder[a] = quizOrder[b];
-      quizOrder[b] = v;
+export const quizShuffle =
+  (payload, reset, callback) => async (dispatch, getState) => {
+    function getRndInteger(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
     }
-  }
-  await AsyncStorage.setItem("quizOrder", quizOrder);
-  dispatch({
-    type: types.PARAMS,
-    payload: {
-      quizOrder: [...quizOrder],
-    },
-  });
-  if (callback) callback();
-};
-
-export const quizCommand = (payload, callback) => async (
-  dispatch,
-  getState
-) => {
-  const {
-    app: { name },
-  } = getState();
-  payload = ((obj) => {
-    const t = {};
-    [
-      "type",
-      "action",
-      "options",
-      "selects",
-      "speech",
-      "time",
-      "pages",
-      "quizMode",
-      "closeButton",
-      "sideImage",
-      "inlineFrame",
-      "choices",
-      "fontScale",
-      "question",
-      "answers",
-      "messages",
-      "links",
-      "entry",
-      "title",
-      "photo",
-      "name",
-      "area",
-      "pageNumber",
-      "quizAnswers",
-      "quizId",
-      "quizStartTime",
-      "sheet",
-      "members",
-      "showSum",
-      "speechButton",
-      "noSave",
-      "backgroundImage",
-      "backgroundColor",
-    ].forEach((key) => {
-      if (typeof obj[key] !== "undefined") {
-        t[key] = obj[key];
+    const {} = getState().app;
+    let count = 4;
+    const quizOrder = [];
+    for (var i = 0; i < count; i++) {
+      quizOrder.push(i);
+    }
+    if (!reset) {
+      for (var i = 0; i < 8; i++) {
+        const a = getRndInteger(0, quizOrder.length);
+        const b = getRndInteger(0, quizOrder.length);
+        const v = quizOrder[a];
+        quizOrder[a] = quizOrder[b];
+        quizOrder[b] = v;
       }
-    });
-    return t;
-  })(payload);
-  if (payload.action == "quiz-init") {
-    await AsyncStorage.setItem(`sumQuestions`, {});
-    payload.sumQuestions = {};
-  }
-  if (!payload.name || payload.name == name) {
-    await Promise.all(
-      Object.keys(payload).map(async (key) => {
-        await AsyncStorage.setItem(key, payload[key]);
-      })
-    );
+    }
+    await AsyncStorage.setItem("quizOrder", quizOrder);
     dispatch({
       type: types.PARAMS,
-      payload,
+      payload: {
+        quizOrder: [...quizOrder],
+      },
     });
-  }
-  if (callback) callback();
-};
+    if (callback) callback();
+  };
 
-export const sendAnswer = (question, answer, callback) => async (
-  dispatch,
-  getState
-) => {
-  const {
-    app: {
+export const quizCommand =
+  (payload, callback) => async (dispatch, getState) => {
+    const {
+      app: { name },
+    } = getState();
+    payload = (obj => {
+      const t = {};
+      [
+        "type",
+        "action",
+        "options",
+        "selects",
+        "speech",
+        "time",
+        "pages",
+        "quizMode",
+        "closeButton",
+        "sideImage",
+        "inlineFrame",
+        "choices",
+        "fontScale",
+        "question",
+        "answers",
+        "messages",
+        "links",
+        "entry",
+        "title",
+        "photo",
+        "name",
+        "area",
+        "pageNumber",
+        "quizAnswers",
+        "quizId",
+        "quizStartTime",
+        "sheet",
+        "members",
+        "showSum",
+        "speechButton",
+        "noSave",
+        "backgroundImage",
+        "backgroundColor",
+      ].forEach(key => {
+        if (typeof obj[key] !== "undefined") {
+          t[key] = obj[key];
+        }
+      });
+      return t;
+    })(payload);
+    if (payload.action == "quiz-init") {
+      await AsyncStorage.setItem(`sumQuestions`, {});
+      payload.sumQuestions = {};
+    }
+    if (!payload.name || payload.name == name) {
+      await Promise.all(
+        Object.keys(payload).map(async key => {
+          await AsyncStorage.setItem(key, payload[key]);
+        })
+      );
+      dispatch({
+        type: types.PARAMS,
+        payload,
+      });
+    }
+    if (callback) callback();
+  };
+
+export const sendAnswer =
+  (question, answer, callback) => async (dispatch, getState) => {
+    const {
+      app: {
+        name,
+        clientId,
+        quizId,
+        playerAnswers,
+        quizStartTime,
+        showSum,
+        speechButton,
+        noSave,
+        user_id,
+        signature,
+      },
+    } = getState();
+    const payload = {
       name,
-      clientId,
       quizId,
-      playerAnswers,
-      quizStartTime,
+      question,
+      answer,
+      clientId,
       showSum,
       speechButton,
       noSave,
+      time: new Date(),
+      quizStartTime,
       user_id,
       signature,
-    },
-  } = getState();
-  const payload = {
-    name,
-    quizId,
-    question,
-    answer,
-    clientId,
-    showSum,
-    speechButton,
-    noSave,
-    time: new Date(),
-    quizStartTime,
-    user_id,
-    signature,
+    };
+    console.log(JSON.stringify(payload));
+    socket.emit("quiz", payload);
+    const answers = { ...playerAnswers };
+    answers[question] = answer;
+    await AsyncStorage.setItem(`playerAnswers`, answers);
+    dispatch({
+      type: types.PARAMS,
+      payload: {
+        playerAnswers: answers,
+      },
+    });
+    if (callback) callback();
   };
-  console.log(JSON.stringify(payload));
-  socket.emit("quiz", payload);
-  const answers = { ...playerAnswers };
-  answers[question] = answer;
-  await AsyncStorage.setItem(`playerAnswers`, answers);
-  dispatch({
-    type: types.PARAMS,
-    payload: {
-      playerAnswers: answers,
-    },
-  });
-  if (callback) callback();
-};
 
 export const sendSpeech = (speech, callback) => async (dispatch, getState) => {
   const {
@@ -361,7 +353,7 @@ export const sendSpeech = (speech, callback) => async (dispatch, getState) => {
   if (callback) callback();
 };
 
-export const startButtonPushed = (callback) => async (dispatch, getState) => {
+export const startButtonPushed = callback => async (dispatch, getState) => {
   const {
     app: { user_id, signature },
   } = getState();
@@ -387,7 +379,7 @@ export const startButtonPushed = (callback) => async (dispatch, getState) => {
   if (callback) callback();
 };
 
-export const sendEntry = (callback) => async (dispatch, getState) => {
+export const sendEntry = callback => async (dispatch, getState) => {
   const {
     app: { name, clientId, user_id, signature },
   } = getState();
@@ -425,12 +417,12 @@ export const loadQuizAnswers = () => async (dispatch, getState) => {
   });
   let data = await response.json();
   const sumQuestions = {};
-  pages.forEach((page) => {
+  pages.forEach(page => {
     if (page.action === "quiz") {
       const r = {};
       const t = data.answers[page.question];
       if (typeof t !== "undefined") {
-        Object.keys(t).forEach((key) => {
+        Object.keys(t).forEach(key => {
           if (typeof r[t[key].answer] === "undefined") r[t[key].answer] = 0;
           r[t[key].answer]++;
         });
@@ -448,7 +440,7 @@ export const loadQuizAnswers = () => async (dispatch, getState) => {
   });
 };
 
-export const imageServers = (imageServers) => async (dispatch, getState) => {
+export const imageServers = imageServers => async (dispatch, getState) => {
   function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
   }
@@ -474,53 +466,50 @@ export const imageServers = (imageServers) => async (dispatch, getState) => {
   });
 };
 
-export const preloadSlideImage = (photo, params = {}) => async (
-  dispatch,
-  getState
-) => {
-  const {
-    app: { cacheSlide },
-  } = getState();
-  if (
-    !cacheSlide.some((v) => {
-      return v === photo;
-    })
-  ) {
-    const r = [...cacheSlide];
-    r.push(photo);
-    if (typeof params.cacheSize !== "undefined") {
-      r.splice(0, r.length - params.cacheSize);
+export const preloadSlideImage =
+  (photo, params = {}) =>
+  async (dispatch, getState) => {
+    const {
+      app: { cacheSlide },
+    } = getState();
+    if (
+      !cacheSlide.some(v => {
+        return v === photo;
+      })
+    ) {
+      const r = [...cacheSlide];
+      r.push(photo);
+      if (typeof params.cacheSize !== "undefined") {
+        r.splice(0, r.length - params.cacheSize);
+      }
+      dispatch({
+        type: types.PARAMS,
+        payload: {
+          cacheSlide: r,
+        },
+      });
     }
-    dispatch({
-      type: types.PARAMS,
-      payload: {
-        cacheSlide: r,
-      },
-    });
-  }
-};
+  };
 
-export const saveImageMap = (filename, imageMap, callback) => async (
-  dispatch,
-  getState
-) => {
-  const {
-    app: { signature },
-  } = getState();
-  let response = await fetch("/command", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      type: "save",
-      action: "imageMap",
-      filename,
-      imageMap,
-      signature,
-    }),
-  });
-  if (response.ok) {
-  }
-  if (callback) callback();
-};
+export const saveImageMap =
+  (filename, imageMap, callback) => async (dispatch, getState) => {
+    const {
+      app: { signature },
+    } = getState();
+    let response = await fetch("/command", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "save",
+        action: "imageMap",
+        filename,
+        imageMap,
+        signature,
+      }),
+    });
+    if (response.ok) {
+    }
+    if (callback) callback();
+  };

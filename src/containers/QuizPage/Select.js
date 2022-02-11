@@ -67,7 +67,7 @@ class Select extends Component {
 
   componentDidUpdate() {}
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (
       this.props.question !== nextProps.question ||
       this.props.comment !== nextProps.comment
@@ -117,17 +117,17 @@ class Select extends Component {
     return "cyan";
   };
 
-  checkOption = (key) => {
-    return this.props.options.some((v) => {
+  checkOption = key => {
+    return this.props.options.some(v => {
       return v == key;
     });
   };
 
-  selectedButton = (v) => {
+  selectedButton = v => {
     const t = typeof v !== "object" ? v : v.value;
     return (
       this.checkOption("final-answer") &&
-      this.props.selects.some((v) => {
+      this.props.selects.some(v => {
         return v == t;
       })
     );
@@ -227,18 +227,18 @@ class Select extends Component {
     } = this.props;
     const _fontScale =
       (fontScale ? fontScale : 1) * (this.checkOption("font-small") ? 0.8 : 1);
-    const _choices = choices.filter((v) => {
+    const _choices = choices.filter(v => {
       if (typeof v !== "object" || v.type !== "option") return true;
       return false;
     });
-    const optionButtons = choices.filter((v) => {
+    const optionButtons = choices.filter(v => {
       if (typeof v !== "object" || v.type !== "option") return false;
       return true;
     });
     const buttonScale = _fontScale * (sideImage || inlineFrame ? 1.0 : 1.0);
     const shuffleChoices =
       this.props.quizOrder && _choices.length === 4
-        ? this.props.quizOrder.map((v) => _choices[v])
+        ? this.props.quizOrder.map(v => _choices[v])
         : _choices;
     const buttonStyle = this.checkOption("style-answer") ? "article" : "normal";
     const titleHeight =
@@ -275,8 +275,8 @@ class Select extends Component {
                 }}
               >
                 <Container
-                  ref={(d) => (this.titleContainer = d)}
-                  onUpdate={(box) => this.setState({ titleContainer: box })}
+                  ref={d => (this.titleContainer = d)}
+                  onUpdate={box => this.setState({ titleContainer: box })}
                 >
                   <div
                     style={{
@@ -295,7 +295,7 @@ class Select extends Component {
                     ) : null}
                     {
                       <Text
-                        ref={(text) => (this.titleText = text)}
+                        ref={text => (this.titleText = text)}
                         style={{
                           textAlign: this.checkOption("center-title")
                             ? "center"
@@ -410,7 +410,7 @@ class Select extends Component {
                         <Row style={{ height: "99%" }}>
                           {shuffleChoices
                             ? shuffleChoices
-                                .filter((v) => v)
+                                .filter(v => v)
                                 .map((v, i) =>
                                   i % 2 == 0 ? (
                                     <Button
@@ -423,7 +423,7 @@ class Select extends Component {
                                         (this.props.action === "quiz-answer" ||
                                           this.props.action === "answer")
                                           ? answers.some(
-                                              (t) =>
+                                              t =>
                                                 t ===
                                                 (typeof v !== "object"
                                                   ? v
@@ -467,7 +467,7 @@ class Select extends Component {
                         <Row style={{ height: "99%" }}>
                           {shuffleChoices
                             ? shuffleChoices
-                                .filter((v) => v)
+                                .filter(v => v)
                                 .map((v, i) =>
                                   i % 2 == 1 ? (
                                     <Button
@@ -480,7 +480,7 @@ class Select extends Component {
                                         (this.props.action === "quiz-answer" ||
                                           this.props.action === "answer")
                                           ? answers.some(
-                                              (t) =>
+                                              t =>
                                                 t ===
                                                 (typeof v !== "object"
                                                   ? v
@@ -526,7 +526,7 @@ class Select extends Component {
                       <div>
                         {shuffleChoices
                           ? shuffleChoices
-                              .filter((v) => v)
+                              .filter(v => v)
                               .map((v, i) => (
                                 <Button
                                   key={i}
@@ -538,7 +538,7 @@ class Select extends Component {
                                     (this.props.action === "quiz-answer" ||
                                       this.props.action === "answer")
                                       ? answers.some(
-                                          (t) =>
+                                          t =>
                                             t ===
                                             (typeof v !== "object"
                                               ? v
@@ -598,8 +598,7 @@ class Select extends Component {
                           (this.props.action === "quiz-answer" ||
                             this.props.action === "answer")
                             ? answers.some(
-                                (t) =>
-                                  t === (typeof v !== "object" ? v : v.value)
+                                t => t === (typeof v !== "object" ? v : v.value)
                               )
                             : false
                         }
@@ -656,11 +655,11 @@ class Select extends Component {
       fontScale,
       options,
     } = this.props;
-    const shuffleChoices = choices.filter((v) => {
+    const shuffleChoices = choices.filter(v => {
       if (typeof v !== "object" || v.type !== "option") return true;
       return false;
     });
-    const optionButtons = choices.filter((v) => {
+    const optionButtons = choices.filter(v => {
       if (typeof v !== "object" || v.type !== "option") return false;
       return true;
     });
@@ -674,9 +673,9 @@ class Select extends Component {
           */}
           <Column style={{ margin: 8, marginTop: 16 }}>
             <Container
-              ref={(d) => (this.titleContainer = d)}
+              ref={d => (this.titleContainer = d)}
               //style={{ height: '25%', }}
-              onUpdate={(box) => this.setState({ titleContainer: box })}
+              onUpdate={box => this.setState({ titleContainer: box })}
             >
               <div
                 style={{
@@ -701,7 +700,7 @@ class Select extends Component {
                   </div>
                 )}
                 <Text
-                  ref={(text) => (this.titleText = text)}
+                  ref={text => (this.titleText = text)}
                   style={{
                     textAlign: "left",
                   }}
@@ -828,7 +827,7 @@ class Select extends Component {
                                   (this.props.action === "quiz-answer" ||
                                     this.props.action === "answer")
                                     ? answers.some(
-                                        (t) =>
+                                        t =>
                                           t ===
                                           (typeof v !== "object" ? v : v.value)
                                       )
@@ -882,7 +881,7 @@ class Select extends Component {
                                 (this.props.action === "quiz-answer" ||
                                   this.props.action === "answer")
                                   ? answers.some(
-                                      (t) =>
+                                      t =>
                                         t ===
                                         (typeof v !== "object" ? v : v.value)
                                     )
@@ -939,11 +938,11 @@ class Select extends Component {
       fontScale,
     } = this.props;
     let maxValue = 10;
-    const shuffleChoices = choices.filter((v) => {
+    const shuffleChoices = choices.filter(v => {
       if (typeof v !== "object" || v.type !== "option") return true;
       return false;
     });
-    const optionButtons = choices.filter((v) => {
+    const optionButtons = choices.filter(v => {
       if (typeof v !== "object" || v.type !== "option") return false;
       return true;
     });
@@ -959,7 +958,7 @@ class Select extends Component {
         });
       }
     }
-    const shuffleChoicesLength = shuffleChoices.filter((v) => {
+    const shuffleChoicesLength = shuffleChoices.filter(v => {
       return v;
     }).length;
     return (
@@ -978,9 +977,9 @@ class Select extends Component {
             }
           >
             <Container
-              ref={(d) => (this.titleContainer = d)}
+              ref={d => (this.titleContainer = d)}
               //style={{ height: '10%', }}
-              onUpdate={(box) => this.setState({ titleContainer: box })}
+              onUpdate={box => this.setState({ titleContainer: box })}
             >
               <div
                 style={{
@@ -1005,7 +1004,7 @@ class Select extends Component {
                   </div>
                 )}
                 <Text
-                  ref={(text) => (this.titleText = text)}
+                  ref={text => (this.titleText = text)}
                   style={{
                     textAlign: "left",
                   }}
@@ -1071,7 +1070,7 @@ class Select extends Component {
                 <Row>
                   {shuffleChoices
                     ? shuffleChoices
-                        .filter((v) => v)
+                        .filter(v => v)
                         .map((v, i) => {
                           if (typeof v === "undefined") return null;
                           return (
@@ -1102,7 +1101,7 @@ class Select extends Component {
                 <Column>
                   {shuffleChoices
                     ? shuffleChoices
-                        .filter((v) => v)
+                        .filter(v => v)
                         .map((v, i) => {
                           if (typeof v === "undefined") return null;
                           return (

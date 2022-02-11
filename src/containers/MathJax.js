@@ -15,7 +15,7 @@ export const update = () => {
   }, 100);
 };
 
-export const check = (value) => {
+export const check = value => {
   return value && value.match(/\\\(.+\\\)/);
   // return (value && (value.match(/\\\(.+\\\)/) || value.match(/\$\$.+\$\$/)));
 };
@@ -30,7 +30,7 @@ class MathJax extends Component {
     };
   }
 
-  onLoad = (err) => {
+  onLoad = err => {
     this.setState({
       loaded: true,
     });
@@ -68,7 +68,7 @@ class MathJax extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     this.setState({
       value: nextProps.value,
     });
@@ -82,7 +82,7 @@ class MathJax extends Component {
     return (
       <div
         className={this.props.className}
-        ref={(d) => {
+        ref={d => {
           this.preview = d;
         }}
         style={this.props.style}

@@ -16,7 +16,7 @@ class MenuButton extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.value !== this.props.value) {
       this.setState({
         value: nextProps.value,
@@ -52,7 +52,7 @@ MenuButton.defaultProps = {
   }),
 };
 
-export default connect((state) => ({
+export default connect(state => ({
   fontSize: state.app.fontSize,
   width: state.app.width,
   height: state.app.height,

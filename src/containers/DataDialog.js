@@ -21,7 +21,7 @@ export default class DataDialog extends Component {
 
   componentWillUnmount() {}
 
-  componentWillReceiveProps(nextProps) {}
+  componentDidUpdate(nextProps) {}
 
   onClose = () => {
     if (this.props.onClose) {
@@ -29,7 +29,7 @@ export default class DataDialog extends Component {
     }
   };
 
-  onChangeText = (value) => {
+  onChangeText = value => {
     this.setState({
       value,
     });
@@ -57,7 +57,7 @@ export default class DataDialog extends Component {
             <Col md={12}>
               {
                 <AceEditor
-                  ref={(r) => (this.editor = r)}
+                  ref={r => (this.editor = r)}
                   style={{
                     display: "inline-block",
                     border: "solid 1px lightgray",

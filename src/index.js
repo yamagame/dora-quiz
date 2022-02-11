@@ -34,15 +34,15 @@ store.dispatch(
       store.dispatch(sendEntry());
     });
 
-    socket.on("init", (state) => {
+    socket.on("init", state => {
       console.log(state);
     });
 
-    socket.on("quiz-reload-entry", (msg) => {
+    socket.on("quiz-reload-entry", msg => {
       store.dispatch(sendEntry());
     });
 
-    socket.on("quiz", (msg) => {
+    socket.on("quiz", msg => {
       if (!msg.quizMode) {
         msg.quizMode = "Quiz Robo";
       }
@@ -73,11 +73,11 @@ store.dispatch(
       store.dispatch(quizCommand(msg));
     });
 
-    socket.on("imageServers", (msg) => {
+    socket.on("imageServers", msg => {
       store.dispatch(imageServers(msg));
     });
 
-    socket.on("sheet", (msg) => {
+    socket.on("sheet", msg => {
       store.dispatch(quizCommand(msg));
     });
 

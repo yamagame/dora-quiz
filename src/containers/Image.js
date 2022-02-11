@@ -35,7 +35,7 @@ class Image extends Component {
     window.removeEventListener("resize", this.onResize);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (this.props.src !== nextProps.src) {
       this.loaded = false;
     }
@@ -132,7 +132,7 @@ class Image extends Component {
       return (
         <div style={{ width: width, ...this.props.style, marginTop }}>
           <img
-            ref={(img) => (this.imageView = img)}
+            ref={img => (this.imageView = img)}
             src={this.props.src}
             width={width}
             onLoad={this.resizeImage}
