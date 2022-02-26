@@ -39,6 +39,12 @@ class Image extends Component {
     if (this.props.src !== nextProps.src) {
       this.loaded = false;
     }
+    if (
+      this.props.width !== nextProps.width ||
+      this.props.height !== nextProps.height
+    ) {
+      this.resizeImage();
+    }
   }
 
   onResize = () => {
