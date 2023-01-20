@@ -86,7 +86,7 @@ class MathJax extends Component {
           this.preview = d;
         }}
         style={this.props.style}
-      ></div>
+      >{this.props.value}</div>
     );
   }
 }

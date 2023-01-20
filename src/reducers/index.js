@@ -191,7 +191,7 @@ export const quizShuffle =
     function getRndInteger(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
     }
-    const {} = getState().app;
+    const { } = getState().app;
     let count = 4;
     const quizOrder = [];
     for (var i = 0; i < count; i++) {
@@ -468,28 +468,28 @@ export const imageServers = imageServers => async (dispatch, getState) => {
 
 export const preloadSlideImage =
   (photo, params = {}) =>
-  async (dispatch, getState) => {
-    const {
-      app: { cacheSlide },
-    } = getState();
-    if (
-      !cacheSlide.some(v => {
-        return v === photo;
-      })
-    ) {
-      const r = [...cacheSlide];
-      r.push(photo);
-      if (typeof params.cacheSize !== "undefined") {
-        r.splice(0, r.length - params.cacheSize);
+    async (dispatch, getState) => {
+      const {
+        app: { cacheSlide },
+      } = getState();
+      if (
+        !cacheSlide.some(v => {
+          return v === photo;
+        })
+      ) {
+        const r = [...cacheSlide];
+        r.push(photo);
+        if (typeof params.cacheSize !== "undefined") {
+          r.splice(0, r.length - params.cacheSize);
+        }
+        dispatch({
+          type: types.PARAMS,
+          payload: {
+            cacheSlide: r,
+          },
+        });
       }
-      dispatch({
-        type: types.PARAMS,
-        payload: {
-          cacheSlide: r,
-        },
-      });
-    }
-  };
+    };
 
 export const saveImageMap =
   (filename, imageMap, callback) => async (dispatch, getState) => {

@@ -66,7 +66,7 @@ class QuizPage extends Component {
       if (this.props.action === "start" || this.props.action === "quiz-start") {
         const t =
           this.props.playerAnswers[
-            this.checkPage(this.props.pages, this.props.pageNumber).question
+          this.checkPage(this.props.pages, this.props.pageNumber).question
           ] == null;
         this.props.sendAnswer(question, answer, () => {
           if (t) {
@@ -143,7 +143,7 @@ class QuizPage extends Component {
   }
 
   onClickArea = key => {
-    this.props.sendSpeech(key, () => {});
+    this.props.sendSpeech(key, () => { });
   };
 
   render() {
@@ -156,7 +156,8 @@ class QuizPage extends Component {
       this.props.action == "quiz-answer"
     ) {
       if (this.props.pages && this.props.pages.length > 0) {
-        return this.renderPages(this.checkPage(this.props.pages, pageNumber));
+        const page = this.checkPage(this.props.pages, pageNumber)
+        return this.renderPages(page);
       } else {
         return this.renderSelect(this.props);
       }
@@ -188,7 +189,8 @@ class QuizPage extends Component {
       page.action == "quiz-answer"
     ) {
       if (page.pages && page.pages.length > 0) {
-        return this.renderPages(this.checkPage(page.pages, pageNumber));
+        const p = this.checkPage(page.pages, pageNumber)
+        return this.renderPages(p);
       } else {
         return this.renderSelect(page);
       }
@@ -245,7 +247,7 @@ class QuizPage extends Component {
     return this.renderWait(page);
   }
 
-  renderWait({}) {
+  renderWait({ }) {
     return (
       <Wait
         fontSize={this.props.fontSize}
@@ -255,7 +257,7 @@ class QuizPage extends Component {
     );
   }
 
-  renderTitle({}) {
+  renderTitle({ }) {
     if (!this.props.quizMode) {
       return <div></div>;
     }

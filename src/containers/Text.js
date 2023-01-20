@@ -171,7 +171,7 @@ Text.defaultProps = {
   maxHeight: 300,
   style: {},
   fontSize: 12,
-  onLayout: () => {},
+  onLayout: () => { },
 };
 
 export default Text;

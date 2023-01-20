@@ -63,9 +63,9 @@ class Select extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   componentDidUpdate(nextProps) {
     if (
@@ -410,115 +410,115 @@ class Select extends Component {
                         <Row style={{ height: "99%" }}>
                           {shuffleChoices
                             ? shuffleChoices
-                                .filter(v => v)
-                                .map((v, i) =>
-                                  i % 2 == 0 ? (
-                                    <Button
-                                      key={i}
-                                      imageButton={v.image ? true : false}
-                                      fontScale={buttonScale}
-                                      height={buttonHeight}
-                                      correct={
-                                        answers &&
+                              .filter(v => v)
+                              .map((v, i) =>
+                                i % 2 == 0 ? (
+                                  <Button
+                                    key={i}
+                                    imageButton={v.image ? true : false}
+                                    fontScale={buttonScale}
+                                    height={buttonHeight}
+                                    correct={
+                                      answers &&
                                         (this.props.action === "quiz-answer" ||
                                           this.props.action === "answer")
-                                          ? answers.some(
-                                              t =>
-                                                t ===
-                                                (typeof v !== "object"
-                                                  ? v
-                                                  : v.value)
-                                            )
-                                          : false
-                                      }
-                                      selected={
-                                        this.props.selectedHandller(
-                                          this.props.playerAnswers[question],
-                                          typeof v !== "object" ? v : v.value
-                                        ) || this.selectedButton(v)
-                                      }
-                                      onClick={this.props.buttonHandller(
-                                        question,
+                                        ? answers.some(
+                                          t =>
+                                            t ===
+                                            (typeof v !== "object"
+                                              ? v
+                                              : v.value)
+                                        )
+                                        : false
+                                    }
+                                    selected={
+                                      this.props.selectedHandller(
+                                        this.props.playerAnswers[question],
                                         typeof v !== "object" ? v : v.value
-                                      )}
-                                      buttonStyle={buttonStyle}
-                                      fontColor={
-                                        this.checkOption("style-deepblue")
-                                          ? "white"
-                                          : "black"
-                                      }
-                                      buttonBaseColor={
-                                        this.checkOption("style-deepblue")
-                                          ? "#0761A0"
-                                          : "#CDF"
-                                      }
-                                    >
-                                      {buttonValue(
-                                        v,
-                                        this.props.width / 2 - 30,
-                                        buttonHeight - 30,
-                                        host
-                                      )}
-                                    </Button>
-                                  ) : null
-                                )
+                                      ) || this.selectedButton(v)
+                                    }
+                                    onClick={this.props.buttonHandller(
+                                      question,
+                                      typeof v !== "object" ? v : v.value
+                                    )}
+                                    buttonStyle={buttonStyle}
+                                    fontColor={
+                                      this.checkOption("style-deepblue")
+                                        ? "white"
+                                        : "black"
+                                    }
+                                    buttonBaseColor={
+                                      this.checkOption("style-deepblue")
+                                        ? "#0761A0"
+                                        : "#CDF"
+                                    }
+                                  >
+                                    {buttonValue(
+                                      v,
+                                      this.props.width / 2 - 30,
+                                      buttonHeight - 30,
+                                      host
+                                    )}
+                                  </Button>
+                                ) : null
+                              )
                             : null}
                         </Row>
                         <Row style={{ height: "99%" }}>
                           {shuffleChoices
                             ? shuffleChoices
-                                .filter(v => v)
-                                .map((v, i) =>
-                                  i % 2 == 1 ? (
-                                    <Button
-                                      key={i}
-                                      imageButton={v.image ? true : false}
-                                      fontScale={buttonScale}
-                                      height={buttonHeight}
-                                      correct={
-                                        answers &&
+                              .filter(v => v)
+                              .map((v, i) =>
+                                i % 2 == 1 ? (
+                                  <Button
+                                    key={i}
+                                    imageButton={v.image ? true : false}
+                                    fontScale={buttonScale}
+                                    height={buttonHeight}
+                                    correct={
+                                      answers &&
                                         (this.props.action === "quiz-answer" ||
                                           this.props.action === "answer")
-                                          ? answers.some(
-                                              t =>
-                                                t ===
-                                                (typeof v !== "object"
-                                                  ? v
-                                                  : v.value)
-                                            )
-                                          : false
-                                      }
-                                      selected={
-                                        this.props.selectedHandller(
-                                          this.props.playerAnswers[question],
-                                          typeof v !== "object" ? v : v.value
-                                        ) || this.selectedButton(v)
-                                      }
-                                      onClick={this.props.buttonHandller(
-                                        question,
+                                        ? answers.some(
+                                          t =>
+                                            t ===
+                                            (typeof v !== "object"
+                                              ? v
+                                              : v.value)
+                                        )
+                                        : false
+                                    }
+                                    selected={
+                                      this.props.selectedHandller(
+                                        this.props.playerAnswers[question],
                                         typeof v !== "object" ? v : v.value
-                                      )}
-                                      buttonStyle={buttonStyle}
-                                      fontColor={
-                                        this.checkOption("style-deepblue")
-                                          ? "white"
-                                          : "black"
-                                      }
-                                      buttonBaseColor={
-                                        this.checkOption("style-deepblue")
-                                          ? "#0761A0"
-                                          : "#CDF"
-                                      }
-                                    >
-                                      {buttonValue(
-                                        v,
-                                        this.props.width / 2 - 30,
-                                        buttonHeight - 30,
-                                        host
-                                      )}
-                                    </Button>
-                                  ) : null
-                                )
+                                      ) || this.selectedButton(v)
+                                    }
+                                    onClick={this.props.buttonHandller(
+                                      question,
+                                      typeof v !== "object" ? v : v.value
+                                    )}
+                                    buttonStyle={buttonStyle}
+                                    fontColor={
+                                      this.checkOption("style-deepblue")
+                                        ? "white"
+                                        : "black"
+                                    }
+                                    buttonBaseColor={
+                                      this.checkOption("style-deepblue")
+                                        ? "#0761A0"
+                                        : "#CDF"
+                                    }
+                                  >
+                                    {buttonValue(
+                                      v,
+                                      this.props.width / 2 - 30,
+                                      buttonHeight - 30,
+                                      host
+                                    )}
+                                  </Button>
+                                ) : null
+                              )
                             : null}
                         </Row>
                       </div>
@@ -526,56 +526,56 @@ class Select extends Component {
                       <div>
                         {shuffleChoices
                           ? shuffleChoices
-                              .filter(v => v)
-                              .map((v, i) => (
-                                <Button
-                                  key={i}
-                                  imageButton={v.image ? true : false}
-                                  fontScale={buttonScale}
-                                  height={buttonHeight}
-                                  correct={
-                                    answers &&
+                            .filter(v => v)
+                            .map((v, i) => (
+                              <Button
+                                key={i}
+                                imageButton={v.image ? true : false}
+                                fontScale={buttonScale}
+                                height={buttonHeight}
+                                correct={
+                                  answers &&
                                     (this.props.action === "quiz-answer" ||
                                       this.props.action === "answer")
-                                      ? answers.some(
-                                          t =>
-                                            t ===
-                                            (typeof v !== "object"
-                                              ? v
-                                              : v.value)
-                                        )
-                                      : false
-                                  }
-                                  selected={
-                                    this.props.selectedHandller(
-                                      this.props.playerAnswers[question],
-                                      typeof v !== "object" ? v : v.value
-                                    ) || this.selectedButton(v)
-                                  }
-                                  onClick={this.props.buttonHandller(
-                                    question,
+                                    ? answers.some(
+                                      t =>
+                                        t ===
+                                        (typeof v !== "object"
+                                          ? v
+                                          : v.value)
+                                    )
+                                    : false
+                                }
+                                selected={
+                                  this.props.selectedHandller(
+                                    this.props.playerAnswers[question],
                                     typeof v !== "object" ? v : v.value
-                                  )}
-                                  buttonStyle={buttonStyle}
-                                  fontColor={
-                                    this.checkOption("style-deepblue")
-                                      ? "white"
-                                      : "black"
-                                  }
-                                  buttonBaseColor={
-                                    this.checkOption("style-deepblue")
-                                      ? "#0761A0"
-                                      : "#CDF"
-                                  }
-                                >
-                                  {buttonValue(
-                                    v,
-                                    this.props.width,
-                                    buttonHeight - 30,
-                                    host
-                                  )}
-                                </Button>
-                              ))
+                                  ) || this.selectedButton(v)
+                                }
+                                onClick={this.props.buttonHandller(
+                                  question,
+                                  typeof v !== "object" ? v : v.value
+                                )}
+                                buttonStyle={buttonStyle}
+                                fontColor={
+                                  this.checkOption("style-deepblue")
+                                    ? "white"
+                                    : "black"
+                                }
+                                buttonBaseColor={
+                                  this.checkOption("style-deepblue")
+                                    ? "#0761A0"
+                                    : "#CDF"
+                                }
+                              >
+                                {buttonValue(
+                                  v,
+                                  this.props.width,
+                                  buttonHeight - 30,
+                                  host
+                                )}
+                              </Button>
+                            ))
                           : null}
                       </div>
                     )}
@@ -595,11 +595,11 @@ class Select extends Component {
                         height={buttonHeight}
                         correct={
                           answers &&
-                          (this.props.action === "quiz-answer" ||
-                            this.props.action === "answer")
+                            (this.props.action === "quiz-answer" ||
+                              this.props.action === "answer")
                             ? answers.some(
-                                t => t === (typeof v !== "object" ? v : v.value)
-                              )
+                              t => t === (typeof v !== "object" ? v : v.value)
+                            )
                             : false
                         }
                         selected={
@@ -773,8 +773,8 @@ class Select extends Component {
                         this.props.height -
                         160 -
                         this.props.height /
-                          4 /
-                          (sideImage || inlineFrame ? 2 : 1),
+                        4 /
+                        (sideImage || inlineFrame ? 2 : 1),
                       border: "none",
                     }}
                   />
@@ -810,61 +810,6 @@ class Select extends Component {
                     <Row style={{ height: "99%" }}>
                       {shuffleChoices
                         ? shuffleChoices.map((v, i) =>
-                            v ? (
-                              <Button
-                                key={i}
-                                imageButton={v.image ? true : false}
-                                fontScale={
-                                  fontScale *
-                                  (this.checkOption("half-button") ? 0.5 : 1)
-                                }
-                                height={100}
-                                //margin={this.props.fontSize*0.5}
-                                paddingTop={0}
-                                paddingBottom={0}
-                                correct={
-                                  answers &&
-                                  (this.props.action === "quiz-answer" ||
-                                    this.props.action === "answer")
-                                    ? answers.some(
-                                        t =>
-                                          t ===
-                                          (typeof v !== "object" ? v : v.value)
-                                      )
-                                    : false
-                                }
-                                selected={
-                                  this.props.selectedHandller(
-                                    this.props.playerAnswers[question],
-                                    typeof v !== "object" ? v : v.value
-                                  ) || this.selectedButton(v)
-                                }
-                                onClick={this.props.buttonHandller(
-                                  question,
-                                  typeof v !== "object" ? v : v.value
-                                )}
-                                fontColor={
-                                  this.checkOption("style-deepblue")
-                                    ? "white"
-                                    : "black"
-                                }
-                                buttonBaseColor={
-                                  this.checkOption("style-deepblue")
-                                    ? "#0761A0"
-                                    : "#CDF"
-                                }
-                              >
-                                {buttonValue(v, 100, host)}
-                              </Button>
-                            ) : null
-                          )
-                        : null}
-                    </Row>
-                  </div>
-                ) : (
-                  <Row style={{ height: "99%" }}>
-                    {shuffleChoices
-                      ? shuffleChoices.map((v, i) =>
                           v ? (
                             <Button
                               key={i}
@@ -873,18 +818,19 @@ class Select extends Component {
                                 fontScale *
                                 (this.checkOption("half-button") ? 0.5 : 1)
                               }
-                              height={this.props.fontSize * 5}
-                              margin={this.props.fontSize * 0.5}
-                              paddingTop={this.props.fontSize * 2}
+                              height={100}
+                              //margin={this.props.fontSize*0.5}
+                              paddingTop={0}
+                              paddingBottom={0}
                               correct={
                                 answers &&
-                                (this.props.action === "quiz-answer" ||
-                                  this.props.action === "answer")
+                                  (this.props.action === "quiz-answer" ||
+                                    this.props.action === "answer")
                                   ? answers.some(
-                                      t =>
-                                        t ===
-                                        (typeof v !== "object" ? v : v.value)
-                                    )
+                                    t =>
+                                      t ===
+                                      (typeof v !== "object" ? v : v.value)
+                                  )
                                   : false
                               }
                               selected={
@@ -908,10 +854,64 @@ class Select extends Component {
                                   : "#CDF"
                               }
                             >
-                              {buttonValue(v, this.props.fontSize * 3, host)}
+                              {buttonValue(v, 100, host)}
                             </Button>
                           ) : null
                         )
+                        : null}
+                    </Row>
+                  </div>
+                ) : (
+                  <Row style={{ height: "99%" }}>
+                    {shuffleChoices
+                      ? shuffleChoices.map((v, i) =>
+                        v ? (
+                          <Button
+                            key={i}
+                            imageButton={v.image ? true : false}
+                            fontScale={
+                              fontScale *
+                              (this.checkOption("half-button") ? 0.5 : 1)
+                            }
+                            height={this.props.fontSize * 5}
+                            margin={this.props.fontSize * 0.5}
+                            paddingTop={this.props.fontSize * 2}
+                            correct={
+                              answers &&
+                                (this.props.action === "quiz-answer" ||
+                                  this.props.action === "answer")
+                                ? answers.some(
+                                  t =>
+                                    t ===
+                                    (typeof v !== "object" ? v : v.value)
+                                )
+                                : false
+                            }
+                            selected={
+                              this.props.selectedHandller(
+                                this.props.playerAnswers[question],
+                                typeof v !== "object" ? v : v.value
+                              ) || this.selectedButton(v)
+                            }
+                            onClick={this.props.buttonHandller(
+                              question,
+                              typeof v !== "object" ? v : v.value
+                            )}
+                            fontColor={
+                              this.checkOption("style-deepblue")
+                                ? "white"
+                                : "black"
+                            }
+                            buttonBaseColor={
+                              this.checkOption("style-deepblue")
+                                ? "#0761A0"
+                                : "#CDF"
+                            }
+                          >
+                            {buttonValue(v, this.props.fontSize * 3, host)}
+                          </Button>
+                        ) : null
+                      )
                       : null}
                   </Row>
                 )}
@@ -1070,28 +1070,28 @@ class Select extends Component {
                 <Row>
                   {shuffleChoices
                     ? shuffleChoices
-                        .filter(v => v)
-                        .map((v, i) => {
-                          if (typeof v === "undefined") return null;
-                          return (
-                            <Bar
-                              key={i}
-                              maxValue={maxValue}
-                              label={v}
-                              value={
-                                this.props.sumQuestions[this.props.question]
-                                  ? this.props.sumQuestions[
-                                      this.props.question
-                                    ][v]
-                                  : 0
-                              }
-                              fontSize={this.props.fontSize}
-                              width={this.props.fontSize * 4}
-                              height={this.props.height * 0.4}
-                              color={this.barColor(shuffleChoicesLength, i)}
-                            />
-                          );
-                        })
+                      .filter(v => v)
+                      .map((v, i) => {
+                        if (typeof v === "undefined") return null;
+                        return (
+                          <Bar
+                            key={i}
+                            maxValue={maxValue}
+                            label={v}
+                            value={
+                              this.props.sumQuestions[this.props.question]
+                                ? this.props.sumQuestions[
+                                this.props.question
+                                ][v]
+                                : 0
+                            }
+                            fontSize={this.props.fontSize}
+                            width={this.props.fontSize * 4}
+                            height={this.props.height * 0.4}
+                            color={this.barColor(shuffleChoicesLength, i)}
+                          />
+                        );
+                      })
                     : null}
                 </Row>
               </div>
@@ -1101,29 +1101,29 @@ class Select extends Component {
                 <Column>
                   {shuffleChoices
                     ? shuffleChoices
-                        .filter(v => v)
-                        .map((v, i) => {
-                          if (typeof v === "undefined") return null;
-                          return (
-                            <Bar
-                              key={i}
-                              maxValue={maxValue}
-                              label={v}
-                              horozontal
-                              value={
-                                this.props.sumQuestions[this.props.question]
-                                  ? this.props.sumQuestions[
-                                      this.props.question
-                                    ][v]
-                                  : 0
-                              }
-                              fontSize={this.props.fontSize}
-                              width={this.props.width}
-                              height={this.props.fontSize * 2}
-                              color={this.barColor(shuffleChoicesLength, i)}
-                            />
-                          );
-                        })
+                      .filter(v => v)
+                      .map((v, i) => {
+                        if (typeof v === "undefined") return null;
+                        return (
+                          <Bar
+                            key={i}
+                            maxValue={maxValue}
+                            label={v}
+                            horozontal
+                            value={
+                              this.props.sumQuestions[this.props.question]
+                                ? this.props.sumQuestions[
+                                this.props.question
+                                ][v]
+                                : 0
+                            }
+                            fontSize={this.props.fontSize}
+                            width={this.props.width}
+                            height={this.props.fontSize * 2}
+                            color={this.barColor(shuffleChoicesLength, i)}
+                          />
+                        );
+                      })
                     : null}
                 </Column>
               </div>
