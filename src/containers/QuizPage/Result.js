@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { fontSize } from "../../reducers";
-import Column from "../Column";
 import Row from "../Row";
 import PageButton from "../PageButton";
 import Radar from "../Radar";

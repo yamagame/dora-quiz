@@ -133,7 +133,7 @@ export const loadInitialData =
         console.log("ERROR");
       }
     }
-    if (payload.mode == "admin-result") {
+    if (payload.mode === "admin-result") {
       const { _quizId, _startTime, _playerName } = payload;
       let response = await fetch("/result", {
         method: "POST",
@@ -191,14 +191,13 @@ export const quizShuffle =
     function getRndInteger(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
     }
-    const { } = getState().app;
     let count = 4;
     const quizOrder = [];
-    for (var i = 0; i < count; i++) {
+    for (let i = 0; i < count; i++) {
       quizOrder.push(i);
     }
     if (!reset) {
-      for (var i = 0; i < 8; i++) {
+      for (let i = 0; i < 8; i++) {
         const a = getRndInteger(0, quizOrder.length);
         const b = getRndInteger(0, quizOrder.length);
         const v = quizOrder[a];
@@ -264,11 +263,11 @@ export const quizCommand =
       });
       return t;
     })(payload);
-    if (payload.action == "quiz-init") {
+    if (payload.action === "quiz-init") {
       await AsyncStorage.setItem(`sumQuestions`, {});
       payload.sumQuestions = {};
     }
-    if (!payload.name || payload.name == name) {
+    if (!payload.name || payload.name === name) {
       await Promise.all(
         Object.keys(payload).map(async key => {
           await AsyncStorage.setItem(key, payload[key]);
@@ -400,7 +399,7 @@ export const sendEntry = callback => async (dispatch, getState) => {
 
 export const loadQuizAnswers = () => async (dispatch, getState) => {
   const {
-    app: { quizId, quizStartTime, pageNumber, pages, showSum, signature },
+    app: { quizId, quizStartTime, pages, showSum, signature },
   } = getState();
   let response = await fetch("/result", {
     method: "POST",

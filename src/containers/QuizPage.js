@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Button from "./Button";
-import MenuButton from "./MenuButton";
 import Row from "./Row";
 import Column from "./Column";
 import Bar from "./Bar";
-import PageButton from "./PageButton";
 import {
   fontSize,
-  fontScale,
   sendAnswer,
   sendEntry,
   sendSpeech,
@@ -16,7 +12,6 @@ import {
   startButtonPushed,
   saveImageMap,
 } from "../reducers";
-import Image from "./Image";
 import Wait from "./QuizPage/Wait";
 import Title from "./QuizPage/Title";
 import Message from "./QuizPage/Message";

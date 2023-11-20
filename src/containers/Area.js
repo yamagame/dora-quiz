@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import * as d3 from "d3";
 
 function rect(x1, y1, x2, y2) {
@@ -328,19 +327,19 @@ export default class Area extends Component {
     }
   };
 
-  onKeyPress = () => {};
+  onKeyPress = () => { };
 
-  onKeyUp = e => {};
+  onKeyUp = e => { };
 
-  onMouseMove = () => {};
+  onMouseMove = () => { };
 
-  onMouseOut = () => {};
+  onMouseOut = () => { };
 
-  onMouseOver = () => {};
+  onMouseOver = () => { };
 
-  onMouseUp = () => {};
+  onMouseUp = () => { };
 
-  onMouseEnter = () => {};
+  onMouseEnter = () => { };
 
   onMouseLeave = () => {
     // if (this.shiftKey) {
@@ -400,5 +399,5 @@ Area.defaultProps = {
   target: null,
   data: [],
   editable: true,
-  onAction: event => {},
+  onAction: event => { },
 };

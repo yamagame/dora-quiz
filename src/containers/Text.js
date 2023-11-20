@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import { fontSize } from "../reducers";
 import MathJax from "./MathJax";
 
@@ -92,7 +91,6 @@ class Text extends Component {
         }),
       },
       () => {
-        const fontScale = this.state.fontScale;
         const fontSize = this.state.fontSize * this.state.fontScale;
         const offsetHeight =
           this.valueText.offsetHeight + this.commentText.offsetHeight;

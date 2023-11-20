@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import * as d3 from "d3";
 
 const cfg = {
@@ -22,7 +21,7 @@ export default class Radar extends Component {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
   initUpdate = () => {
     const width = this.container.clientWidth;
@@ -64,7 +63,7 @@ export default class Radar extends Component {
     }
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
   componentDidUpdate(nextProps) {
     if (this.props.legend !== nextProps.legend) {
@@ -161,15 +160,15 @@ export default class Radar extends Component {
         .attr("x2", function (d, i) {
           return self.xScale(
             -levelFactor *
-              cfg.factor *
-              Math.sin(((i + 1) * cfg.radians) / total)
+            cfg.factor *
+            Math.sin(((i + 1) * cfg.radians) / total)
           );
         })
         .attr("y2", function (d, i) {
           return self.yScale(
             -levelFactor *
-              cfg.factor *
-              Math.cos(((i + 1) * cfg.radians) / total)
+            cfg.factor *
+            Math.cos(((i + 1) * cfg.radians) / total)
           );
         })
         .style("stroke", "grey")

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import { Row, Col, Button, Modal } from "react-bootstrap";
 
 export default class AreaDialog extends Component {
@@ -12,15 +11,15 @@ export default class AreaDialog extends Component {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
-  componentDidUpdate(nextProps) {}
+  componentDidUpdate(nextProps) { }
 
   onClose = () => {
     if (this.props.onClose) {

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function ({ title, disabled, fontSize, onClick, style }) {
+export default function PageButton({ title, disabled, fontSize, onClick, style }) {
   const margin = fontSize / 2 < 15 ? 15 : fontSize / 2;
   return !disabled ? (
     <div>

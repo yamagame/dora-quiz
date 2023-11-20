@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { fontSize } from "../../reducers";
-// import pathParse from "path-parse";
 import Column from "../Column";
 import Row from "../Row";
 import Image from "../Image";

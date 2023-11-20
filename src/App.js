@@ -15,6 +15,7 @@ function SlideCache({ cacheSlide, width, height }) {
           width={width / (cacheSlide.length + 1)}
           height={height / (cacheSlide.length + 1)}
           src={getHost(null, v)}
+          alt="slide"
         />
       ))}
     </div>
