@@ -22,7 +22,7 @@ class Wait extends Component {
               }}
             >
               {" "}
-              早押しロボクイズ{" "}
+              おしゃべりロボットエンジン{" "}
             </p>
             <p
               style={{

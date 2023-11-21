@@ -27,6 +27,46 @@ var params = {
   cacheSlide: [],
 };
 
+let speechRef = null
+
+function Speech() {
+  if (speechRef) return speechRef
+  const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+  speechRef = new SpeechRecognition();
+  speechRef.onresult = (event) => {
+    const resultText = event.results[0][0].transcript
+    console.log(resultText)
+    fetch(`/transcribe`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: resultText }),
+    })
+  }
+  speechRef.addEventListener("error", (event) => {
+    let text = "timeout"
+    switch (event.error) {
+      case "aborted":
+        return
+      case "no-speech":
+        break;
+      default:
+        console.error(`音声認識エラーが発生しました: ${event.error}`);
+        text = "[error]"
+        break;
+    }
+    fetch(`/transcribe`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    })
+  });
+  speechRef.addEventListener("end", (event) => {
+    //
+  });
+
+  return speechRef
+}
+
 store.dispatch(
   loadInitialData(params, socket, () => {
     socket.on("connect", () => {
@@ -79,6 +119,16 @@ store.dispatch(
 
     socket.on("sheet", msg => {
       store.dispatch(quizCommand(msg));
+    });
+
+    socket.on("startRecording", msg => {
+      console.log("startRecording")
+      Speech().start();
+    });
+
+    socket.on("stopRecording", msg => {
+      console.log("stopRecording")
+      Speech().abort();
     });
 
     ReactDOM.render(
