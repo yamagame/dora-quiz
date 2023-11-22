@@ -314,12 +314,12 @@ export default class Area extends Component {
 
   onKeyDown = e => {
     if (this.props.editable) {
-      if (e.keyCode == 8 || e.keyCode == 46) {
+      if (e.keyCode === 8 || e.keyCode === 46) {
         this.props.onAction({
           action: "delete-selection",
         });
       }
-      if (e.keyCode == 32) {
+      if (e.keyCode === 32) {
         this.props.onAction({
           action: "show-data",
         });

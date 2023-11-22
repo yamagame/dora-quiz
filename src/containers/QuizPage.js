@@ -145,10 +145,10 @@ class QuizPage extends Component {
     const pageNumber =
       typeof this.props.pageNumber === "undefined" ? 0 : this.props.pageNumber;
     if (
-      this.props.action == "quiz-init" ||
-      this.props.action == "quiz-start" ||
-      this.props.action == "quiz-stop" ||
-      this.props.action == "quiz-answer"
+      this.props.action === "quiz-init" ||
+      this.props.action === "quiz-start" ||
+      this.props.action === "quiz-stop" ||
+      this.props.action === "quiz-answer"
     ) {
       if (this.props.pages && this.props.pages.length > 0) {
         const page = this.checkPage(this.props.pages, pageNumber)
@@ -174,14 +174,14 @@ class QuizPage extends Component {
     ) {
       return this.renderTitle(page);
     }
-    if (page.action == "quiz") {
+    if (page.action === "quiz") {
       return this.renderSelect(page);
     }
     if (
-      page.action == "quiz-init" ||
-      page.action == "quiz-start" ||
-      page.action == "quiz-stop" ||
-      page.action == "quiz-answer"
+      page.action === "quiz-init" ||
+      page.action === "quiz-start" ||
+      page.action === "quiz-stop" ||
+      page.action === "quiz-answer"
     ) {
       if (page.pages && page.pages.length > 0) {
         const p = this.checkPage(page.pages, pageNumber)
@@ -190,40 +190,40 @@ class QuizPage extends Component {
         return this.renderSelect(page);
       }
     }
-    if (page.action == "quiz-entry") {
+    if (page.action === "quiz-entry") {
       return this.renderEntry(page);
     }
-    if (page.action == "question") {
+    if (page.action === "question") {
       return this.renderSelect(page);
     }
-    if (page.action == "message") {
+    if (page.action === "message") {
       return this.renderMessage(page);
     }
-    if (page.action == "start") {
+    if (page.action === "start") {
       return this.renderSelect(page);
     }
-    if (page.action == "time") {
+    if (page.action === "time") {
       return this.renderSelect(page);
     }
-    if (page.action == "stop") {
+    if (page.action === "stop") {
       return this.renderSelect(page);
     }
-    if (page.action == "answer") {
+    if (page.action === "answer") {
       return this.renderSelect(page);
     }
-    if (page.action == "reset") {
+    if (page.action === "reset") {
       return this.renderTitle(page);
     }
-    if (page.action == "slide") {
+    if (page.action === "slide") {
       return this.renderSlide(page);
     }
-    if (page.action == "edit") {
+    if (page.action === "edit") {
       return this.renderSlide(page, "edit");
     }
-    if (page.action == "startScreen") {
+    if (page.action === "startScreen") {
       return this.renderSlide(page, "start");
     }
-    if (page.action == "result") {
+    if (page.action === "result") {
       if (this.props.name !== "_quiz_master_") {
         return this.renderResult(page);
       } else {
@@ -233,10 +233,10 @@ class QuizPage extends Component {
         });
       }
     }
-    if (page.action == "sheet") {
+    if (page.action === "sheet") {
       return this.renderSheet(page);
     }
-    if (page.action == "quiz-ranking") {
+    if (page.action === "quiz-ranking") {
       return this.renderRanking(page);
     }
     return this.renderWait(page);

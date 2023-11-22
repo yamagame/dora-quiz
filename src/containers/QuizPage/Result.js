@@ -30,10 +30,10 @@ class Result extends Component {
       }
       return `${sec}秒 `;
     };
-    if (this.props.action == "question" || this.props.action == "quiz-init") {
+    if (this.props.action === "question" || this.props.action === "quiz-init") {
       return `回答時間は ${_timeStr(this.props.time)}です`;
     } else {
-      if (this.props.time == 0) {
+      if (this.props.time === 0) {
         return `タイムアップ`;
       } else {
         return `あと ${_timeStr(this.props.time)}です`;
@@ -50,15 +50,15 @@ class Result extends Component {
     const { title, messages, links, options } = this.props;
     const resultCount = this.props.pages
       .map((v) =>
-        v.action == "quiz"
-          ? v.answers.some((w) => w == this.props.playerAnswers[v.question])
+        v.action === "quiz"
+          ? v.answers.some((w) => w === this.props.playerAnswers[v.question])
             ? 1
             : 0
           : 0
       )
       .reduce((a, b) => a + b);
     const quizCount = this.props.pages
-      .map((v) => (v.action == "quiz" ? 1 : 0))
+      .map((v) => (v.action === "quiz" ? 1 : 0))
       .reduce((a, b) => a + b);
     const resultMessage = (() => {
       if (resultCount === quizCount && quizCount !== 0)
@@ -71,7 +71,7 @@ class Result extends Component {
       if (resultCount === quizCount) return this.props.fontSize;
       return this.props.fontSize * 0.7;
     })();
-    const quizPages = this.props.pages.filter((v) => v.action == "quiz");
+    const quizPages = this.props.pages.filter((v) => v.action === "quiz");
     const categories = {};
     quizPages.forEach((v) => {
       if (v.category) {
@@ -83,7 +83,7 @@ class Result extends Component {
         } else {
           categories[v.category].sum++;
         }
-        if (v.answers.some((w) => w == this.props.playerAnswers[v.question])) {
+        if (v.answers.some((w) => w === this.props.playerAnswers[v.question])) {
           categories[v.category].point++;
         }
       }

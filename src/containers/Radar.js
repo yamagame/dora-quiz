@@ -26,7 +26,6 @@ export default class Radar extends Component {
   initUpdate = () => {
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
-    const svg = this.svg;
     const minsize = Math.min(width, height);
 
     this.xScale

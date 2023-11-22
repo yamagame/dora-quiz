@@ -64,49 +64,48 @@ function RankingTable({ ranking, fontSize, startTime }) {
       <Row style={{ width: "100%" }}>
         {others.length > 0
           ? others.map((ranking, col) => {
-              return (
-                <Column>
-                  {ranking.length > 0
-                    ? ranking.map((d, i) => {
-                        if (d.name) {
-                          const s = `${i + 4 + col * n}位 ${
-                            d.name
-                          }さん ${resultTimeStr(
-                            d.time.getTime() - startTime.getTime()
-                          )}`;
-                          return (
-                            <p
-                              className="Ranking-Item"
-                              key={i + 4 + col * n}
-                              style={{
-                                fontSize: fontSize * limitScale(n, topScale[3]),
-                                background: topColor[3],
-                                border: "solid 0px",
-                              }}
-                            >
-                              {s}
-                            </p>
-                          );
-                        } else {
-                          return (
-                            <p
-                              className="Ranking-Item"
-                              key={i + 4 + col * n}
-                              style={{
-                                fontSize: fontSize * limitScale(n, topScale[3]),
-                                background: topColor[3],
-                                border: "solid 0px",
-                              }}
-                            >
-                              　
-                            </p>
-                          );
-                        }
-                      })
-                    : null}
-                </Column>
-              );
-            })
+            return (
+              <Column>
+                {ranking.length > 0
+                  ? ranking.map((d, i) => {
+                    if (d.name) {
+                      const s = `${i + 4 + col * n}位 ${d.name
+                        }さん ${resultTimeStr(
+                          d.time.getTime() - startTime.getTime()
+                        )}`;
+                      return (
+                        <p
+                          className="Ranking-Item"
+                          key={i + 4 + col * n}
+                          style={{
+                            fontSize: fontSize * limitScale(n, topScale[3]),
+                            background: topColor[3],
+                            border: "solid 0px",
+                          }}
+                        >
+                          {s}
+                        </p>
+                      );
+                    } else {
+                      return (
+                        <p
+                          className="Ranking-Item"
+                          key={i + 4 + col * n}
+                          style={{
+                            fontSize: fontSize * limitScale(n, topScale[3]),
+                            background: topColor[3],
+                            border: "solid 0px",
+                          }}
+                        >
+
+                        </p>
+                      );
+                    }
+                  })
+                  : null}
+              </Column>
+            );
+          })
           : null}
       </Row>
     </Column>
@@ -130,11 +129,11 @@ class Ranking extends Component {
             typeof page.question !== "undefined" &&
             page.question === question
           ) {
-            return page.answers.some((a) => a == answer);
+            return page.answers.some((a) => a === answer);
           }
         });
       };
-      quizCount = this.props.pages.filter((a) => a.action == "quiz").length;
+      quizCount = this.props.pages.filter((a) => a.action === "quiz").length;
       Object.keys(this.props.quizAnswers).forEach((question) => {
         const players = this.props.quizAnswers[question];
         Object.keys(players).forEach((clientId) => {
@@ -151,7 +150,7 @@ class Ranking extends Component {
           }
         });
       });
-    } catch (e) {}
+    } catch (e) { }
     const ranking = Object.keys(result)
       .map((name) => {
         return {
@@ -161,7 +160,7 @@ class Ranking extends Component {
           point: result[name].point,
         };
       })
-      .filter((p) => p.point == quizCount)
+      .filter((p) => p.point === quizCount)
       .sort((a, b) => {
         const at = new Date(a.time).getTime();
         const bt = new Date(b.time).getTime();
@@ -207,7 +206,7 @@ class Ranking extends Component {
                     </p>
                   </div>
                 ) : null}
-                {ranking && ranking.length == 1 ? (
+                {ranking && ranking.length === 1 ? (
                   <div className="Ranking-Container">
                     <p
                       className="Ranking-Result-Item"

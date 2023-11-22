@@ -43,8 +43,6 @@ export default class AreaDialog extends Component {
     const value = { ...this.props.value };
     if (typeof value.title === "undefined") {
       value.title = "";
-    } else {
-      value.title = value.title;
     }
     this.setState({
       value,

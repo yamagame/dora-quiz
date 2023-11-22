@@ -96,10 +96,10 @@ class Select extends Component {
 
   timeStr = () => {
     if ("time" in this.props) {
-      if (this.props.action == "question" || this.props.action == "quiz-init") {
+      if (this.props.action === "question" || this.props.action === "quiz-init") {
         return `回答時間は ${this.props.time} 秒です`;
       } else {
-        if (this.props.time == 0) {
+        if (this.props.time === 0) {
           return `タイムアップ`;
         } else {
           return `あと ${this.props.time} 秒です`;
@@ -110,7 +110,7 @@ class Select extends Component {
   };
 
   barColor = (maxnum, i) => {
-    if (maxnum == 2) {
+    if (maxnum === 2) {
       const tbl = ["#00A2FF", "#FF3399"];
       return tbl[i];
     }
@@ -119,7 +119,7 @@ class Select extends Component {
 
   checkOption = key => {
     return this.props.options.some(v => {
-      return v == key;
+      return v === key;
     });
   };
 
@@ -128,7 +128,7 @@ class Select extends Component {
     return (
       this.checkOption("final-answer") &&
       this.props.selects.some(v => {
-        return v == t;
+        return v === t;
       })
     );
   };
@@ -412,7 +412,7 @@ class Select extends Component {
                             ? shuffleChoices
                               .filter(v => v)
                               .map((v, i) =>
-                                i % 2 == 0 ? (
+                                i % 2 === 0 ? (
                                   <Button
                                     key={i}
                                     imageButton={v.image ? true : false}
@@ -469,7 +469,7 @@ class Select extends Component {
                             ? shuffleChoices
                               .filter(v => v)
                               .map((v, i) =>
-                                i % 2 == 1 ? (
+                                i % 2 === 1 ? (
                                   <Button
                                     key={i}
                                     imageButton={v.image ? true : false}

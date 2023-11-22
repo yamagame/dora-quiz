@@ -131,7 +131,7 @@ class Slide extends Component {
     this.saveTimer = setTimeout(() => {
       if (this.props.saveImageMap) {
         let photo = this.props.photo;
-        if (photo.indexOf("images/") == 0) {
+        if (photo.indexOf("images/") === 0) {
           photo = photo.replace("images/", "");
         }
         this.props.saveImageMap(photo, this.saveText());

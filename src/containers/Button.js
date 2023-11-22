@@ -56,7 +56,7 @@ class Button extends Component {
         ? this.props.pushedColor
         : this.props.selectedColor;
     if (this.props.selected) return this.props.selectedColor;
-    if (this.props.buttonStyle == "article") {
+    if (this.props.buttonStyle === "article") {
       return "white";
     }
     return this.props.buttonBaseColor;
