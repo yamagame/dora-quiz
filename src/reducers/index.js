@@ -311,6 +311,9 @@ export const sendAnswer =
       user_id,
       signature,
     };
+    if (window.location.pathname.indexOf("quiz-master") >= 0) {
+      payload.name = "_quiz_master_"
+    }
     console.log(JSON.stringify(payload));
     socket.emit("quiz", payload);
     const answers = { ...playerAnswers };
@@ -389,6 +392,9 @@ export const sendEntry = callback => async (dispatch, getState) => {
     user_id,
     signature,
   };
+  if (window.location.pathname.indexOf("quiz-master") >= 0) {
+    payload.name = "_quiz_master_"
+  }
   socket.emit("quiz", payload);
   dispatch({
     type: types.PARAMS,
