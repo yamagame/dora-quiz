@@ -29,11 +29,10 @@ export default class Area extends Component {
     this.mount = true;
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(nextProps) {
     if (this.initialized) {
       const width = this.container.clientWidth;
       const height = this.container.clientHeight;
-      const svg = this.svg;
 
       this.xScale.range([0, width]);
       this.yScale.range([0, height]);
@@ -44,17 +43,14 @@ export default class Area extends Component {
 
       this.updateArea();
     }
+    if (this.props.data !== nextProps.data) {
+      this.forceUpdate();
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener("keydown", this.onKeyDown);
     this.mount = false;
-  }
-
-  componentDidUpdate(nextProps) {
-    if (this.props.data !== nextProps.data) {
-      this.forceUpdate();
-    }
   }
 
   initializeSVG = target => {

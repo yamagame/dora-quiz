@@ -99,7 +99,7 @@ export const loadInitialData =
     payload.fontSize = fontSize(payload);
     socket = socketIO;
     await Promise.all(
-      Object.keys(initialState).map(async key => {
+      Object.keys(initialState).filter(key => key !== "area").map(async key => {
         payload[key] = await AsyncStorage.getItem(key, payload[key]);
       })
     );
@@ -169,6 +169,17 @@ export const changeLayout = payload => async (dispatch, getState) => {
     payload: {
       ...payload,
       fontSize: fontSize(payload),
+    },
+  });
+};
+
+export const changeArea = area => async (dispatch, getState) => {
+  const payload = getState()
+  dispatch({
+    type: types.LAYOUT,
+    payload: {
+      ...payload,
+      area,
     },
   });
 };
@@ -311,7 +322,7 @@ export const sendAnswer =
       user_id,
       signature,
     };
-    if (window.location.pathname.indexOf("quiz-master") >= 0) {
+    if (window.location.pathname.indexOf("browser-speech") >= 0) {
       payload.name = "_quiz_master_"
     }
     console.log(JSON.stringify(payload));
@@ -392,7 +403,7 @@ export const sendEntry = callback => async (dispatch, getState) => {
     user_id,
     signature,
   };
-  if (window.location.pathname.indexOf("quiz-master") >= 0) {
+  if (window.location.pathname.indexOf("browser-speech") >= 0) {
     payload.name = "_quiz_master_"
   }
   socket.emit("quiz", payload);
@@ -515,6 +526,7 @@ export const saveImageMap =
       }),
     });
     if (response.ok) {
+      // console.log(filename, imageMap)
     }
     if (callback) callback();
   };

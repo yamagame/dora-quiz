@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { fontSize } from "../../reducers";
+import { connect } from "react-redux";
+import { fontSize, changeArea } from "../../reducers";
 import Column from "../Column";
 import Row from "../Row";
 import Image from "../Image";
@@ -10,6 +11,7 @@ import Container from "./Container";
 import { getHost } from "../../utils";
 import AreaDialog from "../AreaDialog";
 import DataDialog from "../DataDialog";
+import equal from 'deep-equal';
 
 const notSelectable = {
   userSelect: "none",
@@ -23,7 +25,7 @@ const slideTitle = {
 };
 
 function basename(path) {
-  const basename = path.split("/").pop().split(".").shift();
+  const basename = path.split("/").pop();
   if (basename) {
     return basename;
   }
@@ -68,11 +70,11 @@ class Slide extends Component {
   componentDidUpdate(nextProps) {
     let updateState = false;
     const data = { ...this.state.data };
-    if (this.props.area !== nextProps.area) {
+    if (!equal(this.props.area, nextProps.area) || !equal(this.state.data.area, nextProps.area)) {
       data.area = nextProps.area;
       updateState = true;
     }
-    if (this.props.photo !== nextProps.photo) {
+    if (this.props.photo !== nextProps.photo || this.state.data.image !== basename(nextProps.photo)) {
       data.image = basename(nextProps.photo);
       updateState = true;
     }
@@ -86,6 +88,12 @@ class Slide extends Component {
         }
       );
     }
+    if (this.areaView && this.imageView) {
+      if (this.imageView.isLoaded()) {
+        this.areaView.updateArea();
+        this.areaView.updateSelection();
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -93,15 +101,6 @@ class Slide extends Component {
     this.updateTimer = null;
     if (this.saveTimer) clearTimeout(this.saveTimer);
     this.saveTimer = null;
-  }
-
-  componentDidUpdate() {
-    if (this.areaView && this.imageView) {
-      if (this.imageView.isLoaded()) {
-        this.areaView.updateArea();
-        this.areaView.updateSelection();
-      }
-    }
   }
 
   render() {
@@ -172,6 +171,7 @@ class Slide extends Component {
     if (action === "delete-selection") {
       const data = { ...this.state.data };
       data.area = data.area.filter(d => !d.selected);
+      this.props.onChangeArea(data.area)
       this.setState(
         {
           data,
@@ -376,4 +376,12 @@ Slide.defaultProps = {
   saveImageMap: null,
 };
 
-export default Slide;
+export default connect(
+  state => {
+    return {
+    };
+  },
+  dispatch => ({
+    onChangeArea: area => dispatch(changeArea(area)),
+  })
+)(Slide);

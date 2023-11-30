@@ -8,4 +8,4 @@ cp ./build/index.html ../dora-engine/public/
 cp ./build/static/js/main.*.js ../dora-engine/public/static/js/
 cp ./build/static/css/main.*.css ../dora-engine/public/static/css/
 
-cp ./build/index.html ../dora-engine/public/quiz-master/
+cp ./build/index.html ../dora-engine/public/browser-speech/
