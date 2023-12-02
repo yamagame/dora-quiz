@@ -28,6 +28,7 @@ var params = {
 };
 
 let speechRef = null
+let speechFlag = false
 
 function Speech() {
   if (speechRef) return speechRef
@@ -46,14 +47,18 @@ function Speech() {
     let text = "timeout"
     switch (event.error) {
       case "aborted":
+        speechFlag = false
         return
       case "no-speech":
         break;
       default:
         console.error(`音声認識エラーが発生しました: ${event.error}`);
-        text = "[error]"
+        text = "error"
         break;
     }
+    console.log("ERROR", event.error, new Date())
+    if (!speechFlag) return
+    speechFlag = false
     fetch(`/transcribe`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -61,7 +66,9 @@ function Speech() {
     })
   });
   speechRef.addEventListener("end", (event) => {
-    //
+    console.log("END", event, new Date())
+    if (!speechFlag) return
+    speechRef.start()
   });
 
   return speechRef
@@ -122,12 +129,14 @@ store.dispatch(
     });
 
     socket.on("startRecording", msg => {
-      console.log("startRecording")
+      console.log("startRecording", new Date())
+      speechFlag = true
       Speech().start();
     });
 
     socket.on("stopRecording", msg => {
       console.log("stopRecording")
+      speechFlag = false
       Speech().abort();
     });
 
